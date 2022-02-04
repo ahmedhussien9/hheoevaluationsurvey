@@ -12,7 +12,7 @@ import { finalize, tap } from 'rxjs';
 
 import { SecurityProtocolsDocumentsService } from 'src/app/module/survey-form/services/SecurityProtocolsDocuments.service';
 import { SystemImagesService } from 'src/app/module/survey-form/services/SystemImages.service';
-import { HttpSubmitSurveyService } from './services/http-servey.service';
+import { HttpSubmitSurveyService } from './services/http-survey.service';
 import { ContractFilesService } from 'src/app/module/survey-form/services/ContractFiles.service';
 
 enum ToasterMessage {

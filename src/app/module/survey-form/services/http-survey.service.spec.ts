@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HttpSubmitSurveyService } from './http-servey.service';
+import { HttpSubmitSurveyService } from './http-survey.service';
 
 describe('HttpSubmitSurveyService', () => {
   let service: HttpSubmitSurveyService;
