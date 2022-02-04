@@ -1,0 +1,74 @@
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin ball {
+  @include center;
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #000;
+  z-index: 2;
+  margin-top: 4px;
+  animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+}
+:host {
+  .submit-btn {
+    display: block;
+    position: relative;
+    width: 100%;
+    background: #03dac5;
+    color: #000;
+    width: 10rem;
+    height: 3rem;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    &:focus {
+      outline: none;
+      border-color: transparent;
+    }
+
+    &:hover {
+      box-shadow: none;
+      background: #04baa7;
+    }
+    &:focus {
+      outline: 0;
+      box-shadow: none;
+    }
+    .loading {
+      &::before {
+        @include ball;
+        animation-delay: 0.15s;
+      }
+    }
+    &.loading-btn {
+      font-size: 0;
+      &::before {
+        @include ball;
+        margin-left: -10px;
+      }
+
+      &::after {
+        @include ball;
+        margin-left: 10px;
+        animation-delay: 0.3s;
+      }
+    }
+  }
+}
+
+@keyframes ball {
+  from {
+    transform: translateY(0) scaleY(0.8);
+  }
+
+  to {
+    transform: translateY(-10px);
+  }
+}

@@ -1,0 +1,7 @@
+<button
+  class="submit-btn btn"
+  (click)="isClicked()"
+  [ngClass]="{ 'loading-btn': loading }"
+>
+  {{ title }} <span class="loading" *ngIf="loading"> </span>
+</button>

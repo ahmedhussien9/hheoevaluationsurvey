@@ -1,0 +1,26 @@
+<div class="center">
+  <div class="drop-area" [class.hasFiles]="filesCount > 0">
+    <ngx-file-drop
+      dropZoneLabel="Drop files here"
+      (onFileDrop)="dropped($event)"
+      (onFileOver)="fileOver($event)"
+      (onFileLeave)="fileLeave($event)"
+    >
+      <ng-template
+        ngx-file-drop-content-tmp
+        let-openFileSelector="openFileSelector"
+      >
+        <h3 class="title">
+          قم بسحب وإدراج الملفات أو
+          <a (click)="openFileSelector()" style="color: #03dac5"
+            >قم برفع الملفات</a
+          >
+        </h3>
+        <!-- <h6>{{sampleTitle}}</h6> -->
+        <h5 class="count" *ngIf="filesCount > 0">
+          عدد الملفات : <strong>{{ filesCount }}</strong>
+        </h5>
+      </ng-template>
+    </ngx-file-drop>
+  </div>
+</div>

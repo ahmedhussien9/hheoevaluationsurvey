@@ -1,0 +1,19 @@
+<ng-container *ngIf="file">
+  <div class="upload-file-container">
+    <div class="file-number">
+      <strong>#{{ number }}</strong>
+    </div>
+    <!-- <div class="file-icon">
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        </div> -->
+    <div class="file-info">
+      <h6 class="file-info__title">{{ file.name }}</h6>
+      <p class="file-info__size">{{ file.fileSize }}</p>
+    </div>
+    <div class="file-action">
+      <app-remove-button
+        (removeButton)="deleteFileHandler()"
+      ></app-remove-button>
+    </div>
+  </div>
+</ng-container>

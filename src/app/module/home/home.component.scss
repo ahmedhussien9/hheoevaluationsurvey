@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  max-width: 900px;
+}
+.main {
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 0rem 1rem;
+  .title {
+    font-size: 2.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 2.8rem;
+    padding: 1rem 0rem;
+    @media screen and (max-width: 600px) {
+      font-size: 1.3rem;
+    }
+  }
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 600px;
+  align-items: center;
+  text-align: center;
+}
+img {
+  object-fit: contain;
+  height: 300px;
+}
+button {
+  display: block;
+  position: relative;
+  width: 100%;
+  background: #818181;
+  color: #000;
+  width: 10rem;
+  height: 3rem;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background: rgb(209, 209, 209);
+  }
+}

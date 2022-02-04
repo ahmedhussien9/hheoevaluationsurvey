@@ -1,1 +1,121 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use "@angular/material" as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@import url("https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100;200;300;500;800&display=swap");
+
+$--bs-body-font-family: '"Noto Kufi Arabic", sans-serif;';
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$BS-form-survey-primary: mat.define-palette(mat.$indigo-palette);
+$BS-form-survey-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$BS-form-survey-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$BS-form-survey-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $BS-form-survey-primary,
+      accent: $BS-form-survey-accent,
+      warn: $BS-form-survey-warn,
+    ),
+  )
+);
+
+@import "~@angular/material/theming";
+
+$custom-typography: mat-typography-config(
+  $font-family: "'Noto Kufi Arabic', sans-serif;",
+);
+
+@include mat-base-typography($custom-typography);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($BS-form-survey-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: rgb(13 110 253 / 3%);
+  direction: rtl;
+  font-size: 16px;
+  font-family: "'Noto Kufi Arabic', sans-serif;";
+}
+@font-face {
+  font-family: JZOORFONT;
+  src: url("/assets/fonts/Jozoor-Font-Regular.otf") format("truetype");
+  font-weight: 400;
+}
+
+.mat-table {
+  font-family: "Noto Kufi Arabic", sans-serif;
+  font: "Noto Kufi Arabic", sans-serif;
+}
+
+.mat-toolbar {
+  font-family: "Noto Kufi Arabic", sans-serif;
+  font: "Noto Kufi Arabic", sans-serif;
+}
+
+input:focus {
+  outline: 0px;
+  box-shadow: none;
+  outline-width: 0;
+  border-color: none !important;
+}
+.form-control:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.5);
+  outline: 0;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.5);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 2px;
+  opacity: 0.6;
+  filter: invert(0.4);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+.form-control {
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.is-inavlid {
+  border-color: rgb(189, 1, 1);
+  box-shadow: 2px 2px 2px 1px rgb(189, 1, 1);
+  line-height: 2rem;
+}
+.spinner-container {
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+

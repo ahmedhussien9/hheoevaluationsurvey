@@ -1,0 +1,40 @@
+.upload-file-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0.2rem 0rem;
+  border-radius: 5px !important;
+  border-left: 5px solid #fff;
+  transition: all 0.5s ease-in-out;
+  border: 1px solid #f1f1f1;
+  margin: 0.5rem 0rem;
+  .file-number {
+    font-size: 10px;
+    font-weight: bold;
+    margin: 0rem 1rem;
+  }
+  .file-info {
+    flex-grow: 1;
+    &__title {
+      font-size: 14px;
+      color: #3f3f3f;
+      font-size: 700;
+    }
+    &__size {
+      font-size: 10px;
+      color: #1b9cfc;
+    }
+    &__title,
+    &__size {
+      margin-bottom: 0px;
+    }
+  }
+  .file-action {
+    margin-left: 1rem;
+    button {
+      color: #d0d0d0;
+      background: transparent;
+      font-size: 25px;
+    }
+  }
+}

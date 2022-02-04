@@ -1,0 +1,1261 @@
+<div class="surveyContainer">
+  <header class="header">
+    <h1 class="title">
+      استبيان المواقع الالكترونية التابعة لمؤسسات سموالشيخة جواهرالقاسمي
+    </h1>
+  </header>
+  <form class="formContainer" [formGroup]="userForm">
+    <div class="form-group">
+      <label class="label"> 1- اسم المؤسسة</label>
+      <input
+        [ngClass]="{
+          'is-inavlid':
+            userForm.controls['organizationName']?.errors?.required &&
+            isSubmitted
+        }"
+        class="form-control"
+        matInput
+        value=""
+        formControlName="organizationName"
+      />
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['organizationName']?.errors?.required && isSubmitted
+        "
+        >اسم المؤسسة مطلوب</small
+      >
+    </div>
+    <div class="form-group">
+      <label class="label"> 2- رابط الموقع الإلكتروني</label>
+      <input
+        class="form-control"
+        matInput
+        value=""
+        [ngClass]="{
+          'is-inavlid':
+            userForm.controls['webSiteURL']?.errors?.required && isSubmitted
+        }"
+        formControlName="webSiteURL"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['webSiteURL']?.errors?.required && isSubmitted"
+      >
+        رابط الموقع الالكتروني مطلوب</small
+      >
+    </div>
+    <div class="form-group">
+      <label class="label">3- ما اسم الشركة التي قامت بتطوير الموقع</label>
+      <input
+        class="form-control"
+        matInput
+        [ngClass]="{
+          'is-inavlid':
+            userForm.controls['websiteSoftwareCompany']?.errors?.required &&
+            isSubmitted
+        }"
+        value=""
+        formControlName="websiteSoftwareCompany"
+      />
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['websiteSoftwareCompany']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        اسم الشركة التي قامت بتطوير الموقع مطلوب</small
+      >
+    </div>
+    <!---->
+    <!--First add more question -->
+    <!---->
+    <fieldset>
+      <legend>
+        <label class="label">
+          4- يرجى ذكر جميع الشركات التي تم التعامل معها لتطوير الموقع الالكتروني
+          بالترتيب مع ذكر السنة
+        </label>
+      </legend>
+      <div formArrayName="companies">
+        <div
+          class="address-container"
+          *ngFor="let group of companiesArray.controls; let i = index"
+          [formGroupName]="i"
+          class="groupWrapper"
+        >
+          <div class="grid-table">
+            <div class="form-group">
+              <label class="label">اسم الشركة</label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['companyName']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="companyName"
+              />
+            </div>
+            <div class="form-group">
+              <label class="label">سنة التعاقد </label>
+              <input
+                class="form-control"
+                matInput
+                type="date"
+                value=""
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['contractYear']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="contractYear"
+              />
+            </div>
+            <div class="form-group">
+              <label class="label">اسباب تغيير الشركة</label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['reasonForLeaving']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="reasonForLeaving"
+              />
+            </div>
+
+            <ng-container *ngIf="i > 0">
+              <div class="form-group remove-button">
+                <app-remove-button
+                  (removeButton)="removeCompany(i)"
+                ></app-remove-button>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="add-more-container">
+        <app-add-button (addButton)="addCompany()"></app-add-button>
+      </div>
+    </fieldset>
+    <!---->
+    <!--End First add more question -->
+    <!---->
+    <!---->
+    <!-- Second add more question -->
+    <!---->
+    <fieldset>
+      <legend>
+        <label class="label">
+          5- ماهو المبلغ الاجمالي لتطوير الموقع مع بيان كل شركة والمبلغ المدفوع/
+          إجمالى رسوم السنة ؟
+        </label>
+      </legend>
+      <div formArrayName="companyDevelopmentFees">
+        <div
+          class="address-container"
+          *ngFor="
+            let group of companyDevelopmentFeesArray.controls;
+            let i = index
+          "
+          [formGroupName]="i"
+          class="groupWrapper"
+        >
+          <div class="grid-table">
+            <div class="form-group">
+              <label class="label">اسم الشركة</label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['companyName']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="companyName"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="label">السنة </label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                type="date"
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['year']?.errors?.required && isSubmitted
+                }"
+                formControlName="year"
+              />
+            </div>
+            <div class="form-group">
+              <label class="label">المبلغ المدفوع (بالدرهم)</label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                type="number"
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['paymentAmount']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="paymentAmount"
+              />
+            </div>
+
+            <ng-container *ngIf="i > 0">
+              <div class="form-group remove-button">
+                <app-remove-button
+                  (removeButton)="removeTotalPaymentsForWebsites(i)"
+                ></app-remove-button>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="add-more-container">
+        <app-add-button
+          (addButton)="addCompanyDevelopmentFees()"
+        ></app-add-button>
+      </div>
+    </fieldset>
+    <!---->
+    <!-- End Second add more question -->
+    <!---->
+
+    <!---->
+    <!-- Third add more question -->
+    <!---->
+    <fieldset>
+      <legend>
+        <label class="label"> 6- ماهو مبلغ صيانة الموقع مع ذكر السنة ؟</label>
+      </legend>
+      <div formArrayName="websiteMaintenanceFees">
+        <div
+          class="address-container"
+          *ngFor="
+            let group of websiteMaintenanceFeesArray.controls;
+            let i = index
+          "
+          [formGroupName]="i"
+          class="groupWrapper"
+        >
+          <div class="grid-table-2c">
+            <div class="form-group">
+              <label class="label"
+                >المبلغ المدفوع/ إجمالى رسوم السنة (بالدرهم)</label
+              >
+              <input
+                class="form-control"
+                matInput
+                value=""
+                type="number"
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['totalPaymentAmount']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="totalPaymentAmount"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="label">السنة </label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                type="date"
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['paymentYear']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="paymentYear"
+              />
+            </div>
+            <ng-container *ngIf="i > 0">
+              <div class="form-group remove-button">
+                <app-remove-button
+                  (removeButton)="removeTotalAmountOfMantaniance(i)"
+                ></app-remove-button>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="add-more-container">
+        <app-add-button
+          (addButton)="addWebsiteMaintenanceFees()"
+        ></app-add-button>
+      </div>
+    </fieldset>
+    <!---->
+    <!-- End Third add more question -->
+    <!---->
+
+    <div class="form-group">
+      <label class="label"
+        >7- اين موقع الهوست للموقع والبيانات (يرجى ذكر اسم الهوست)؟
+      </label>
+      <textarea
+        [ngClass]="{
+          'is-inavlid':
+            userForm.controls['websiteHostDetails']?.errors?.required &&
+            isSubmitted
+        }"
+        class="form-control h-25"
+        formControlName="websiteHostDetails"
+        rows="5"
+      ></textarea>
+
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['websiteHostDetails']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="label">
+        8- هل لديكم نسخة سورس كود من ملف الموقع وقاعدة البيانات؟
+      </label>
+      <div id="group1" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="sourceCodeObtained"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="sourceCodeObtained"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['sourceCodeObtained']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <div class="form-group">
+      <label class="label">9- اي لغة برمجية تم استخدامها لتطوير الموقع ؟</label>
+      <input
+        class="form-control"
+        matInput
+        value=""
+        formControlName="websiteProgrammingLanguage"
+      />
+
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['websiteProgrammingLanguage']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="label">
+        10- هل يتم دفع مبالغ مالية اخرى للموقع اذا كانت الاجابة (نعم) يرجى
+        ذكرها؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="haswebsiteextrafees"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="haswebsiteextrafees"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['haswebsiteextrafees']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Conditional Question -->
+    <!---->
+    <ng-container>
+      <div class="form-group">
+        <label class="label">
+          يرجى ذكر قيمة المبالغ الاضافية التي يتم دفعها على الموقع الالكترني
+          ونوع الخدمة المقدمة
+        </label>
+        <textarea
+          class="form-control h-25"
+          formControlName="websiteExtraFeesDetails"
+          rows="5"
+        ></textarea>
+      </div>
+    </ng-container>
+
+    <!-- <ng-container *ngIf="userForm.value.haswebsiteextrafees === 'false'">
+      <div class="form-group">
+        <label class="label"> غلط </label>
+        <textarea
+          class="form-control h-25"
+          formControlName="x"
+          rows="5"
+        ></textarea>
+      </div>
+    </ng-container> -->
+    <!---->
+    <!--End Of Conditional Question-->
+    <!---->
+    <div class="form-group">
+      <label class="label">11- كم يتم دفع مبلغ Domain name ؟ </label>
+      <input
+        class="form-control"
+        matInput
+        value=""
+        type="number"
+        formControlName="websiteDomainNameFees"
+      />
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['websiteDomainNameFees']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+
+    <!---->
+    <!-- Fourth add more question -->
+    <!---->
+    <fieldset>
+      <legend>
+        <label class="label">
+          12 -كم عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
+        </label>
+      </legend>
+      <div formArrayName="websiteSupervisors">
+        <div
+          class="address-container"
+          *ngFor="let group of websiteSupervisorsArray.controls; let i = index"
+          [formGroupName]="i"
+          class="groupWrapper"
+        >
+          <div class="grid-table-2c">
+            <div class="form-group">
+              <label class="label">عدد الاشخاص </label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                type="number"
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['numberOfSupervisors']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="numberOfSupervisors"
+              />
+            </div>
+            <div class="form-group">
+              <label class="label">المسمى الوظيفي </label>
+              <input
+                class="form-control"
+                matInput
+                value=""
+                type="text"
+                [ngClass]="{
+                  'is-inavlid':
+                    group.controls['supervisorPosition']?.errors?.required &&
+                    isSubmitted
+                }"
+                formControlName="supervisorPosition"
+              />
+            </div>
+            <ng-container *ngIf="i > 0">
+              <div class="form-group remove-button">
+                <app-remove-button
+                  (removeButton)="removeNumberOfPeopleSupportsWebsite(i)"
+                ></app-remove-button>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="add-more-container">
+        <app-add-button (addButton)="addWebsiteSupervisors()"></app-add-button>
+      </div>
+    </fieldset>
+    <!---->
+    <!-- End Fourth add more question -->
+    <!---->
+
+    <!----------------------------->
+    <!--1 Start Upload Attachements-->
+    <!----------------------------->
+    <div class="dropFile-container">
+      <label class="label"
+        >13- الرجاء ارفاق جميع العقود الخاصة بالموقع والصيانة</label
+      >
+      <app-upload-file
+        (filesEvent)="contractFilesService.add($event)"
+        [sampleTitle]="'Sample 1 (Mandatroy)'"
+        [filesCount]="contractFilesService.filesPreview.length"
+      >
+      </app-upload-file>
+
+      <ng-container *ngIf="contractFilesService.loading">
+        <app-progress-bar></app-progress-bar>
+      </ng-container>
+
+      <ng-container *ngIf="contractFilesService.filesPreview.length > 0">
+        <div class="dropFile-details">
+          <div class="dropFile-details__header">
+            <h6 style="font-weight: bold">الملفات</h6>
+          </div>
+          <div
+            *ngFor="
+              let item of contractFilesService.filesPreview;
+              let i = index
+            "
+            class="files-container"
+          >
+            <app-upload-file-details
+              [file]="item"
+              (deleteFile)="contractFilesService.remove(item)"
+              [number]="i + 1"
+            >
+            </app-upload-file-details>
+          </div>
+        </div>
+      </ng-container>
+
+      <small
+        class="form-text text-danger"
+        *ngIf="contractFilesService.filesPreview.length <= 0 && isSubmitted"
+      >
+        من فضلك ارفاق الملفات مطلوب</small
+      >
+    </div>
+    <!--End Upload Attachments-->
+
+    <!---->
+    <!-- 14  add more question -->
+    <!---->
+
+    <div class="form-group">
+      <label class="label">
+        14 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="'AUTOMATIC'"
+            formControlName="serviceFollowUp"
+          />
+          نظام إلكتروني
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="'MANUAL'"
+            formControlName="serviceFollowUp"
+          />
+          يدوي
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['serviceFollowUp']?.errors?.required && isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 14 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        اذا كانت الاجابة في السؤال السابق" يدوي" يرجى توضيح الية متابعة الخدمات
+      </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="serviceFollowUpDetails"
+        rows="5"
+      ></textarea>
+    </div>
+
+    <!----------------------------->
+    <!--2 Start Upload Attachements-->
+    <!----------------------------->
+    <div class="dropFile-container">
+      <label class="label">
+        اذا كانت الاجابة في السؤال السابق "نظام الكتروني" يرجى ارفاق صورة من
+        النظام
+      </label>
+      <app-upload-file
+        (filesEvent)="systemImagesService.add($event)"
+        [sampleTitle]="'Sample 1 (Mandatroy)'"
+        [filesCount]="systemImagesService.filesPreview.length"
+      >
+      </app-upload-file>
+      <ng-container *ngIf="systemImagesService.loading">
+        <app-progress-bar></app-progress-bar>
+      </ng-container>
+      <ng-container *ngIf="systemImagesService.filesPreview.length > 0">
+        <div class="dropFile-details">
+          <div class="dropFile-details__header">
+            <h6>الملفات</h6>
+          </div>
+          <div
+            *ngFor="let item of systemImagesService.filesPreview; let i = index"
+            class="files-container"
+          >
+            <app-upload-file-details
+              [file]="item"
+              (deleteFile)="systemImagesService.remove(i)"
+              [number]="i + 1"
+            >
+            </app-upload-file-details>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <!--End Upload Attachments-->
+    <!--End Follow Up-->
+
+    <!---->
+    <!-- 15 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        15 - هل يوجد في الموقع خدمة للابلاغ عن الشكاوي والمقترحات؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="hasComplainFeature"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="hasComplainFeature"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['hasComplainFeature']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 15 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        اذا كانت الاجابة في السؤال السابق" لا" يرجى توضيح الية متابعة الشكاوي
+        والمقترحات؟
+      </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="complainFeatureDetails"
+        rows="5"
+      ></textarea>
+    </div>
+
+    <!--End Follow up for 15-->
+
+    <!---->
+    <!-- 16 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        16- هل يتم تقييم مستوى الخدمة المقدمة للجمهور و قياس رضا المتعاملين؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="hasCustomerSatisfactionFeature"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="hasCustomerSatisfactionFeature"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['hasCustomerSatisfactionFeature']?.errors
+            ?.required && isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 16 -->
+    <!---->
+    <div class="form-group">
+      <label class="label"
+        >ماهي الخدمات التي يتم تقييمها وما هو الاسلوب المتبع في التقييم؟
+      </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="customerSatisfactionFeature"
+        rows="5"
+      ></textarea>
+    </div>
+    <!--End Follow up for 16-->
+
+    <!---->
+    <!-- 17 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        17 - هل تم تطوير الموقع وفق ارشادات خاصة بافضل الممارسات العالمية لتطوير
+        المواقع الالكترونية؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="developedUsingLatestStandard"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="developedUsingLatestStandard"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['developedUsingLatestStandard']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 17 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">يرجى ذكر الارشادات و الممارسات </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="latestStandardDetails"
+        rows="5"
+      ></textarea>
+    </div>
+
+    <!--End Follow up for 17-->
+
+    <!---->
+    <!-- 18 -->
+    <!---->
+    <!-- <div class="form-group">
+      <label class="label">
+        18 -هل تم تطوير الموقع وفق ارشادات خاصة بافضل الممارسات العالمية لتطوير المواقع الالكترونية
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="preferStandardDevelopmentInstruction"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="preferStandardDevelopmentInstruction"
+          />
+          لا
+        </div>
+      </div>
+    </div> -->
+    <!---->
+    <!--Follow up for 18 -->
+    <!---->
+    <!-- <div class="form-group">
+      <label class="label"
+        >ماهي الخدمات التي يتم تقييمها وما هو الاسلوب المتبع في التقييم
+      </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="latestStandardDetails"
+        rows="5"
+      ></textarea>
+    </div> -->
+    <!--End Follow up for 18-->
+
+    <!---->
+    <!-- 19 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        19- هل تفضل وجود ارشادات خاصة بتطوير الموقع الإلكتروني موحد على مستوى
+        مؤسسات سمو الشيخة؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="preferStandardDevelopmentInstruction"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="preferStandardDevelopmentInstruction"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['preferStandardDevelopmentInstruction']?.errors
+            ?.required && isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--End => 19 -->
+    <!---->
+
+    <!---->
+    <!-- 20 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        20- هل لديك اي اقتراحات خاصة بالارشادات التي يجب اتباعها؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="suggestionsToShare"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="suggestionsToShare"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['suggestionsToShare']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="label">اذا كانت الاجابة نعم يرجى ذكر الارشادات </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="suggestionsDetails"
+        rows="5"
+      ></textarea>
+    </div>
+    <!---->
+    <!--End => 20 -->
+    <!---->
+
+    <!---->
+    <!-- 21 -->
+    <!---->
+    <div class="form-group">
+      <label class="label"> 21 - هل يتم تحديث المحتوى بشكل دوري ؟</label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="continuousUpdate"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="continuousUpdate"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['continuousUpdate']?.errors?.required && isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 21 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">يرجى توضيح الية و دورية التحديث </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="continuousUpdateDetails"
+        rows="5"
+      ></textarea>
+    </div>
+    <!--End Follow up for 21-->
+
+    <!---->
+    <!-- 22 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        22 - هل تملك الجهة حسابات على مواقع التواصل الاجتماعي؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="hasSocialMediaAccounts"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="hasSocialMediaAccounts"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['hasSocialMediaAccounts']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 22 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">يرجى ادراج منصات التواصل الاجتماعي </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="socialMediaAccountsDetails"
+        rows="5"
+      ></textarea>
+    </div>
+    <!--End Follow up for 22-->
+
+    <!---->
+    <!-- 23 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        23 - هل تقوم الجهة بتوعية الجمهور عن الخدمات التي تقدمها؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="hasCustomerAwareness"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="hasCustomerAwareness"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['hasCustomerAwareness']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 23 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">يرجى توضيح الية التوعية المستخدمة </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="CustomerAwarenessDetails"
+        rows="5"
+      ></textarea>
+    </div>
+    <!--End Follow up for 23-->
+
+    <!---->
+    <!-- 24 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">
+        24 - هل تقوم المؤسسة بتطبيق آلية حماية لتبادل المعلومات الحساسة "مثل
+        استخدام بروتوكولات SSL, TLS, SSH, SFTP وغيرها؟
+      </label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="securityProtocolsApplied"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="securityProtocolsApplied"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['securityProtocolsApplied']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 24 -->
+    <!---->
+    <!----------------------------->
+    <!--3 Start Upload Attachements-->
+    <!----------------------------->
+    <div class="dropFile-container">
+      <label class="label">يرجى ارفاق ادلة </label>
+      <app-upload-file
+        (filesEvent)="securityProtocolsDocumentsService.add($event)"
+        [sampleTitle]="'Sample 1 (Mandatroy)'"
+        [filesCount]="securityProtocolsDocumentsService.filesPreview.length"
+      >
+      </app-upload-file>
+      <ng-container *ngIf="securityProtocolsDocumentsService.loading">
+        <app-progress-bar></app-progress-bar>
+      </ng-container>
+      <div class="dropFile-container__header"></div>
+      <ng-container
+        *ngIf="securityProtocolsDocumentsService.filesPreview.length > 0"
+      >
+        <div class="dropFile-details">
+          <div class="dropFile-details__header">
+            <h6>الملفات</h6>
+          </div>
+          <div
+            *ngFor="
+              let item of securityProtocolsDocumentsService.filesPreview;
+              let i = index
+            "
+            class="files-container"
+          >
+            <app-upload-file-details
+              [file]="item"
+              (deleteFile)="securityProtocolsDocumentsService.remove(i)"
+              [number]="i + 1"
+            >
+            </app-upload-file-details>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <!--End Upload Attachments-->
+    <!--End Follow up for 24-->
+
+    <!---->
+    <!-- 25 -->
+    <!---->
+    <div class="form-group">
+      <label class="label"
+        >كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟
+      </label>
+      <input
+        class="form-control"
+        matInput
+        value=""
+        formControlName="howMaintenanceApplied"
+      />
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['howMaintenanceApplied']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!--End 25-->
+    <!---->
+    <!-- 26 -->
+    <!---->
+    <div class="form-group">
+      <label class="label"> 26 - هل يوجد طريقة لتتبع زوار الموقع ؟</label>
+      <div id="group2" class="radio-button-group">
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="true"
+            formControlName="hasTrackingFeature"
+          />
+          نعم
+        </div>
+        <div class="group-field">
+          <input
+            type="radio"
+            [value]="false"
+            formControlName="hasTrackingFeature"
+          />
+          لا
+        </div>
+      </div>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['hasTrackingFeature']?.errors?.required &&
+          isSubmitted
+        "
+      >
+        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+      >
+    </div>
+    <!---->
+    <!--Follow up for 26 -->
+    <!---->
+    <div class="form-group">
+      <label class="label">يرجى ذكر الطريقة المستخدمة </label>
+      <textarea
+        class="form-control h-25"
+        formControlName="trackingFeatureDetails"
+        rows="5"
+      ></textarea>
+    </div>
+    <div class="submit-container">
+      <app-submit-button
+        [loading]="loading"
+        [title]="'إرسال'"
+        (click)="submit()"
+      >
+      </app-submit-button>
+    </div>
+
+    <!--End Follow up for 26-->
+    <!-- <div class="pre-code">
+      <div>
+        <div>Users Information</div>
+      </div>
+      <div>
+        <pre>{{ userForm.value | json }}</pre>
+      </div>
+    </div> -->
+  </form>
+</div>
