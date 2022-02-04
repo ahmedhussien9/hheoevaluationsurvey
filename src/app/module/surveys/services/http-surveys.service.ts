@@ -7,10 +7,19 @@ import { TFormStatus } from '../types/TFormStatus.type';
 
 @Injectable()
 export class HttpSurveysService {
+
   private readonly baseUrl = environment.baseUrl;
+
   constructor(private httpClient: HttpClient) {}
 
-  getListOfSurveysApi(
+  /**
+   * This request is for getting the list of submitted surveys
+   * @param page This is page number for pagination the starter is 0
+   * @param pageSize This is the page size number for pagination the starter is 10
+   * @param formStatus This is the form status which has 4 and the starter is completed (queryparam)
+   * @returns
+   */
+  public getListOfSurveysApi(
     page: number = 0,
     pageSize: number = 10,
     formStatus:
@@ -21,7 +30,6 @@ export class HttpSurveysService {
   ): Observable<ISurveryListResponse> {
     let params = new HttpParams();
     params = params.set('formStatus', formStatus);
-
     return this.httpClient
       .get<ISurveryListResponse>(
         `${this.baseUrl}survey/form/${page}/${pageSize}`,
