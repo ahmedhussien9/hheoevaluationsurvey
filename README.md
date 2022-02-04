@@ -1,3 +1,5 @@
+[![Azure Static Web Apps CI/CD](https://github.com/ahmedhussien9/hheoevaluationsurvey/actions/workflows/azure-static-web-apps-black-mushroom-033ef9b03.yml/badge.svg?branch=production)](https://github.com/ahmedhussien9/hheoevaluationsurvey/actions/workflows/azure-static-web-apps-black-mushroom-033ef9b03.yml)
+
 # BSFormSurvey
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
