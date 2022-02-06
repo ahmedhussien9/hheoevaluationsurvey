@@ -13,7 +13,6 @@ export interface IFormId {
   providedIn: 'root',
 })
 export class HttpSubmitSurveyService {
-
   private readonly FORM_LOCALSTORAGE_PRFIX = 'FORM_ID';
   private readonly baseUrl = environment.baseUrl;
 
