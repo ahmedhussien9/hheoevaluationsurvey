@@ -6,10 +6,18 @@
   min-height: 100vh;
 }
 .header {
-  padding: 2rem 1rem;
+  padding: 2rem 1rem 0rem 1rem;
+  text-align: center;
+  .logo {
+    height: 60px;
+    margin-bottom: 1rem;
+  }
   @media screen and (min-width: 600px) {
     padding: 2rem 4rem;
     line-height: 4rem;
+    .logo {
+      height: 100px;
+    }
   }
 }
 .title {
@@ -19,7 +27,7 @@
   line-height: 2rem;
   color: #818181;
   @media screen and (min-width: 600px) {
-    line-height: 4rem;
+    line-height: 3rem;
   }
 }
 
