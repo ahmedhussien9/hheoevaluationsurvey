@@ -57,17 +57,19 @@ export class ContractFilesService extends FileUploadBase {
     }
   }
 
-  override remove(item: FilePreviw): void {
-    this.httpSubmiturveyService.removeFile(item.id).subscribe(
-      (data) => {
-        console.log(data);
-        this.toastr.error(`تم حذف ${item.name} بنجاح`);
-        this.filesPreview.splice(item.id, 1);
-        this.files.splice(item.id, 1);
-      },
-      (err) => {
-        throw new Error(err);
-      }
-    );
+  override remove(item: FilePreviw, index: number): void {
+    this.httpSubmiturveyService
+      .removeFile(item.id)
+      .pipe(finalize(() => this.cdr.detectChanges()))
+      .subscribe(
+        (data) => {
+          this.toastr.error(`تم حذف ${item.name} بنجاح`);
+          this.filesPreview.splice(index, 1);
+          this.files.splice(index, 1);
+        },
+        (err) => {
+          throw new Error(err);
+        }
+      );
   }
 }
