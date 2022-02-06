@@ -7,7 +7,6 @@ import { TFormStatus } from '../types/TFormStatus.type';
 
 @Injectable()
 export class HttpSurveysService {
-
   private readonly baseUrl = environment.baseUrl;
 
   constructor(private httpClient: HttpClient) {}
@@ -31,12 +30,9 @@ export class HttpSurveysService {
     let params = new HttpParams();
     params = params.set('formStatus', formStatus);
     return this.httpClient
-      .get<ISurveryListResponse>(
-        `${this.baseUrl}survey/form/${page}/${pageSize}`,
-        {
-          params: params,
-        }
-      )
+      .get<ISurveryListResponse>(`${this.baseUrl}${page}/${pageSize}`, {
+        params: params,
+      })
       .pipe(tap((data) => console.log(data)));
   }
 }

@@ -8,6 +8,7 @@ import { DropFileModel } from '../../../shared/models/FileUploadModels/dropFile.
 import { FileType } from '../../../shared/models/FileUploadModels/File.types';
 import { FileUploadBase } from '../../../shared/models/FileUploadModels/FileUpload.model';
 import { FilePreviw } from '../interfaces/IFilePreview.interface';
+
 @Injectable()
 export class SecurityProtocolsDocumentsService extends FileUploadBase {
   override files: File[] = [];

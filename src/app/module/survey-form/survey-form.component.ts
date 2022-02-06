@@ -14,7 +14,7 @@ import { SecurityProtocolsDocumentsService } from 'src/app/module/survey-form/se
 import { SystemImagesService } from 'src/app/module/survey-form/services/SystemImages.service';
 import { HttpSubmitSurveyService } from './services/http-survey.service';
 import { ContractFilesService } from 'src/app/module/survey-form/services/ContractFiles.service';
-import { TFormStatus } from '../surveys/types/TFormStatus.type';
+import { TFormStatus } from 'src/app/module/surveys/types/TFormStatus.type';
 
 enum ToasterMessage {
   success = 'تم ارسال النموذج  بنجاح شكرا لكم',

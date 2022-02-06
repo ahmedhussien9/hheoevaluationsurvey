@@ -21,7 +21,7 @@ export class HttpSubmitSurveyService {
   public sendSurveyDataApi(survey: any) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
-    return this.httpClient.post(`${this.baseUrl}survey/form/submit`, survey, {
+    return this.httpClient.post(`${this.baseUrl}submit`, survey, {
       headers: headers,
       observe: 'response',
     });
@@ -31,7 +31,7 @@ export class HttpSubmitSurveyService {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     return this.httpClient.post<FilePreviw[]>(
-      `${this.baseUrl}survey/form/file/upload`,
+      `${this.baseUrl}file/upload`,
       formData,
       {
         headers: headers,
@@ -40,11 +40,11 @@ export class HttpSubmitSurveyService {
   }
 
   public removeFile(fileId: number) {
-    return this.httpClient.delete(`${this.baseUrl}survey/form/file/${fileId}`);
+    return this.httpClient.delete(`${this.baseUrl}file/${fileId}`);
   }
 
   public getFormInitializeApi() {
-    return this.httpClient.get(`${this.baseUrl}survey/form/initialize`).pipe(
+    return this.httpClient.get(`${this.baseUrl}initialize`).pipe(
       map((data: any) => {
         return {
           id: data['id'],
