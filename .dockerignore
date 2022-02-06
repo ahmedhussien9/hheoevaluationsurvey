@@ -3,3 +3,7 @@ node_modules
 .git
 npm-debug.log
 .gitignore
+.firebase
+.github
+.vscode
+.angular
