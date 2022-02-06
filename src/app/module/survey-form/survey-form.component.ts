@@ -8,12 +8,13 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { finalize, tap } from 'rxjs';
+import { finalize, switchMap, tap } from 'rxjs';
 
 import { SecurityProtocolsDocumentsService } from 'src/app/module/survey-form/services/SecurityProtocolsDocuments.service';
 import { SystemImagesService } from 'src/app/module/survey-form/services/SystemImages.service';
-import { HttpSubmitSurveyService } from './services/http-servey.service';
+import { HttpSubmitSurveyService } from './services/http-survey.service';
 import { ContractFilesService } from 'src/app/module/survey-form/services/ContractFiles.service';
+import { TFormStatus } from '../surveys/types/TFormStatus.type';
 
 enum ToasterMessage {
   success = 'تم ارسال النموذج  بنجاح شكرا لكم',
@@ -222,9 +223,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
 
   ngOnInit(): void {
     if (!this.httpSubmiturveyService.getFormIdFromLocalStorage()) {
-      this.httpSubmiturveyService.getFormInitializeApi().subscribe((data) => {
-        console.log(data);
-      });
+      this.httpSubmiturveyService.getFormInitializeApi().subscribe();
     }
   }
 
@@ -233,7 +232,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
       this.toastr.error(ToasterMessage.validationError);
       return true;
     }
-    if (this.contractFilesService.files.length === 0) {
+    if (this.contractFilesService.filesPreview.length === 0) {
       this.toastr.error(ToasterMessage.uploadFileError);
       return true;
     }
@@ -248,17 +247,34 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
       this.loading = false;
       return;
     }
+
     this.httpSubmiturveyService
-      .sendSurveyDataApi(this.userForm.value)
+      .sendSurveyDataApi(this.getSurveyFormData())
       .pipe(
-        tap((data) => {
-          console.log(data);
-          this.toastr.success(ToasterMessage.success);
-          this.userForm.reset();
-          this.isSubmitted = false;
+        switchMap((response) => {
+          if (response.status === 201 || response.status === 200) {
+            this.submittedFormSuccess();
+          }
+          return this.httpSubmiturveyService.getFormInitializeApi();
         }),
         finalize(() => (this.loading = false))
       )
-      .subscribe();
+      .subscribe(() => this.cdr.detectChanges());
+  }
+
+  submittedFormSuccess() {
+    this.toastr.success(ToasterMessage.success);
+    this.userForm.reset();
+    this.isSubmitted = false;
+    this.loading = false;
+    this.httpSubmiturveyService.clearLocalStorage();
+  }
+
+  getSurveyFormData() {
+    return {
+      ...this.userForm.value,
+      uuid: this.httpSubmiturveyService.getFormUUID(),
+      formStatus: TFormStatus.completed,
+    };
   }
 }

@@ -14,7 +14,6 @@ export interface IFormId {
 })
 export class HttpSubmitSurveyService {
   private readonly FORM_LOCALSTORAGE_PRFIX = 'FORM_ID';
-
   private readonly baseUrl = environment.baseUrl;
 
   constructor(private httpClient: HttpClient) {}
@@ -24,6 +23,7 @@ export class HttpSubmitSurveyService {
     headers.append('Content-Type', 'multipart/form-data');
     return this.httpClient.post(`${this.baseUrl}survey/form/submit`, survey, {
       headers: headers,
+      observe: 'response',
     });
   }
 
@@ -52,6 +52,7 @@ export class HttpSubmitSurveyService {
         };
       }),
       tap((data: IFormId) => {
+        console.log(data);
         this.setToLocalStorage(data);
       })
     );
@@ -83,7 +84,17 @@ export class HttpSubmitSurveyService {
     );
   }
 
-  clearLocalStorage() {
+  getFormUUID(): string {
+    return (
+      (
+        JSON.parse(
+          localStorage.getItem(this.FORM_LOCALSTORAGE_PRFIX)
+        ) as IFormId
+      ).uuid || null
+    );
+  }
+
+  clearLocalStorage(): void {
     localStorage.clear();
   }
 }

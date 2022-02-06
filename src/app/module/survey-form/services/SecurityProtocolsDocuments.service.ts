@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/internal/operators/finalize';
-import { HttpSubmitSurveyService } from 'src/app/module/survey-form/services/http-servey.service';
+import { HttpSubmitSurveyService } from 'src/app/module/survey-form/services/http-survey.service';
 import { BuildFormDataModel } from '../../../shared/models/FileUploadModels/BuildFormData.model';
 import { DropFileModel } from '../../../shared/models/FileUploadModels/dropFile.model';
 import { FileType } from '../../../shared/models/FileUploadModels/File.types';
