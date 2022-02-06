@@ -24,7 +24,19 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
   }
 
   override add(files: NgxFileDropEntry[]) {
+
+    if (this.validateMaxFilesNumber(files, this.files)) {
+      this.toastr.error(
+        `عذراً ، الحد الاقصى لعدد الملفات ${this.MAX_FILES_NUMBER}`
+      );
+      return;
+    }
+
     const dropFileModel = new DropFileModel(files, this.fileType);
+    if (files.length + this.files.length > 7) {
+      this.toastr.error('عذراً، الحد الأقصى لعدد الملفات 7');
+      return;
+    }
     dropFileModel.dropped((file: File) => {
       this.files.push(file);
     });

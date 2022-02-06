@@ -15,6 +15,7 @@ export class SystemImagesService extends FileUploadBase {
   override fileType = FileType.systemImages;
   override filesPreview: FilePreviw[] = [];
   override loading = false;
+
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
     private toastr: ToastrService,
@@ -24,6 +25,14 @@ export class SystemImagesService extends FileUploadBase {
   }
 
   override add(files: NgxFileDropEntry[]) {
+
+    if (this.validateMaxFilesNumber(files, this.files)) {
+      this.toastr.error(
+        `عذراً ، الحد الاقصى لعدد الملفات ${this.MAX_FILES_NUMBER}`
+      );
+      return;
+    }
+
     const dropFileModel = new DropFileModel(files, this.fileType);
     dropFileModel.dropped((file: File) => {
       this.files.push(file);
@@ -54,6 +63,8 @@ export class SystemImagesService extends FileUploadBase {
       this.toastr.error('حدث خطأ فى تحميل الملفات');
     }
   }
+
+
 
   override remove(item: FilePreviw, index: number): void {
     this.httpSubmiturveyService.removeFile(item.id).subscribe(

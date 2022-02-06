@@ -24,7 +24,13 @@ export class ContractFilesService extends FileUploadBase {
   }
   override add(files: NgxFileDropEntry[]) {
     const dropFileModel = new DropFileModel(files, this.fileType);
-    console.log('Hey');
+
+    if (this.validateMaxFilesNumber(files, this.files)) {
+      this.toastr.error(
+        `عذراً ، الحد الاقصى لعدد الملفات ${this.MAX_FILES_NUMBER}`
+      );
+      return;
+    }
 
     dropFileModel.dropped((file: File) => {
       this.files.push(file);
