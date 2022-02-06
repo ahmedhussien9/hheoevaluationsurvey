@@ -55,13 +55,14 @@ export class SystemImagesService extends FileUploadBase {
     }
   }
 
-  override remove(item: FilePreviw): void {
+  override remove(item: FilePreviw, index: number): void {
     this.httpSubmiturveyService.removeFile(item.id).subscribe(
       (data) => {
         console.log(data);
         this.toastr.error(`تم حذف ${item.name} بنجاح`);
-        this.filesPreview.splice(item.id, 1);
-        this.files.splice(item.id, 1);
+        this.filesPreview.splice(index, 1);
+        this.files.splice(index, 1);
+        this.cdr.detectChanges();
       },
       (err) => {
         throw new Error(err);

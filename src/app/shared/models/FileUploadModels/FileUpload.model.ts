@@ -7,8 +7,8 @@ export abstract class FileUploadBase implements IFileUpload {
   filesPreview: FilePreviw[];
   fileType: string;
   loading: boolean;
-  public remove(file: FilePreviw): void {
-    this.files.splice(file.id, 1);
+  public remove(file: FilePreviw, index: number): void {
+    this.files.splice(index, 1);
   }
 
   public add(files: NgxFileDropEntry[]): void {

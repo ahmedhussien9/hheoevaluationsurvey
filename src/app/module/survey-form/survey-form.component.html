@@ -563,7 +563,7 @@
           >
             <app-upload-file-details
               [file]="item"
-              (deleteFile)="contractFilesService.remove(item)"
+              (deleteFile)="contractFilesService.remove(item, i)"
               [number]="i + 1"
             >
             </app-upload-file-details>
@@ -657,7 +657,7 @@
           >
             <app-upload-file-details
               [file]="item"
-              (deleteFile)="systemImagesService.remove(i)"
+              (deleteFile)="systemImagesService.remove(item, i)"
               [number]="i + 1"
             >
             </app-upload-file-details>
@@ -1160,7 +1160,7 @@
           >
             <app-upload-file-details
               [file]="item"
-              (deleteFile)="securityProtocolsDocumentsService.remove(i)"
+              (deleteFile)="securityProtocolsDocumentsService.remove(item, i)"
               [number]="i + 1"
             >
             </app-upload-file-details>
