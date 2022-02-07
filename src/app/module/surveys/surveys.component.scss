@@ -1,7 +1,46 @@
 table {
   width: 100%;
 }
-
+.statusWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: #f3f3f3;
+  padding: 1rem 1rem;
+  overflow-x: auto;
+  .list {
+    list-style-type: none;
+    width: 100%;
+    display: flex;
+    margin: 0px;
+    padding: 0px 1rem;
+    gap: 1rem;
+    justify-content: center;
+    @media screen and (max-width: 800px) {
+      justify-content: flex-start;
+    }
+    .item {
+      &__link {
+        background: rgb(255, 255, 255);
+        display: block;
+        color: rgb(129, 129, 129);
+        text-decoration: none;
+        width: 100%;
+        cursor: pointer;
+        text-align: center;
+        min-width: 100px;
+        padding: 0.6rem 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 12px;
+      }
+      .active {
+        background: #0bbb05;
+        color: #fff;
+      }
+    }
+  }
+}
 .list-surverys {
   margin: 2rem auto;
   .header {
@@ -62,9 +101,9 @@ table {
     th.mat-header-cell {
       border-bottom-color: transparent;
       color: #fff;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 600;
-      background: rgb(51, 51, 51);
+      background: rgb(71, 71, 71);
       @media screen and (max-width: 600px) {
         font-size: 12px;
         font-weight: 600;
@@ -78,7 +117,7 @@ table {
     }
     td.mat-cell {
       border-color: transparent;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 400;
       text-align: center;
       @media screen and (max-width: 600px) {

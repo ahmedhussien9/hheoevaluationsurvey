@@ -13,12 +13,12 @@ import { CoreModule } from './core/core.module';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    CoreModule,
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    CoreModule,
-    ToastrModule.forRoot(), // ToastrModule added
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

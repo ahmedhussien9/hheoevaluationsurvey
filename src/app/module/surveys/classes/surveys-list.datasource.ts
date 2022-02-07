@@ -8,6 +8,7 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { finalize } from 'rxjs/internal/operators/finalize';
 import { of } from 'rxjs/internal/observable/of';
 import { HttpSurveysService } from '../services/http-surveys.service';
+import { TFormStatus } from '../types/TFormStatus.type';
 
 @Injectable({
   providedIn: 'root',
@@ -36,10 +37,17 @@ export class ListOfSurveysDataSource implements DataSource<any> {
     this.loadingSubject.unsubscribe();
   }
 
-  loadData(page: number) {
+  loadData(
+    page: number,
+    formStatus:
+      | TFormStatus.completed
+      | TFormStatus.canceled
+      | TFormStatus.drafted
+      | TFormStatus.inProgress
+  ) {
     this.loadingSubject.next(true);
     this.httpSurveysService
-      .getListOfSurveysApi(page)
+      .getListOfSurveysApi(page, formStatus)
       .pipe(
         first(),
         catchError(() => of([])),

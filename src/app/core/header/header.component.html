@@ -1,6 +1,6 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="">
   <mat-toolbar-row class="container">
-    <span>استبيان المواقع الالكترونية</span>
+    <img src="./assets/image/survey-logo.png" class="logo" />
     <span class="example-spacer"></span>
     <!-- <mat-icon
       class="example-icon"
@@ -14,5 +14,7 @@
       aria-label="Example delete icon"
       >delete</mat-icon
     > -->
+    <button class="btn" [routerLink]="['/survey']">الاستبيان</button>
+    <button class="btn" (click)="logOut()">الخروج</button>
   </mat-toolbar-row>
 </mat-toolbar>
