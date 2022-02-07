@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  loading = false;
   constructor(
     private fg: FormBuilder,
     private toaster: ToastrService,
@@ -30,20 +31,29 @@ export class LoginComponent implements OnInit {
   }
 
   submit() {
+    this.loading = true;
     const body = {
       username: this.loginForm.value.username,
       password: this.loginForm.value.password,
     };
 
     if (this.loginForm.invalid) {
+      this.loading = false;
       this.toaster.error('من فضلك قم بملئ البيانات');
       return;
     }
 
-    this._authService.login(body).subscribe((res) => {
-      this.toaster.success('Welcome Back!');
-      this._authService.saveToken(res['body'].jwt);
-      this.router.navigate(['dashboard']);
-    });
+    this._authService.login(body).subscribe(
+      (res) => {
+        this.loading = false;
+        this.toaster.success('Welcome Back!');
+        this._authService.saveToken(res['body'].jwt);
+        this.router.navigate(['dashboard']);
+      },
+      (err) => {
+        this.loading = false;
+        console.log(err);
+      }
+    );
   }
 }

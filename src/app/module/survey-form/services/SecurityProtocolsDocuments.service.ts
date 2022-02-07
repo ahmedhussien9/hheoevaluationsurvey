@@ -15,6 +15,8 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
   override fileType = FileType.securityProtocolsDocuments;
   override filesPreview: FilePreviw[] = [];
   override loading = false;
+  override isStartUploading: boolean = false;
+
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
     private toastr: ToastrService,
@@ -24,7 +26,6 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
   }
 
   override add(files: NgxFileDropEntry[]) {
-
     if (this.validateMaxFilesNumber(files, this.files)) {
       this.toastr.error(
         `عذراً ، الحد الاقصى لعدد الملفات ${this.MAX_FILES_NUMBER}`
@@ -38,6 +39,7 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
       return;
     }
     dropFileModel.dropped((file: File) => {
+      this.startUploading();
       this.files.push(file);
     });
     try {
@@ -53,11 +55,16 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
           .subscribe(
             (data: FilePreviw[]) => {
               this.loading = false;
-              this.filesPreview = [...data];
+              this.filesPreview = this.filesPreview.concat(data);
+              console.log(this.filesPreview);
+              this.files = [];
+              this.endUploading();
               this.cdr.detectChanges();
             },
             (err) => {
+              this.toastr.error(err.error.message);
               this.loading = false;
+              this.cdr.detectChanges();
             }
           );
       }
@@ -77,6 +84,8 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
         this.cdr.detectChanges();
       },
       (err) => {
+        console.log(err);
+        this.toastr.error(err.error.message);
         throw new Error(err);
       }
     );

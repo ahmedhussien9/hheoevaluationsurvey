@@ -4,3 +4,12 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+.page-content {
+  margin-top: 5rem !important;
+}
+.container {
+  @media screen and (max-width: 600px) {
+    padding: 0px;
+    margin: 0px;
+  }
+}

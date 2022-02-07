@@ -23,11 +23,15 @@ const routes: Routes = [
     canActivate: [CanActivateViaAuthGuard],
     children: [
       {
-        path: '',
+        path: 'surveys',
         loadChildren: () =>
           import('./module/surveys/surveys.module').then(
             (m) => m.SurveysModule
           ),
+      },
+      {
+        path: '**',
+        redirectTo: 'surveys',
       },
     ],
   },

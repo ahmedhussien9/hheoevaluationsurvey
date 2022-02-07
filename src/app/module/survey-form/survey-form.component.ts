@@ -20,6 +20,7 @@ enum ToasterMessage {
   success = 'تم ارسال النموذج  بنجاح شكرا لكم',
   validationError = 'من فضلك قم بملئ النموذج!',
   uploadFileError = 'من فضلك قم برفع الملفات المطلوبة',
+  isStillUploadingFile = 'برجاء انتظار تحميل الملفات',
 }
 
 @Component({
@@ -72,7 +73,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
       hasComplainFeature: [null, Validators.required],
       complainFeatureDetails: [null],
       hasCustomerSatisfactionFeature: [null, Validators.required],
-      customerSatisfactionFeature: [null],
+      customerSatisfactionFeatureDetails: [null],
       developedUsingLatestStandard: [null, Validators.required],
       latestStandardDetails: [null],
       preferStandardDevelopmentInstruction: [null, Validators.required],
@@ -83,14 +84,14 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
       hasSocialMediaAccounts: [null, Validators.required],
       socialMediaAccountsDetails: [null],
       hasCustomerAwareness: [null, Validators.required],
-      CustomerAwarenessDetails: [null],
+      customerAwarenessDetails: [null],
       securityProtocolsApplied: [null, Validators.required],
       howMaintenanceApplied: [null, Validators.required],
       hasTrackingFeature: [null, Validators.required],
       trackingFeatureDetails: [null],
       sourceCodeObtained: [null, Validators.required],
       websiteProgrammingLanguage: [null, Validators.required],
-      haswebsiteextrafees: [null, Validators.required],
+      hasWebsiteExtraFees: [null, Validators.required],
       websiteExtraFeesDetails: [null], // optional
     });
   }
@@ -133,6 +134,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
       supervisorPosition: [null, Validators.required],
     });
   }
+
   ngAfterContentChecked() {
     this.cdr.detectChanges();
   }
@@ -154,6 +156,14 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   removeCompany(index: number): void {
     this.companiesArray.removeAt(index);
   }
+
+  resetCompanyArray() {
+    this.userForm.setControl(
+      'companies',
+      this._fb.array([this.addCompainesGroup()])
+    );
+  }
+
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 
@@ -176,6 +186,14 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   removeTotalPaymentsForWebsites(index: number): void {
     this.companyDevelopmentFeesArray.removeAt(index);
   }
+
+  resetcompanyDevelopmentFeesArray() {
+    this.userForm.setControl(
+      'companyDevelopmentFees',
+      this._fb.array([this.addCompanyDevelopmentFeesGroup()])
+    );
+  }
+
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 
@@ -198,6 +216,14 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   removeTotalAmountOfMantaniance(index: number): void {
     this.websiteMaintenanceFeesArray.removeAt(index);
   }
+
+  resetwebsiteMaintenanceFeesArray() {
+    this.userForm.setControl(
+      'websiteMaintenanceFees',
+      this._fb.array([this.addWebsiteMaintenanceFeesGroup()])
+    );
+  }
+
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 
@@ -218,8 +244,22 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   removeNumberOfPeopleSupportsWebsite(index: number): void {
     this.websiteSupervisorsArray.removeAt(index);
   }
+
+  resetWebSiteSupervisorsArray() {
+    this.userForm.setControl(
+      'websiteSupervisors',
+      this._fb.array([this.addWebsiteSupervisorsGroup()])
+    );
+  }
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
+
+  resetFormArray() {
+    this.resetCompanyArray();
+    this.resetwebsiteMaintenanceFeesArray();
+    this.resetcompanyDevelopmentFeesArray();
+    this.resetWebSiteSupervisorsArray();
+  }
 
   ngOnInit(): void {
     if (!this.httpSubmiturveyService.getFormIdFromLocalStorage()) {
@@ -227,21 +267,19 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
     }
   }
 
-  isNotValidForm(): boolean {
-    if (this.userForm.invalid) {
-      this.toastr.error(ToasterMessage.validationError);
-      return true;
-    }
-    if (this.contractFilesService.filesPreview.length === 0) {
-      this.toastr.error(ToasterMessage.uploadFileError);
-      return true;
-    }
-    return false;
-  }
-
-  submit() {
-    this.isSubmitted = true;
-    this.loading = true;
+  /**
+   * Submit Form
+   * start submitted form
+   * Check validation
+   * Send the form body to the API
+   * Run submittied form sucess
+   * and call initialize API to get a new ID for the new form
+   * Stop loader
+   * Run change detection to update the UI
+   * @returns void
+   */
+  submit(): void {
+    this.startSubmittingForm();
 
     if (this.isNotValidForm()) {
       this.loading = false;
@@ -257,19 +295,80 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
           }
           return this.httpSubmiturveyService.getFormInitializeApi();
         }),
-        finalize(() => (this.loading = false))
+        finalize(() => this.stopLoader())
       )
       .subscribe(() => this.cdr.detectChanges());
   }
 
-  submittedFormSuccess() {
+  /**
+   *  Check some cases if one of them is unvalid so error message should be shown
+   * @returns boolean
+   */
+  isNotValidForm(): boolean {
+    if (this.userForm.invalid) {
+      this.toastr.error(ToasterMessage.validationError);
+      return true;
+    }
+
+    if (
+      this.contractFilesService.isStartUploading ||
+      this.systemImagesService.isStartUploading ||
+      this.securityProtocolsDocumentsService.isStartUploading
+    ) {
+      this.toastr.error(ToasterMessage.isStillUploadingFile);
+      return true;
+    }
+
+    if (this.contractFilesService.filesPreview.length === 0) {
+      this.toastr.error(ToasterMessage.uploadFileError);
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * It should be called when submitted form is success
+   */
+  submittedFormSuccess(): void {
     this.toastr.success(ToasterMessage.success);
     this.userForm.reset();
-    this.isSubmitted = false;
-    this.loading = false;
+    this.resetFormArray();
+    this.endSubmittingForm();
+    this.systemImagesService.filesPreview = [];
+    this.securityProtocolsDocumentsService.filesPreview = [];
+    this.contractFilesService.filesPreview = [];
     this.httpSubmiturveyService.clearLocalStorage();
   }
 
+  /**
+   * Starts when form is submitted
+   */
+  startSubmittingForm(): void {
+    this.isSubmitted = true;
+    this.loading = true;
+  }
+
+  /**
+   * Stop loader
+   * @returns boolean
+   */
+  stopLoader(): boolean {
+    return (this.loading = false);
+  }
+
+  /**
+   * End submitted form
+   */
+  endSubmittingForm(): void {
+    this.isSubmitted = false;
+    this.loading = false;
+  }
+
+  /**
+   *  This function is responsible for generating the form body that will be send to the API
+   * @returns body of the form
+   */
   getSurveyFormData() {
     return {
       ...this.userForm.value,

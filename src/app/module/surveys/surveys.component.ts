@@ -28,7 +28,6 @@ export interface PeriodicElement {
   selector: 'app-surveys',
   templateUrl: './surveys.component.html',
   styleUrls: ['./surveys.component.scss'],
-  providers: [HttpSurveysService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SurveysComponent implements OnInit {

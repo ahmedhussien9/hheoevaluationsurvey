@@ -28,15 +28,15 @@ table {
         width: 100%;
         cursor: pointer;
         text-align: center;
-        min-width: 100px;
+        min-width: 120px;
         padding: 0.6rem 1rem;
-        border-radius: 5px;
+        border-radius: 50px;
         font-weight: bold;
         font-size: 12px;
       }
       .active {
-        background: #0bbb05;
-        color: #fff;
+        background: #f9c74f;
+        color: #000;
       }
     }
   }
@@ -47,9 +47,16 @@ table {
     background: #fff;
     border: 1px solid #f1f1f1;
     padding: 2rem 1rem;
+    display: flex;
     .title {
       font-weight: bold;
       margin-bottom: 0px;
+      @media screen and (max-width: 600px) {
+        font-size: 18px;
+      }
+    }
+    .back {
+      align-self: flex-end;
     }
   }
 }
@@ -63,6 +70,13 @@ table {
   .tabelContainer {
     transition: all 200ms ease-in-out;
     overflow-x: auto;
+    .empty-container {
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
     table {
       width: 100%;
       display: table;
@@ -100,17 +114,17 @@ table {
 
     th.mat-header-cell {
       border-bottom-color: transparent;
-      color: #fff;
+      color: rgb(36, 36, 36);
       font-size: 12px;
       font-weight: 600;
-      background: rgb(71, 71, 71);
+      background: #95d5b2;
       @media screen and (max-width: 600px) {
         font-size: 12px;
         font-weight: 600;
       }
     }
     tr.mat-row {
-      height: 70px;
+      height: 40px;
       &:nth-child(odd) {
         background: #fff;
       }
