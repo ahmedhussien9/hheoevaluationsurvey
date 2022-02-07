@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { AuthService } from 'src/app/core/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { ISurveryListResponse } from '../interfaces/ISurvey.interface';
+import { ISurveryListResponse, ISurvey } from '../interfaces/ISurvey.interface';
 import { TFormStatus } from '../types/TFormStatus.type';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HttpSurveysService {
   private readonly baseUrl = environment.baseUrl;
-
+  public surveyDetail: ISurvey;
   constructor(
     private httpClient: HttpClient,
     private authService: AuthService
@@ -40,6 +42,19 @@ export class HttpSurveysService {
     return this.httpClient
       .get<ISurveryListResponse>(`${this.baseUrl}${page}/${10}`, {
         params: params,
+        headers: headers,
+      })
+      .pipe(tap((data) => console.log(data)));
+  }
+
+  public getSurveyById(id: string): Observable<ISurvey> {
+    let headers = new HttpHeaders();
+    headers = headers.append(
+      'Authorization',
+      `Bearer ${this.authService.getToken()}`
+    );
+    return this.httpClient
+      .get<ISurvey>(`${this.baseUrl}${id}`, {
         headers: headers,
       })
       .pipe(tap((data) => console.log(data)));

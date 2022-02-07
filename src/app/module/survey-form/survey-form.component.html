@@ -394,7 +394,7 @@
           <input
             type="radio"
             [value]="true"
-            formControlName="haswebsiteextrafees"
+            formControlName="hasWebsiteExtraFees"
           />
           نعم
         </div>
@@ -402,7 +402,7 @@
           <input
             type="radio"
             [value]="false"
-            formControlName="haswebsiteextrafees"
+            formControlName="hasWebsiteExtraFees"
           />
           لا
         </div>
@@ -410,7 +410,7 @@
       <small
         class="form-text text-danger"
         *ngIf="
-          userForm.controls['haswebsiteextrafees']?.errors?.required &&
+          userForm.controls['hasWebsiteExtraFees']?.errors?.required &&
           isSubmitted
         "
       >
@@ -765,7 +765,7 @@
       </label>
       <textarea
         class="form-control h-25"
-        formControlName="customerSatisfactionFeature"
+        formControlName="customerSatisfactionFeatureDetails"
         rows="5"
       ></textarea>
     </div>
@@ -1085,7 +1085,7 @@
       <label class="label">يرجى توضيح الية التوعية المستخدمة </label>
       <textarea
         class="form-control h-25"
-        formControlName="CustomerAwarenessDetails"
+        formControlName="customerAwarenessDetails"
         rows="5"
       ></textarea>
     </div>
@@ -1177,7 +1177,7 @@
     <!---->
     <div class="form-group">
       <label class="label"
-        >كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟
+        >25- كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟
       </label>
       <input
         class="form-control"
@@ -1248,7 +1248,6 @@
       >
       </app-submit-button>
     </div>
-
     <!--End Follow up for 26-->
     <!-- <div class="pre-code">
       <div>

@@ -4,25 +4,25 @@ import { TFormStatus } from './types/TFormStatus.type';
 export const SURVEY_STATUS_DATA: ISurveyStatus[] = [
   {
     id: 1,
-    name: 'Completed',
+    name: 'مكتمل',
     value: TFormStatus.completed,
     selected: true,
   },
   {
     id: 2,
-    name: 'Canceled',
+    name: 'ملغي',
     value: TFormStatus.canceled,
     selected: false,
   },
   {
     id: 3,
-    name: 'Drafted',
+    name: 'مسودة',
     value: TFormStatus.drafted,
     selected: false,
   },
   {
     id: 4,
-    name: 'In Progress',
+    name: 'قيد الارسال',
     value: TFormStatus.inProgress,
     selected: false,
   },

@@ -1,6 +1,8 @@
 <mat-toolbar class="">
   <mat-toolbar-row class="container">
-    <img src="./assets/image/survey-logo.png" class="logo" />
+    <a [routerLink]="['/dashboard', 'surveys']">
+      <img src="./assets/image/survey-logo.png" class="logo" />
+    </a>
     <span class="example-spacer"></span>
     <!-- <mat-icon
       class="example-icon"
@@ -14,7 +16,7 @@
       aria-label="Example delete icon"
       >delete</mat-icon
     > -->
-    <button class="btn" [routerLink]="['/survey']">الاستبيان</button>
+    <button class="btn" [routerLink]="['/survey']">النموذج</button>
     <button class="btn" (click)="logOut()">الخروج</button>
   </mat-toolbar-row>
 </mat-toolbar>

@@ -4,8 +4,8 @@ export class DropFileModel {
   units = ['بايت', 'كيلوبايت', 'ميجا بايت', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
   size: number = 0;
   fileMaxSizeHandler = (sizes: number) => Math.round(sizes / 1024);
-  filesMaxSizeNumber = 10096;
-
+  filesMaxSizeNumber = 25096;
+  public startUploading: boolean = false;
   constructor(public files: NgxFileDropEntry[], public type: string) {
     this.files = files;
     this.type = type;
@@ -28,6 +28,7 @@ export class DropFileModel {
       }
     }
   }
+
 
   /**
    * Check if the upload files size is not exceed the max size number which is 10mb

@@ -15,7 +15,7 @@ export class SystemImagesService extends FileUploadBase {
   override fileType = FileType.systemImages;
   override filesPreview: FilePreviw[] = [];
   override loading = false;
-
+  override isStartUploading: boolean = false;
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
     private toastr: ToastrService,
@@ -25,7 +25,6 @@ export class SystemImagesService extends FileUploadBase {
   }
 
   override add(files: NgxFileDropEntry[]) {
-
     if (this.validateMaxFilesNumber(files, this.files)) {
       this.toastr.error(
         `عذراً ، الحد الاقصى لعدد الملفات ${this.MAX_FILES_NUMBER}`
@@ -35,6 +34,7 @@ export class SystemImagesService extends FileUploadBase {
 
     const dropFileModel = new DropFileModel(files, this.fileType);
     dropFileModel.dropped((file: File) => {
+      this.startUploading();
       this.files.push(file);
     });
     try {
@@ -50,11 +50,16 @@ export class SystemImagesService extends FileUploadBase {
           .subscribe(
             (data: FilePreviw[]) => {
               this.loading = false;
-              this.filesPreview = [...data];
+              this.filesPreview = this.filesPreview.concat(data);
+              this.files = [];
+              this.endUploading();
               this.cdr.detectChanges();
             },
             (err) => {
+              this.toastr.error(err.error.message);
               this.loading = false;
+              this.endUploading();
+              this.cdr.detectChanges();
             }
           );
       }
@@ -63,8 +68,6 @@ export class SystemImagesService extends FileUploadBase {
       this.toastr.error('حدث خطأ فى تحميل الملفات');
     }
   }
-
-
 
   override remove(item: FilePreviw, index: number): void {
     this.httpSubmiturveyService.removeFile(item.id).subscribe(
@@ -76,6 +79,8 @@ export class SystemImagesService extends FileUploadBase {
         this.cdr.detectChanges();
       },
       (err) => {
+        console.log(err);
+        this.toastr.error(err.error.message);
         throw new Error(err);
       }
     );

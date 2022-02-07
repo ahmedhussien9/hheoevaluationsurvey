@@ -4,18 +4,25 @@ import { MaterialImportsModule } from './material-imports/material.module';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { SubmitButtonComponent } from './components/submit-button/submit-button.component';
-import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-  declarations: [SubmitButtonComponent,ErrorDialogComponent],
+  declarations: [SubmitButtonComponent],
   exports: [
     MaterialImportsModule,
     MatIconModule,
     HttpClientModule,
     SubmitButtonComponent,
-    ErrorDialogComponent,
+    FontAwesomeModule,
   ],
-  imports: [CommonModule, HttpClientModule],
+
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    FontAwesomeModule,
+    MaterialImportsModule,
+    MatIconModule,
+  ],
   entryComponents: [],
 })
 export class SharedModule {}

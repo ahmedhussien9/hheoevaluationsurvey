@@ -15,6 +15,7 @@ export class ContractFilesService extends FileUploadBase {
   override filesPreview: FilePreviw[] = [];
   override fileType = FileType.contractFiles;
   override loading = false;
+  override isStartUploading: boolean = false;
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
     private toastr: ToastrService,
@@ -33,6 +34,7 @@ export class ContractFilesService extends FileUploadBase {
     }
 
     dropFileModel.dropped((file: File) => {
+      this.startUploading();
       this.files.push(file);
     });
 
@@ -49,11 +51,16 @@ export class ContractFilesService extends FileUploadBase {
           .subscribe(
             (data: FilePreviw[]) => {
               this.loading = false;
-              this.filesPreview = [...data];
+              this.filesPreview = this.filesPreview.concat(data);
+              console.log(this.filesPreview);
+              this.files = [];
+              this.endUploading();
               this.cdr.detectChanges();
             },
             (err) => {
+              this.toastr.error(err.error.message);
               this.loading = false;
+              this.cdr.detectChanges();
             }
           );
       }

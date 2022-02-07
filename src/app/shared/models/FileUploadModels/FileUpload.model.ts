@@ -8,6 +8,8 @@ export abstract class FileUploadBase implements IFileUpload {
   fileType: string;
   loading: boolean;
   MAX_FILES_NUMBER: number = 7;
+  isStartUploading: boolean = false;
+
   public remove(file: FilePreviw, index: number): void {
     this.files.splice(index, 1);
   }
@@ -24,5 +26,13 @@ export abstract class FileUploadBase implements IFileUpload {
 
   public add(files: NgxFileDropEntry[]): void {
     throw new Error('Method not implemented.');
+  }
+
+  public startUploading() {
+    return (this.isStartUploading = true);
+  }
+
+  public endUploading() {
+    return (this.isStartUploading = false);
   }
 }

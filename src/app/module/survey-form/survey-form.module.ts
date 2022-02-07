@@ -8,7 +8,6 @@ import { UploadFileComponent } from './components/upload-file/upload-file.compon
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { UploadFileDetailsComponent } from './components/upload-file-details/upload-file-details.component';
 import { RemoveButtonComponent } from './components/remove-button/remove-button.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddButtonComponent } from './components/add-button/add-button.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
@@ -28,7 +27,6 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
     SurveyFormRoutingModule,
     ReactiveFormsModule,
     NgxFileDropModule,
-    FontAwesomeModule,
   ],
 })
 export class SurveyFormModule {}
