@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './core/admin/admin.component';
+import { CanActivateViaAuthGuard } from './core/auth/auth-guard/auth.guard';
+import { PublicLayoutComponent } from './core/public-layout/public-layout.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: AdminComponent,
+    canActivate: [CanActivateViaAuthGuard],
     children: [
       {
         path: '',
@@ -25,6 +28,18 @@ const routes: Routes = [
           import('./module/surveys/surveys.module').then(
             (m) => m.SurveysModule
           ),
+      },
+    ],
+  },
+
+  {
+    path: 'auth',
+    component: PublicLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./core/auth/auth.module').then((m) => m.AuthModule),
       },
     ],
   },
