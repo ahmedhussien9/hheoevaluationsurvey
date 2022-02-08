@@ -26,7 +26,7 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
   }
 
   override add(files: NgxFileDropEntry[]) {
-    if (this.validateMaxFilesNumber(files, this.files)) {
+    if (this.validateMaxFilesNumber(files, this.filesPreview)) {
       this.toastr.error(
         `عذراً ، الحد الاقصى لعدد الملفات ${this.MAX_FILES_NUMBER}`
       );

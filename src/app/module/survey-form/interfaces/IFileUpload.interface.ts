@@ -12,6 +12,6 @@ export interface IFileUpload {
   add(files: NgxFileDropEntry[]): void;
   validateMaxFilesNumber(
     upCommingFiles: NgxFileDropEntry[],
-    currentFiles: File[]
+    currentFiles: FilePreviw[]
   ): boolean;
 }
