@@ -22,13 +22,13 @@ export class DropFileModel {
           if (this.isNotExceedMaxSizeNumber()) {
             currentFile['fileSize'] = this.niceBytes(file.size.toString());
             currentFile['fileType'] = this.type;
+            console.log('filename', currentFile);
             callback(file);
           }
         });
       }
     }
   }
-
 
   /**
    * Check if the upload files size is not exceed the max size number which is 10mb

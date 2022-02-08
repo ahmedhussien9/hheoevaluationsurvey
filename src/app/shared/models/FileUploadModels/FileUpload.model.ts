@@ -16,7 +16,7 @@ export abstract class FileUploadBase implements IFileUpload {
 
   public validateMaxFilesNumber(
     upCommingFiles: NgxFileDropEntry[],
-    currentFiles: File[]
+    currentFiles: FilePreviw[]
   ) {
     return upCommingFiles.length + currentFiles.length >
       this.MAX_FILES_NUMBER || upCommingFiles.length > this.MAX_FILES_NUMBER

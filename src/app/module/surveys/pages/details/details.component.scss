@@ -14,13 +14,16 @@
       color: #f9c74f;
       cursor: pointer;
     }
+    @media screen and (max-width: 600px) {
+      padding: 1rem 1rem;
+    }
     .titleContainer {
       flex-grow: 1;
       .title {
         font-weight: bold;
         margin-bottom: 0rem;
         @media screen and (max-width: 600px) {
-          font-size: 18px;
+          font-size: 14px;
         }
       }
     }
@@ -40,13 +43,14 @@
         font-weight: bold;
         background: #f1f1f1;
         @media screen and (max-width: 600px) {
-          font-size: 12px;
+          font-size: 10px;
+          padding: 0.5rem 0.5rem;
         }
       }
       &__answer {
         padding: 1rem 0.5rem;
         @media screen and (max-width: 600px) {
-          font-size: 12px;
+          font-size: 10px;
         }
       }
     }
