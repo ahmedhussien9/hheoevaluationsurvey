@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FilePreviw } from '../interfaces/IFilePreview.interface';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface IFormId {
   id: number;
@@ -16,7 +17,10 @@ export class HttpSubmitSurveyService {
   private readonly FORM_LOCALSTORAGE_PRFIX = 'FORM_ID';
   private readonly baseUrl = environment.baseUrl;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   public sendSurveyDataApi(survey: any) {
     const headers = new HttpHeaders();
@@ -60,41 +64,54 @@ export class HttpSubmitSurveyService {
 
   public setToLocalStorage(data: IFormId) {
     const { id, uuid } = data;
-    localStorage.setItem(
-      this.FORM_LOCALSTORAGE_PRFIX,
-      JSON.stringify({ id, uuid })
-    );
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(
+        this.FORM_LOCALSTORAGE_PRFIX,
+        JSON.stringify({ id, uuid })
+      );
+    }
   }
 
   getFormIdFromLocalStorage(): IFormId {
-    return (
-      (JSON.parse(
-        localStorage.getItem(this.FORM_LOCALSTORAGE_PRFIX)
-      ) as IFormId) || null
-    );
+    let FormId: IFormId;
+    if (isPlatformBrowser(this.platformId)) {
+      FormId =
+        (JSON.parse(
+          localStorage.getItem(this.FORM_LOCALSTORAGE_PRFIX)
+        ) as IFormId) || null;
+    }
+    return FormId;
   }
 
   getFormId(): number {
-    return (
-      (
-        JSON.parse(
-          localStorage.getItem(this.FORM_LOCALSTORAGE_PRFIX)
-        ) as IFormId
-      ).id || null
-    );
+    let id: number;
+    if (isPlatformBrowser(this.platformId)) {
+      id =
+        (
+          JSON.parse(
+            localStorage.getItem(this.FORM_LOCALSTORAGE_PRFIX)
+          ) as IFormId
+        ).id || null;
+    }
+    return id;
   }
 
   getFormUUID(): string {
-    return (
-      (
-        JSON.parse(
-          localStorage.getItem(this.FORM_LOCALSTORAGE_PRFIX)
-        ) as IFormId
-      ).uuid || null
-    );
+    let uuid: string;
+    if (isPlatformBrowser(this.platformId)) {
+      uuid =
+        (
+          JSON.parse(
+            localStorage.getItem(this.FORM_LOCALSTORAGE_PRFIX)
+          ) as IFormId
+        ).uuid || null;
+    }
+    return uuid;
   }
 
   clearLocalStorage(): void {
-    localStorage.clear();
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+    }
   }
 }
