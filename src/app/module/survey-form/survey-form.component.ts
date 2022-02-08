@@ -262,9 +262,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit(): void {
-    if (!this.httpSubmiturveyService.getFormIdFromLocalStorage()) {
-      this.httpSubmiturveyService.getFormInitializeApi().subscribe();
-    }
+    this.httpSubmiturveyService.getFormInitializeApi().subscribe();
   }
 
   /**
