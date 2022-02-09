@@ -33,7 +33,8 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
       return;
     }
 
-    const dropFileModel = new DropFileModel(files, this.fileType);
+    const dropFileModel = new DropFileModel(files, this.fileType, this.toastr);
+
     if (files.length + this.files.length > 7) {
       this.toastr.error('عذراً، الحد الأقصى لعدد الملفات 7');
       return;
@@ -54,12 +55,7 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
           .pipe(finalize(() => (this.loading = false)))
           .subscribe(
             (data: FilePreviw[]) => {
-              this.loading = false;
-              this.filesPreview = this.filesPreview.concat(data);
-              console.log(this.filesPreview);
-              this.files = [];
-              this.endUploading();
-              this.cdr.detectChanges();
+              this.uploadedFilesDone(data);
             },
             (err) => {
               this.toastr.error(err.error.message);
@@ -72,6 +68,14 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
       this.loading = false;
       this.toastr.error('حدث خطأ فى تحميل الملفات');
     }
+  }
+
+  public uploadedFilesDone(data: FilePreviw[]): void {
+    this.loading = false;
+    this.filesPreview = this.filesPreview.concat(data);
+    this.files = [];
+    this.endUploading();
+    this.cdr.detectChanges();
   }
 
   override remove(item: FilePreviw, index: number): void {

@@ -1,15 +1,27 @@
 import { NgxFileDropEntry } from 'ngx-file-drop';
+import { ToastrService } from 'ngx-toastr';
 
 export class DropFileModel {
-  units = ['بايت', 'كيلوبايت', 'ميجا بايت', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  private units = [
+    'بايت',
+    'كيلوبايت',
+    'ميجا بايت',
+    'GB',
+    'TB',
+    'PB',
+    'EB',
+    'ZB',
+    'YB',
+  ];
   size: number = 0;
-  fileMaxSizeHandler = (sizes: number) => Math.round(sizes / 1024);
-  filesMaxSizeNumber = 25096;
-  public startUploading: boolean = false;
-  constructor(public files: NgxFileDropEntry[], public type: string) {
-    this.files = files;
-    this.type = type;
-  }
+  private fileMaxSizeHandler = (sizes: number) => Math.round(sizes / 1024);
+  private filesMaxSizeNumber = 25096;
+
+  constructor(
+    public files: NgxFileDropEntry[],
+    public type: string,
+    private toaster: ToastrService
+  ) {}
 
   public dropped(callback: Function) {
     let currentFile: File | any = null;
@@ -37,7 +49,9 @@ export class DropFileModel {
    */
   private isNotExceedMaxSizeNumber(): boolean {
     if (this.fileMaxSizeHandler(this.size) >= this.filesMaxSizeNumber) {
-      alert('نعتذر، الحد الأقصى لحجم الملفات يجب ان يكون اقل من 10 ميجابايت');
+      this.toaster.error(
+        'نعتذر، الحد الأقصى لحجم الملفات يجب ان يكون اقل من 25 ميجابايت'
+      );
       return false;
     }
     return true;

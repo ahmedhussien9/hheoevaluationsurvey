@@ -32,11 +32,13 @@ export class SystemImagesService extends FileUploadBase {
       return;
     }
 
-    const dropFileModel = new DropFileModel(files, this.fileType);
+    const dropFileModel = new DropFileModel(files, this.fileType, this.toastr);
+
     dropFileModel.dropped((file: File) => {
       this.startUploading();
       this.files.push(file);
     });
+
     try {
       const buildFormDataModel = new BuildFormDataModel(
         this.files,
@@ -49,11 +51,7 @@ export class SystemImagesService extends FileUploadBase {
           .pipe(finalize(() => (this.loading = false)))
           .subscribe(
             (data: FilePreviw[]) => {
-              this.loading = false;
-              this.filesPreview = this.filesPreview.concat(data);
-              this.files = [];
-              this.endUploading();
-              this.cdr.detectChanges();
+              this.uploadedFilesDone(data);
             },
             (err) => {
               this.toastr.error(err.error.message);
@@ -69,6 +67,14 @@ export class SystemImagesService extends FileUploadBase {
     }
   }
 
+  public uploadedFilesDone(data: FilePreviw[]): void {
+    this.loading = false;
+    this.filesPreview = this.filesPreview.concat(data);
+    this.files = [];
+    this.endUploading();
+    this.cdr.detectChanges();
+  }
+
   override remove(item: FilePreviw, index: number): void {
     this.httpSubmiturveyService.removeFile(item.id).subscribe(
       (data) => {
@@ -80,7 +86,7 @@ export class SystemImagesService extends FileUploadBase {
       },
       (err) => {
         console.log(err);
-        this.toastr.error(err.error.message);
+        this.toastr.error(err.error.message || '');
         throw new Error(err);
       }
     );

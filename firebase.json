@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/BS-form-survey/browser",
+    "public": "dist/BS-form-survey",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -9,7 +9,7 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "ssr"
+        "destination": "/index.html"
       }
     ]
   }

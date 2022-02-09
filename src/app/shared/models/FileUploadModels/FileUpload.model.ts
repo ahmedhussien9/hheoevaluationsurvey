@@ -1,3 +1,4 @@
+import { ChangeDetectorRef } from '@angular/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { FilePreviw } from 'src/app/module/survey-form/interfaces/IFilePreview.interface';
 import { IFileUpload } from 'src/app/module/survey-form/interfaces/IFileUpload.interface';
@@ -11,7 +12,7 @@ export abstract class FileUploadBase implements IFileUpload {
   isStartUploading: boolean = false;
 
   public remove(file: FilePreviw, index: number): void {
-    this.files.splice(index, 1);
+    throw Error('remove is not called!');
   }
 
   public validateMaxFilesNumber(
@@ -23,6 +24,8 @@ export abstract class FileUploadBase implements IFileUpload {
       ? true
       : false;
   }
+
+
 
   public add(files: NgxFileDropEntry[]): void {
     throw new Error('Method not implemented.');

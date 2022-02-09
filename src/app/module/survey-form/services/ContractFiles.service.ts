@@ -9,6 +9,9 @@ import { FileType } from '../../../shared/models/FileUploadModels/File.types';
 import { FileUploadBase } from '../../../shared/models/FileUploadModels/FileUpload.model';
 import { FilePreviw } from '../interfaces/IFilePreview.interface';
 
+
+
+
 @Injectable()
 export class ContractFilesService extends FileUploadBase {
   override files: File[] = [];
@@ -16,6 +19,7 @@ export class ContractFilesService extends FileUploadBase {
   override fileType = FileType.contractFiles;
   override loading = false;
   override isStartUploading: boolean = false;
+
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
     private toastr: ToastrService,
@@ -24,7 +28,7 @@ export class ContractFilesService extends FileUploadBase {
     super();
   }
   override add(files: NgxFileDropEntry[]) {
-    const dropFileModel = new DropFileModel(files, this.fileType);
+    const dropFileModel = new DropFileModel(files, this.fileType, this.toastr);
 
     if (this.validateMaxFilesNumber(files, this.filesPreview)) {
       this.toastr.error(
@@ -50,12 +54,7 @@ export class ContractFilesService extends FileUploadBase {
           .pipe(finalize(() => (this.loading = false)))
           .subscribe(
             (data: FilePreviw[]) => {
-              this.loading = false;
-              this.filesPreview = this.filesPreview.concat(data);
-              console.log(this.filesPreview);
-              this.files = [];
-              this.endUploading();
-              this.cdr.detectChanges();
+              this.uploadedFilesDone(data);
             },
             (err) => {
               this.toastr.error(err.error.message);
@@ -70,6 +69,14 @@ export class ContractFilesService extends FileUploadBase {
     }
   }
 
+  public uploadedFilesDone(data: FilePreviw[]): void {
+    this.loading = false;
+    this.filesPreview = this.filesPreview.concat(data);
+    this.files = [];
+    this.endUploading();
+    this.cdr.detectChanges();
+  }
+
   override remove(item: FilePreviw, index: number): void {
     this.httpSubmiturveyService
       .removeFile(item.id)
@@ -81,6 +88,7 @@ export class ContractFilesService extends FileUploadBase {
           this.files.splice(index, 1);
         },
         (err) => {
+          this.toastr.error(err.error.message || '');
           throw new Error(err);
         }
       );
