@@ -1,60 +1,132 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { Subject, takeUntil } from 'rxjs';
+import { IUserLogin } from '../interfaces/IUserLogin.interface';
 import { AuthService } from '../services/auth.service';
+import { NotificationService } from '../services/notification.service';
+
+export const formValidationMsgs = {
+  username: `من فضلك أسم المستخدم مطلوب`,
+  password: 'من فضلك كلمة المرور مطلوبة',
+  passwordMinLength: 'من فضلك كلمة المرور يجب الإ تكون أقل من 8 حروف أو أرقام',
+};
+
+enum controlKeys {
+  password = 'password',
+  username = 'username',
+}
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
+  submitted = false;
+  validationMsg = formValidationMsgs;
+  private $destroy = new Subject<any>();
+
   constructor(
     private fg: FormBuilder,
-    private toaster: ToastrService,
     private _authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fg.group({
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(3)]],
+      [controlKeys.username]: ['', Validators.required],
+      [controlKeys.password]: [
+        '',
+        [Validators.required, Validators.minLength(8)],
+      ],
     });
   }
 
   ngOnInit(): void {}
 
-  btnClicked() {
-    this.router.navigate(['dash/products']);
+  isFormHasError(key: string, value: string): boolean {
+    return this.loginForm.get(key).hasError(value);
   }
 
-  submit() {
+  onSubmitStart(): void {
     this.loading = true;
-    const body = {
-      username: this.loginForm.value.username,
-      password: this.loginForm.value.password,
-    };
+    this.submitted = true;
+  }
+
+  validateForm(): boolean {
+    let isNotValid = false;
+    if (this.isFormHasError(controlKeys.username, 'required')) {
+      this.notificationService.showError(this.validationMsg.username);
+    }
+
+    if (this.isFormHasError(controlKeys.password, 'required')) {
+      this.notificationService.showError(this.validationMsg.password);
+    }
+
+    if (this.isFormHasError(controlKeys.password, 'minlength')) {
+      this.notificationService.showError(this.validationMsg.passwordMinLength);
+    }
 
     if (this.loginForm.invalid) {
       this.loading = false;
-      this.toaster.error('من فضلك قم بملئ البيانات');
+      isNotValid = true;
+      this.cdr.detectChanges();
+    }
+    return isNotValid;
+  }
+
+  submit() {
+    this.onSubmitStart();
+
+    if (this.validateForm()) {
       return;
     }
 
-    this._authService.login(body).subscribe(
-      (res) => {
-        this.loading = false;
-        this.toaster.success('Welcome Back!');
-        this._authService.saveToken(res['body'].jwt);
-        this.router.navigate(['dashboard']);
-      },
-      (err) => {
-        this.loading = false;
-        this.toaster.error(err.error.message || '');
-        console.log(err);
-      }
-    );
+    const body: IUserLogin = this.getFormValues() as IUserLogin;
+
+    this._authService
+      .login(body)
+      .pipe(takeUntil(this.$destroy))
+      .subscribe(
+        (res) => {
+          this.onFormSuccess(res['body'].jwt);
+        },
+        (err) => {
+          this.loading = false;
+          this.cdr.detectChanges();
+          this.notificationService.showError(err.error.message || 'Something went wrong!');
+        }
+      );
+  }
+
+  onFormSuccess(jwt: string): void {
+    this.loading = false;
+    this.notificationService.showSuccess('مرحباً، نتمنى لك يوماً رائع');
+    this._authService.saveToken(jwt);
+    this.router.navigate(['dashboard']);
+    this.cdr.detectChanges();
+  }
+
+  getFormValues(): IUserLogin {
+    return {
+      [controlKeys.username]: this.loginForm.value.username,
+      [controlKeys.password]: this.loginForm.value.password,
+    };
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.$destroy.next(null);
+    this.$destroy.complete();
   }
 }

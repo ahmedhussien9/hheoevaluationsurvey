@@ -12,19 +12,21 @@
       <h1 class="login__container__header__title">الدخول</h1>
     </div>
     <div class="login__container__body">
-      <form class="login__container__body__form" [formGroup]="loginForm">
+      <form
+        class="login__container__body__form"
+        [formGroup]="loginForm"
+        id="loginForm"
+      >
         <!--Start User Name section-->
         <div class="form-group">
           <label class="label">أسم المستخدم</label>
           <input class="form-control" formControlName="username" />
 
           <small
-            *ngIf="
-              loginForm.get('username').hasError('username') &&
-              !loginForm.get('username').hasError('required')
-            "
+            class="inavlid"
+            *ngIf="submitted && loginForm.get('username').hasError('required')"
           >
-            من فضلك أدخل أسم مستخدم صحيح</small
+            {{ validationMsg.username }}</small
           >
         </div>
         <div class="form-group">
@@ -34,14 +36,18 @@
             type="password"
             formControlName="password"
           />
+          <small
+            class="inavlid"
+            *ngIf="submitted && loginForm.get('password').hasError('required')"
+          >
+            {{ validationMsg.password }}</small
+          >
 
           <small
-            *ngIf="
-              loginForm.get('password').hasError('password') &&
-              !loginForm.get('password').hasError('required')
-            "
+            class="inavlid"
+            *ngIf="submitted && loginForm.get('password').hasError('minlength')"
           >
-            من فضلك أدخل كلمة المرور</small
+            {{ validationMsg.passwordMinLength }}</small
           >
         </div>
 
@@ -52,11 +58,6 @@
             [loading]="loading"
           ></app-submit-button>
         </section>
-
-        <!-- <section class="login__container__body__form__forgetPassword">
-          <a [routerLink]="['/auth/forget-password']" class="login__container__body__form__forgetPassword__link">Forget
-            Password ?</a>
-        </section> -->
       </form>
     </div>
   </div>
