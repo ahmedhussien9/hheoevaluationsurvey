@@ -103,7 +103,9 @@ export class LoginComponent implements OnInit {
         (err) => {
           this.loading = false;
           this.cdr.detectChanges();
-          this.notificationService.showError(err.error.message || 'Something went wrong!');
+          this.notificationService.showError(
+            err.error.message || 'Something went wrong!'
+          );
         }
       );
   }

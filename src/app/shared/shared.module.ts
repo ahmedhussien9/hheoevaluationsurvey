@@ -5,15 +5,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { SubmitButtonComponent } from './components/submit-button/submit-button.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UrlValidatorDirective } from './directive/url.directive';
 
 @NgModule({
-  declarations: [SubmitButtonComponent],
+  declarations: [SubmitButtonComponent, UrlValidatorDirective],
   exports: [
     MaterialImportsModule,
     MatIconModule,
     HttpClientModule,
     SubmitButtonComponent,
     FontAwesomeModule,
+    UrlValidatorDirective,
   ],
 
   imports: [
