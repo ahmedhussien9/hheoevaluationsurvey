@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnInit,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -49,7 +50,8 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
     public systemImagesService: SystemImagesService,
     public securityProtocolsDocumentsService: SecurityProtocolsDocumentsService,
     private httpSubmiturveyService: HttpSubmitSurveyService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private el: ElementRef
   ) {
     this.userForm = this._fb.group({
       organizationName: ['', [Validators.minLength(3), Validators.required]],
@@ -276,12 +278,13 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
    * Run change detection to update the UI
    * @returns void
    */
-  submit(): void {
+  onSubmit(): void {
     this.startSubmittingForm();
 
     if (this.isNotValidForm()) {
       this.scrollToError();
       this.loading = false;
+      this.scrollToError();
       return;
     }
 

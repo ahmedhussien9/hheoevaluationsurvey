@@ -105,7 +105,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .is-inavlid {
-  border-color: rgb(189, 1, 1);
+  border-color: rgb(233, 10, 10);
   box-shadow: 2px 2px 2px 1px rgb(189, 1, 1);
   line-height: 2rem;
 }
@@ -113,7 +113,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .inavlid {
   color: rgb(189, 1, 1);
 }
-
+.required {
+  color: rgb(233, 10, 10);
+  font-size: 20px;
+  font-weight: bold;
+}
 .spinner-container {
   min-height: 300px;
   display: flex;
