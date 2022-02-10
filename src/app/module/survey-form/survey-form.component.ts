@@ -280,6 +280,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
     this.startSubmittingForm();
 
     if (this.isNotValidForm()) {
+      this.scrollToError();
       this.loading = false;
       return;
     }
@@ -373,5 +374,21 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
       uuid: this.httpSubmiturveyService.getFormUUID(),
       formStatus: TFormStatus.completed,
     };
+  }
+
+  scrollTo(el: any): void {
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.focus();
+      el.blur(); // Trigger error messages
+      el.focus();
+    }
+  }
+
+  scrollToError(): void {
+    const firstElementWithError = document.querySelector(
+      '.ng-invalid[formControlName]'
+    );
+    this.scrollTo(firstElementWithError);
   }
 }

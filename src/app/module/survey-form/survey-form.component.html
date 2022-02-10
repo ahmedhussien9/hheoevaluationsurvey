@@ -7,7 +7,9 @@
   </header>
   <form class="formContainer" [formGroup]="userForm">
     <div class="form-group">
-      <label class="label"> 1- اسم المؤسسة</label>
+      <label class="label">
+        1- اسم المؤسسة <span class="required">*</span></label
+      >
       <input
         [ngClass]="{
           'is-inavlid':
@@ -28,7 +30,9 @@
       >
     </div>
     <div class="form-group">
-      <label class="label"> 2- رابط الموقع الإلكتروني</label>
+      <label class="label">
+        2- رابط الموقع الإلكتروني <span class="required">*</span></label
+      >
       <input
         class="form-control"
         matInput
@@ -38,6 +42,7 @@
             userForm.controls['webSiteURL']?.errors?.required && isSubmitted
         }"
         formControlName="webSiteURL"
+        urlDirective
       />
 
       <small
@@ -45,6 +50,14 @@
         *ngIf="userForm.controls['webSiteURL']?.errors?.required && isSubmitted"
       >
         رابط الموقع الالكتروني مطلوب</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['webSiteURL']?.errors?.wrongUrl"
+      >
+        رابط الموقع الالكتروني الذي ادخلته غير صحيح
+        {{ userForm.controls["webSiteURL"]?.errors?.wrongUrl }}</small
       >
     </div>
     <div class="form-group">
@@ -77,7 +90,7 @@
       <legend>
         <label class="label">
           4- يرجى ذكر جميع الشركات التي تم التعامل معها لتطوير الموقع الالكتروني
-          بالترتيب مع ذكر السنة
+          بالترتيب مع ذكر السنة <span class="required">*</span>
         </label>
       </legend>
       <div formArrayName="companies">
@@ -156,7 +169,7 @@
       <legend>
         <label class="label">
           5- ماهو المبلغ الاجمالي لتطوير الموقع مع بيان كل شركة والمبلغ المدفوع/
-          إجمالى رسوم السنة ؟
+          إجمالى رسوم السنة ؟ <span class="required">*</span>
         </label>
       </legend>
       <div formArrayName="companyDevelopmentFees">
@@ -240,7 +253,7 @@
     <!---->
     <fieldset>
       <legend>
-        <label class="label"> 6- ماهو مبلغ صيانة الموقع مع ذكر السنة ؟</label>
+        <label class="label"> 6- ماهو مبلغ صيانة الموقع مع ذكر السنة ؟ <span class="required">*</span></label>
       </legend>
       <div formArrayName="websiteMaintenanceFees">
         <div
@@ -308,7 +321,7 @@
 
     <div class="form-group">
       <label class="label"
-        >7- اين موقع الهوست للموقع والبيانات (يرجى ذكر اسم الهوست)؟
+        >7- اين موقع الهوست للموقع والبيانات (يرجى ذكر اسم الهوست)؟ <span class="required">*</span>
       </label>
       <textarea
         [ngClass]="{
@@ -334,7 +347,7 @@
 
     <div class="form-group">
       <label class="label">
-        8- هل لديكم نسخة سورس كود من ملف الموقع وقاعدة البيانات؟
+        8- هل لديكم نسخة سورس كود من ملف الموقع وقاعدة البيانات؟ <span class="required">*</span>
       </label>
       <div id="group1" class="radio-button-group">
         <div class="group-field">
@@ -365,7 +378,7 @@
       >
     </div>
     <div class="form-group">
-      <label class="label">9- اي لغة برمجية تم استخدامها لتطوير الموقع ؟</label>
+      <label class="label">9- اي لغة برمجية تم استخدامها لتطوير الموقع ؟ <span class="required">*</span></label>
       <input
         class="form-control"
         matInput
@@ -386,7 +399,7 @@
 
     <div class="form-group">
       <label class="label">
-        10- هل يتم دفع مبالغ مالية اخرى للموقع اذا كانت الاجابة (نعم) يرجى
+        10- هل يتم دفع مبالغ مالية اخرى للموقع اذا كانت الاجابة (نعم) يرجى <span class="required">*</span>
         ذكرها؟
       </label>
       <div id="group2" class="radio-button-group">
@@ -448,7 +461,7 @@
     <!--End Of Conditional Question-->
     <!---->
     <div class="form-group">
-      <label class="label">11- كم يتم دفع مبلغ Domain name ؟ </label>
+      <label class="label">11- كم يتم دفع مبلغ Domain name ؟ <span class="required">*</span></label>
       <input
         class="form-control"
         matInput
@@ -473,7 +486,7 @@
     <fieldset>
       <legend>
         <label class="label">
-          12 -كم عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
+          12 -كم عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟ <span class="required">*</span>
         </label>
       </legend>
       <div formArrayName="websiteSupervisors">
@@ -537,7 +550,7 @@
     <!----------------------------->
     <div class="dropFile-container">
       <label class="label"
-        >13- الرجاء ارفاق جميع العقود الخاصة بالموقع والصيانة</label
+        >13- الرجاء ارفاق جميع العقود الخاصة بالموقع والصيانة <span class="required">*</span></label
       >
       <app-upload-file
         (filesEvent)="contractFilesService.add($event)"
@@ -587,7 +600,7 @@
 
     <div class="form-group">
       <label class="label">
-        14 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟
+        14 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -674,7 +687,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        15 - هل يوجد في الموقع خدمة للابلاغ عن الشكاوي والمقترحات؟
+        15 - هل يوجد في الموقع خدمة للابلاغ عن الشكاوي والمقترحات؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -726,7 +739,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        16- هل يتم تقييم مستوى الخدمة المقدمة للجمهور و قياس رضا المتعاملين؟
+        16- هل يتم تقييم مستوى الخدمة المقدمة للجمهور و قياس رضا المتعاملين؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -777,7 +790,7 @@
     <div class="form-group">
       <label class="label">
         17 - هل تم تطوير الموقع وفق ارشادات خاصة بافضل الممارسات العالمية لتطوير
-        المواقع الالكترونية؟
+        المواقع الالكترونية؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -868,7 +881,7 @@
     <div class="form-group">
       <label class="label">
         19- هل تفضل وجود ارشادات خاصة بتطوير الموقع الإلكتروني موحد على مستوى
-        مؤسسات سمو الشيخة؟
+        مؤسسات سمو الشيخة؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -907,7 +920,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        20- هل لديك اي اقتراحات خاصة بالارشادات التي يجب اتباعها؟
+        20- هل لديك اي اقتراحات خاصة بالارشادات التي يجب اتباعها؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -954,7 +967,7 @@
     <!-- 21 -->
     <!---->
     <div class="form-group">
-      <label class="label"> 21 - هل يتم تحديث المحتوى بشكل دوري ؟</label>
+      <label class="label"> 21 - هل يتم تحديث المحتوى بشكل دوري ؟ <span class="required">*</span></label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
           <input
@@ -1000,7 +1013,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        22 - هل تملك الجهة حسابات على مواقع التواصل الاجتماعي؟
+        22 - هل تملك الجهة حسابات على مواقع التواصل الاجتماعي؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -1048,7 +1061,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        23 - هل تقوم الجهة بتوعية الجمهور عن الخدمات التي تقدمها؟
+        23 - هل تقوم الجهة بتوعية الجمهور عن الخدمات التي تقدمها؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -1097,7 +1110,7 @@
     <div class="form-group">
       <label class="label">
         24 - هل تقوم المؤسسة بتطبيق آلية حماية لتبادل المعلومات الحساسة "مثل
-        استخدام بروتوكولات SSL, TLS, SSH, SFTP وغيرها؟
+        استخدام بروتوكولات SSL, TLS, SSH, SFTP وغيرها؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -1177,7 +1190,7 @@
     <!---->
     <div class="form-group">
       <label class="label"
-        >25- كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟
+        >25- كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟ <span class="required">*</span>
       </label>
       <input
         class="form-control"
@@ -1200,7 +1213,7 @@
     <!-- 26 -->
     <!---->
     <div class="form-group">
-      <label class="label"> 26 - هل يوجد طريقة لتتبع زوار الموقع ؟</label>
+      <label class="label"> 26 - هل يوجد طريقة لتتبع زوار الموقع ؟ <span class="required">*</span></label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
           <input
