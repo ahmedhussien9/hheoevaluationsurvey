@@ -282,6 +282,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
     this.startSubmittingForm();
 
     if (this.isNotValidForm()) {
+      this.scrollToError();
       this.loading = false;
       this.scrollToError();
       return;

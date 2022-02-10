@@ -124,3 +124,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   justify-content: center;
   align-items: center;
 }
+.required {
+  color: rgb(233, 10, 10);
+  font-size: 20px;
+  font-weight: bold;
+}
