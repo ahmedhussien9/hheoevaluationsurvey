@@ -1,5 +1,5 @@
 import { NgxFileDropEntry } from 'ngx-file-drop';
-import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from 'src/app/core/auth/services/notification.service';
 
 export class DropFileModel {
   private units = [
@@ -16,30 +16,40 @@ export class DropFileModel {
   size: number = 0;
   private fileMaxSizeHandler = (sizes: number) => Math.round(sizes / 1024);
   private filesMaxSizeNumber = 25096;
-
+  public isFinished: boolean = false;
   constructor(
-    public files: NgxFileDropEntry[],
     public type: string,
-    private toaster: ToastrService
+    private notificationService: NotificationService
   ) {}
 
-  public dropped(callback: Function) {
+  public async dropped(files: NgxFileDropEntry[]): Promise<File[]> {
+    const convertedFiles: File[] = [];
     let currentFile: File | any = null;
-    for (const droppedFile of this.files) {
-      if (droppedFile.fileEntry.isFile) {
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: any) => {
-          currentFile = file;
-          this.size += file.size;
-          if (this.isNotExceedMaxSizeNumber()) {
-            currentFile['fileSize'] = this.niceBytes(file.size.toString());
+    return await new Promise((resolve, reject) => {
+      for (const droppedFile of files) {
+        if (droppedFile.fileEntry.isFile) {
+          const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+          fileEntry.file((file: any) => {
+            currentFile = file;
             currentFile['fileType'] = this.type;
-            console.log('filename', currentFile);
-            callback(file);
-          }
-        });
+            currentFile['fileSize'] = this.niceBytes(file.size.toString());
+            convertedFiles.push(currentFile);
+          });
+        } else {
+          // It was a directory (empty directories are added, otherwise only files)
+          const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
+          console.log(droppedFile.relativePath, fileEntry);
+        }
       }
-    }
+      setTimeout(() => {
+        resolve(convertedFiles);
+        reject(
+          new Error(
+            'Something went wrong while uploading files, please try again!!!'
+          )
+        );
+      }, 3000);
+    });
   }
 
   /**
@@ -47,9 +57,9 @@ export class DropFileModel {
    * Boolean if is not exceed so it will return true otherwise false
    * @returns
    */
-  private isNotExceedMaxSizeNumber(): boolean {
-    if (this.fileMaxSizeHandler(this.size) >= this.filesMaxSizeNumber) {
-      this.toaster.error(
+  private isNotExceedMaxSizeNumber(size: number, maxSize: number): boolean {
+    if (this.fileMaxSizeHandler(size) >= maxSize) {
+      this.notificationService.showWarn(
         'نعتذر، الحد الأقصى لحجم الملفات يجب ان يكون اقل من 25 ميجابايت'
       );
       return false;

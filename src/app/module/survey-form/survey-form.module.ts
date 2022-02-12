@@ -11,6 +11,8 @@ import { RemoveButtonComponent } from './components/remove-button/remove-button.
 import { AddButtonComponent } from './components/add-button/add-button.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { getDutchPaginatorIntl } from 'src/app/shared/helper/dutch-paginator-intl';
 
 @NgModule({
   declarations: [

@@ -16,4 +16,10 @@ export class NotificationService {
       timeOut: 3000,
     });
   }
+
+  showWarn(message: string = 'Warn '): void {
+    this.toastr.warning(message, '', {
+      timeOut: 3000,
+    });
+  }
 }
