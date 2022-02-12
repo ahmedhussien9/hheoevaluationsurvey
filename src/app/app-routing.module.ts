@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './core/admin/admin.component';
 import { CanActivateViaAuthGuard } from './core/auth/auth-guard/auth.guard';
 import { PublicLayoutComponent } from './core/public-layout/public-layout.component';
+import { SurveyDetailGuard } from './module/surveys/pages/details/details.guard';
 
 const routes: Routes = [
   {
@@ -50,9 +51,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabledBlocking'
-})],
+  imports: [
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabledBlocking',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

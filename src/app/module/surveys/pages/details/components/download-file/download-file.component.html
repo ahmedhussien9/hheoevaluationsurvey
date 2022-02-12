@@ -1,0 +1,17 @@
+<ng-container *ngIf="file">
+  <div class="upload-file-container">
+    <div class="file-number">
+      <strong>#{{ number }}</strong>
+    </div>
+    <div class="file-info">
+      <h6 class="file-info__title">{{ file.name }}</h6>
+      <p class="file-info__size">{{ file.fileSize }}</p>
+    </div>
+    <div class="file-action">
+      <app-download-button
+        [loading]="loading"
+        (downloadButton)="downloadFileHandler()"
+      ></app-download-button>
+    </div>
+  </div>
+</ng-container>

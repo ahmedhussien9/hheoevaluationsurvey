@@ -1,0 +1,74 @@
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin ball {
+  @include center;
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  z-index: 2;
+  margin-top: 4px;
+  animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+}
+
+.btn {
+  height: 35px;
+  width: 35px;
+  background: #3700b3;
+  border-radius: 50%;
+  font-size: 15px;
+  color: #fff;
+  display: flex;
+  box-shadow: 0 3px 5px -1px #0003, 0 6px 10px #00000024, 0 1px 18px #0000001f;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  &:focus {
+    outline: none;
+    border-color: transparent;
+  }
+  .loading {
+    &::before {
+      @include ball;
+      animation-delay: 0.15s;
+    }
+  }
+
+  &.loading-btn {
+    font-size: 0;
+    &::before {
+      @include ball;
+      margin-left: -10px;
+      font-size: 12px;
+    }
+
+    &::after {
+      @include ball;
+      margin-left: 10px;
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@keyframes ball {
+  from {
+    transform: translateY(0) scaleY(0.8);
+  }
+
+  to {
+    transform: translateY(-10px);
+  }
+}

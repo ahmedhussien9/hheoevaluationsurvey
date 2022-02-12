@@ -127,7 +127,7 @@ table {
     th.mat-header-cell {
       border-bottom-color: transparent;
       color: rgb(36, 36, 36);
-      font-size: 12px;
+      font-size: 16px;
       background: #95d5b2;
       @media screen and (max-width: 600px) {
         font-size: 12px;
@@ -142,7 +142,7 @@ table {
     }
     td.mat-cell {
       border-color: transparent;
-      font-size: 12px;
+      font-size: 16px;
       text-align: center;
       @media screen and (max-width: 600px) {
         font-size: 12px;
