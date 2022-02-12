@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/internal/operators/finalize';
+import { NotificationService } from 'src/app/core/auth/services/notification.service';
 import { HttpSubmitSurveyService } from 'src/app/module/survey-form/services/http-survey.service';
 import { BuildFormDataModel } from '../../../shared/models/FileUploadModels/BuildFormData.model';
 import { DropFileModel } from '../../../shared/models/FileUploadModels/dropFile.model';
@@ -16,54 +17,58 @@ export class SystemImagesService extends FileUploadBase {
   override filesPreview: FilePreviw[] = [];
   override loading = false;
   override isStartUploading: boolean = false;
+  public removedFilesIndx: number[] = [];
+
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
-    private toastr: ToastrService,
+    private notificationService: NotificationService,
     private cdr: ChangeDetectorRef
   ) {
     super();
   }
 
-  override add(files: NgxFileDropEntry[]) {
-    if (this.validateMaxFilesNumber(files, this.filesPreview)) {
-      this.toastr.error(
-        `عذراً ، الحد الاقصى لعدد الملفات ${this.MAX_FILES_NUMBER}`
+  override async add(files: NgxFileDropEntry[]) {
+    this.loading = true;
+    this.startUploading();
+    this.cdr.detectChanges();
+    try {
+      const fileDropModel = new DropFileModel(
+        this.fileType,
+        this.notificationService
       );
-      return;
+      this.files = await fileDropModel.dropped(files);
+      if (this.files.length > 0) {
+        this.sendRequest();
+      }
+    } catch (err: any) {
+      this.notificationService.showError(err);
     }
+  }
 
-    const dropFileModel = new DropFileModel(files, this.fileType, this.toastr);
-
-    dropFileModel.dropped((file: File) => {
-      this.startUploading();
-      this.files.push(file);
-    });
-
+  private sendRequest() {
     try {
       const buildFormDataModel = new BuildFormDataModel(
         this.files,
         this.fileType
       );
-      if (this.files.length > 0) {
-        this.loading = true;
-        this.httpSubmiturveyService
-          .uploadingFile(buildFormDataModel.formData)
-          .pipe(finalize(() => (this.loading = false)))
-          .subscribe(
-            (data: FilePreviw[]) => {
-              this.uploadedFilesDone(data);
-            },
-            (err) => {
-              this.toastr.error(err.error.message);
-              this.loading = false;
-              this.endUploading();
-              this.cdr.detectChanges();
-            }
-          );
-      }
+      this.httpSubmiturveyService
+        .uploadingFile(buildFormDataModel.formData)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe(
+          (data: FilePreviw[]) => {
+            this.uploadedFilesDone(data);
+          },
+          (err) => {
+            console.log(err);
+            this.notificationService.showError(err.error.message);
+            this.loading = false;
+            this.cdr.detectChanges();
+          }
+        );
     } catch {
       this.loading = false;
-      this.toastr.error('حدث خطأ فى تحميل الملفات');
+      this.notificationService.showError('حدث خطأ فى تحميل الملفات');
+      this.cdr.detectChanges();
     }
   }
 
@@ -76,19 +81,26 @@ export class SystemImagesService extends FileUploadBase {
   }
 
   override remove(item: FilePreviw, index: number): void {
-    this.httpSubmiturveyService.removeFile(item.id).subscribe(
-      (data) => {
-        console.log(data);
-        this.toastr.error(`تم حذف ${item.name} بنجاح`);
-        this.filesPreview.splice(index, 1);
-        this.files.splice(index, 1);
-        this.cdr.detectChanges();
-      },
-      (err) => {
-        console.log(err);
-        this.toastr.error(err.error.message || '');
-        throw new Error(err);
-      }
-    );
+    if (!this.removedFilesIndx.includes(index)) {
+      this.notificationService.showSuccess('جاري حذف الملف');
+      this.removedFilesIndx.push(index);
+      this.httpSubmiturveyService
+        .removeFile(item.id)
+        .pipe(finalize(() => this.cdr.detectChanges()))
+        .subscribe(
+          (data) => {
+            this.notificationService.showSuccess(`تم حذف ${item.name} بنجاح`);
+            this.filesPreview.splice(index, 1);
+            this.files.splice(index, 1);
+            this.removedFilesIndx.splice(index, 1);
+          },
+          (err) => {
+            this.notificationService.showError(err.error.message || '');
+            throw new Error(err);
+          }
+        );
+    } else {
+      this.notificationService.showWarn('من فضلك أنتظر قليلاً');
+    }
   }
 }

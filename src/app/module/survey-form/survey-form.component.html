@@ -2,7 +2,7 @@
   <header class="header">
     <img src="./assets/image/survey-logo.png" class="img-fluid logo" />
     <h1 class="title">
-      استبيان المواقع الالكترونية التابعة لمؤسسات سموالشيخة جواهرالقاسمي
+      استبيان المواقع الإلكترونية التابعة لمؤسسات سمو الشيخة جواهر القاسمي
     </h1>
   </header>
   <form class="formContainer" [formGroup]="userForm">
@@ -22,6 +22,12 @@
           userForm.controls['organizationName']?.errors?.required && isSubmitted
         "
         >اسم المؤسسة مطلوب</small
+      >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['organizationName']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
       >
     </div>
     <div class="form-group">
@@ -43,9 +49,14 @@
       >
         رابط الموقع الالكتروني مطلوب</small
       >
-
       <small
         class="form-text text-danger"
+        *ngIf="userForm.controls['webSiteURL']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
+      <small
+        class="form-text text-danger"
+        style="display: block"
         *ngIf="userForm.controls['webSiteURL']?.errors?.wrongUrl"
       >
         رابط الموقع الالكتروني الذي ادخلته غير صحيح
@@ -63,6 +74,11 @@
         value=""
         formControlName="websiteSoftwareCompany"
       />
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['websiteSoftwareCompany']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
       <small
         class="form-text text-danger"
         *ngIf="
@@ -97,13 +113,24 @@
                 class="form-control"
                 matInput
                 value=""
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['companyName']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="companyName"
               />
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['companyName']?.errors?.required && isSubmitted
+                "
+              >
+                أسم الشركة التى تم التعامل معها مطلوب</small
+              >
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['companyName']?.errors?.maxLength &&
+                  !group.controls['companyName']?.errors?.required
+                "
+                >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+              >
             </div>
             <div class="form-group">
               <label class="label">سنة التعاقد </label>
@@ -111,14 +138,22 @@
                 class="form-control"
                 matInput
                 type="date"
+                lang="ar-ae"
+                [max]="maxDate"
+                dir="rtl"
                 value=""
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['contractYear']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="contractYear"
               />
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['contractYear']?.errors?.required &&
+                  isSubmitted
+                "
+              >
+                سنة التعاقد مع الشركة مطلوب</small
+              >
             </div>
             <div class="form-group">
               <label class="label">اسباب تغيير الشركة</label>
@@ -126,13 +161,27 @@
                 class="form-control"
                 matInput
                 value=""
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['reasonForLeaving']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="reasonForLeaving"
               />
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['reasonForLeaving']?.errors?.maxLength &&
+                  !group.controls['reasonForLeaving']?.errors?.required
+                "
+                >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+              >
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['reasonForLeaving']?.errors?.required &&
+                  isSubmitted
+                "
+              >
+                أسباب تغيير الشركة مطلوب</small
+              >
             </div>
 
             <ng-container *ngIf="i > 0">
@@ -179,13 +228,26 @@
                 class="form-control"
                 matInput
                 value=""
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['companyName']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="companyName"
               />
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['companyName']?.errors?.maxLength &&
+                  !group.controls['companyName']?.errors?.required
+                "
+                >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+              >
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['companyName']?.errors?.required && isSubmitted
+                "
+              >
+                اسم الشركة التي تم تطوير الموقع الخاص بها مطلوب</small
+              >
             </div>
 
             <div class="form-group">
@@ -194,13 +256,17 @@
                 class="form-control"
                 matInput
                 value=""
+                [max]="maxDate"
                 type="date"
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['year']?.errors?.required && isSubmitted
-                }"
                 formControlName="year"
               />
+
+              <small
+                class="form-text text-danger"
+                *ngIf="group.controls['year']?.errors?.required && isSubmitted"
+              >
+                سنة تطوير الموقع مطلوب</small
+              >
             </div>
             <div class="form-group">
               <label class="label">المبلغ المدفوع (بالدرهم)</label>
@@ -208,14 +274,20 @@
                 class="form-control"
                 matInput
                 value=""
+                min="1"
                 type="number"
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['paymentAmount']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="paymentAmount"
               />
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['paymentAmount']?.errors?.required &&
+                  isSubmitted
+                "
+              >
+                المبلغ المدفوع لتطوير الموقع مطلوب</small
+              >
             </div>
 
             <ng-container *ngIf="i > 0">
@@ -243,8 +315,10 @@
     <!---->
     <fieldset>
       <legend>
-        <label class="label"> 6- ماهو مبلغ صيانة الموقع مع ذكر السنة ؟ <span class="required">*</span></label>
-
+        <label class="label">
+          6- ماهو مبلغ صيانة الموقع مع ذكر السنة ؟
+          <span class="required">*</span></label
+        >
       </legend>
       <div formArrayName="websiteMaintenanceFees">
         <div
@@ -265,14 +339,20 @@
                 class="form-control"
                 matInput
                 value=""
+                min="1"
                 type="number"
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['totalPaymentAmount']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="totalPaymentAmount"
               />
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['totalPaymentAmount']?.errors?.required &&
+                  isSubmitted
+                "
+              >
+                المبلغ المدفوع لصيانة الموقع مطلوب</small
+              >
             </div>
 
             <div class="form-group">
@@ -281,14 +361,19 @@
                 class="form-control"
                 matInput
                 value=""
+                [max]="maxDate"
                 type="date"
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['paymentYear']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="paymentYear"
               />
+
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['paymentYear']?.errors?.required && isSubmitted
+                "
+              >
+                سنة صيانة الموقع مطلوب</small
+              >
             </div>
             <ng-container *ngIf="i > 0">
               <div class="form-group remove-button">
@@ -311,8 +396,8 @@
     <!---->
     <div class="form-group">
       <label class="label"
-        >7- اين موقع الهوست للموقع والبيانات (يرجى ذكر اسم الهوست)؟ <span class="required">*</span>
-
+        >7- اين موقع Host للموقع والبيانات (يرجى ذكر Host name )؟
+        <span class="required">*</span>
       </label>
       <textarea
         class="form-control h-25"
@@ -329,14 +414,18 @@
       >
         من فضلك هذا السؤال مطلوب الاجابة عليه</small
       >
+
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['websiteHostDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
 
     <div class="form-group">
       <label class="label">
-
         8- هل لديكم نسخة سورس كود من ملف الموقع وقاعدة البيانات؟
         <span class="required">*</span>
-
       </label>
       <div id="group1" class="radio-button-group">
         <div class="group-field">
@@ -367,7 +456,6 @@
       >
     </div>
     <div class="form-group">
-
       <label class="label"
         >9- اي لغة برمجية تم استخدامها لتطوير الموقع ؟
         <span class="required">*</span></label
@@ -379,7 +467,13 @@
         value=""
         formControlName="websiteProgrammingLanguage"
       />
-
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['websiteProgrammingLanguage']?.errors?.maxlength
+        "
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
       <small
         class="form-text text-danger"
         *ngIf="
@@ -393,9 +487,7 @@
 
     <div class="form-group">
       <label class="label">
-        10- هل يتم دفع مبالغ مالية اخرى للموقع اذا كانت الاجابة (نعم) يرجى <span class="required">*</span>
-        ذكرها؟
-
+        10- هل يتم دفع مبالغ مالية اخرى للموقع<span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -439,6 +531,14 @@
           formControlName="websiteExtraFeesDetails"
           rows="5"
         ></textarea>
+
+        <small
+          class="form-text text-danger"
+          *ngIf="
+            userForm.controls['websiteExtraFeesDetails']?.errors?.maxlength
+          "
+          >الحد الأقصي للنص لا يجب أن يتجاوز 255 رقم</small
+        >
       </div>
     </ng-container>
 
@@ -456,12 +556,16 @@
     <!--End Of Conditional Question-->
     <!---->
     <div class="form-group">
-      <label class="label">11- كم يتم دفع مبلغ Domain name ؟ <span class="required">*</span></label>
+      <label class="label"
+        >11- كم يتم دفع مبلغ Domain name ؟
+        <span class="required">*</span></label
+      >
 
       <input
         class="form-control"
         matInput
         value=""
+        min="1"
         type="number"
         formControlName="websiteDomainNameFees"
       />
@@ -474,6 +578,11 @@
       >
         من فضلك هذا السؤال مطلوب الاجابة عليه</small
       >
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['websiteDomainNameFees']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 رقم</small
+      >
     </div>
 
     <!---->
@@ -482,8 +591,8 @@
     <fieldset>
       <legend>
         <label class="label">
-          12 -كم عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟ <span class="required">*</span>
-
+          12 -كم عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
+          <span class="required">*</span>
         </label>
       </legend>
       <div formArrayName="websiteSupervisors">
@@ -500,14 +609,19 @@
                 class="form-control"
                 matInput
                 value=""
+                min="1"
                 type="number"
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['numberOfSupervisors']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="numberOfSupervisors"
               />
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['numberOfSupervisors']?.errors?.required &&
+                  isSubmitted
+                "
+              >
+                عدد الأشخاص مطلوب</small
+              >
             </div>
             <div class="form-group">
               <label class="label">المسمى الوظيفي </label>
@@ -516,13 +630,25 @@
                 matInput
                 value=""
                 type="text"
-                [ngClass]="{
-                  'is-inavlid':
-                    group.controls['supervisorPosition']?.errors?.required &&
-                    isSubmitted
-                }"
                 formControlName="supervisorPosition"
               />
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['supervisorPosition']?.errors?.required &&
+                  isSubmitted
+                "
+              >
+                عدد الأشخاص مطلوب</small
+              >
+              <small
+                class="form-text text-danger"
+                *ngIf="
+                  group.controls['supervisorPosition']?.errors?.maxLength &&
+                  !group.controls['supervisorPosition']?.errors?.required
+                "
+                >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+              >
             </div>
             <ng-container *ngIf="i > 0">
               <div class="form-group remove-button">
@@ -547,12 +673,11 @@
     <!----------------------------->
     <div class="dropFile-container">
       <label class="label"
-        >13- الرجاء ارفاق جميع العقود الخاصة بالموقع والصيانة <span class="required">*</span></label
-
+        >13- الرجاء ارفاق جميع العقود الخاصة بالموقع والصيانة
+        <span class="required">*</span></label
       >
       <app-upload-file
         (filesEvent)="contractFilesService.add($event)"
-        [sampleTitle]="'Sample 1 (Mandatroy)'"
         [filesCount]="contractFilesService.filesPreview.length"
       >
       </app-upload-file>
@@ -571,6 +696,7 @@
               let item of contractFilesService.filesPreview;
               let i = index
             "
+            [@listAnimation]="contractFilesService.filesPreview.length"
             class="files-container"
           >
             <app-upload-file-details
@@ -585,7 +711,11 @@
 
       <small
         class="form-text text-danger"
-        *ngIf="contractFilesService.filesPreview.length <= 0 && isSubmitted"
+        *ngIf="
+          contractFilesService.filesPreview.length <= 0 &&
+          isSubmitted &&
+          !contractFilesService.loading
+        "
       >
         من فضلك ارفاق الملفات مطلوب</small
       >
@@ -598,10 +728,8 @@
 
     <div class="form-group">
       <label class="label">
-
         14 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟
         <span class="required">*</span>
-
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -642,6 +770,11 @@
         formControlName="serviceFollowUpDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['serviceFollowUpDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 رقم</small
+      >
     </div>
 
     <!----------------------------->
@@ -669,6 +802,7 @@
           <div
             *ngFor="let item of systemImagesService.filesPreview; let i = index"
             class="files-container"
+            [@listAnimation]="systemImagesService.filesPreview.length"
           >
             <app-upload-file-details
               [file]="item"
@@ -688,10 +822,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-
         15 - هل يوجد في الموقع خدمة للابلاغ عن الشكاوي والمقترحات؟
         <span class="required">*</span>
-
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -734,6 +866,11 @@
         formControlName="complainFeatureDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['complainFeatureDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 رقم</small
+      >
     </div>
 
     <!--End Follow up for 15-->
@@ -743,10 +880,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-
         16- هل يتم تقييم مستوى الخدمة المقدمة للجمهور و قياس رضا المتعاملين؟
         <span class="required">*</span>
-
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -788,6 +923,15 @@
         formControlName="customerSatisfactionFeatureDetails"
         rows="5"
       ></textarea>
+
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['customerSatisfactionFeatureDetails']?.errors
+            ?.maxlength
+        "
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
     <!--End Follow up for 16-->
 
@@ -837,6 +981,11 @@
         formControlName="latestStandardDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['latestStandardDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
 
     <!--End Follow up for 17-->
@@ -927,10 +1076,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-
         20- هل لديك اي اقتراحات خاصة بالارشادات التي يجب اتباعها؟
         <span class="required">*</span>
-
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -968,6 +1115,11 @@
         formControlName="suggestionsDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['suggestionsDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
     <!---->
     <!--End => 20 -->
@@ -977,7 +1129,6 @@
     <!-- 21 -->
     <!---->
     <div class="form-group">
-
       <label class="label">
         21 - هل يتم تحديث المحتوى بشكل دوري ؟
         <span class="required">*</span></label
@@ -1020,6 +1171,11 @@
         formControlName="continuousUpdateDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['continuousUpdateDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
     <!--End Follow up for 21-->
 
@@ -1028,10 +1184,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-
         22 - هل تملك الجهة حسابات على مواقع التواصل الاجتماعي؟
         <span class="required">*</span>
-
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -1071,6 +1225,13 @@
         formControlName="socialMediaAccountsDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="
+          userForm.controls['socialMediaAccountsDetails']?.errors?.maxlength
+        "
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
     <!--End Follow up for 22-->
 
@@ -1079,8 +1240,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        23 - هل تقوم الجهة بتوعية الجمهور عن الخدمات التي تقدمها؟ <span class="required">*</span>
-
+        23 - هل تقوم الجهة بتوعية الجمهور عن الخدمات التي تقدمها؟
+        <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -1120,6 +1281,11 @@
         formControlName="customerAwarenessDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['customerAwarenessDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
     <!--End Follow up for 23-->
 
@@ -1128,10 +1294,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-
         استخدام بروتوكولات SSL, TLS, SSH, SFTP وغيرها؟
         <span class="required">*</span>
-
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -1191,6 +1355,9 @@
               let item of securityProtocolsDocumentsService.filesPreview;
               let i = index
             "
+            [@listAnimation]="
+              securityProtocolsDocumentsService.filesPreview.length
+            "
             class="files-container"
           >
             <app-upload-file-details
@@ -1211,8 +1378,8 @@
     <!---->
     <div class="form-group">
       <label class="label"
-        >25- كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟ <span class="required">*</span>
-
+        >25- كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟
+        <span class="required">*</span>
       </label>
       <input
         class="form-control"
@@ -1220,6 +1387,11 @@
         value=""
         formControlName="howMaintenanceApplied"
       />
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['howMaintenanceApplied']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
       <small
         class="form-text text-danger"
         *ngIf="
@@ -1235,7 +1407,6 @@
     <!-- 26 -->
     <!---->
     <div class="form-group">
-
       <label class="label">
         26 - هل يوجد طريقة لتتبع زوار الموقع ؟
         <span class="required">*</span></label
@@ -1279,7 +1450,19 @@
         formControlName="trackingFeatureDetails"
         rows="5"
       ></textarea>
+      <small
+        class="form-text text-danger"
+        *ngIf="userForm.controls['trackingFeatureDetails']?.errors?.maxlength"
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
+      >
     </div>
+
+    <div class="errorMessages" *ngIf="violations && violations.length > 0">
+      <div *ngFor="let error of violations">
+        <small class="form-text text-danger"> {{ error.message }}</small>
+      </div>
+    </div>
+
     <div class="submit-container">
       <app-submit-button
         [loading]="loading"

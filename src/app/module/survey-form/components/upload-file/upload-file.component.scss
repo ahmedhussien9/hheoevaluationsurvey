@@ -19,7 +19,7 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-width: 700px;
+      height: 100%;
       .icon {
         color: #1b9cfc;
         font-size: 50px;
@@ -53,12 +53,15 @@
       border: 2px dotted #03dac5 !important;
       padding: 20px;
       border-radius: 8px !important;
-      height: 160px !important;
+      height: 220px !important;
       display: flex;
       justify-content: center;
       align-items: center;
       margin: auto;
       background-color: #3b3b3b;
+      @media screen and (max-width: 600px) {
+        height: 160px !important;
+      }
     }
   }
 }

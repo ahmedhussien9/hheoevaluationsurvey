@@ -7,7 +7,13 @@ import {
   ElementRef,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { finalize, switchMap, tap } from 'rxjs';
 
@@ -16,6 +22,14 @@ import { SystemImagesService } from 'src/app/module/survey-form/services/SystemI
 import { HttpSubmitSurveyService } from './services/http-survey.service';
 import { ContractFilesService } from 'src/app/module/survey-form/services/ContractFiles.service';
 import { TFormStatus } from 'src/app/module/surveys/types/TFormStatus.type';
+import {
+  animate,
+  query,
+  stagger,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 enum ToasterMessage {
   success = 'تم ارسال النموذج  بنجاح شكرا لكم',
@@ -23,6 +37,21 @@ enum ToasterMessage {
   uploadFileError = 'من فضلك قم برفع الملفات المطلوبة',
   isStillUploadingFile = 'برجاء انتظار تحميل الملفات',
 }
+export const listAnimation = trigger('listAnimation', [
+  transition('* <=> *', [
+    query(
+      ':enter',
+      [
+        style({ opacity: 0, backgroundColor: '#f1f1f1' }),
+        stagger('60ms', animate('600ms ease-out', style({ opacity: 1 }))),
+      ],
+      { optional: true }
+    ),
+    query(':leave', animate('300ms', style({ opacity: 0 })), {
+      optional: true,
+    }),
+  ]),
+]);
 
 @Component({
   selector: 'app-survey-form',
@@ -36,13 +65,15 @@ enum ToasterMessage {
     SecurityProtocolsDocumentsService,
     HttpSubmitSurveyService,
   ],
+  animations: [listAnimation],
 })
 export class SurveyFormComponent implements OnInit, AfterContentChecked {
   public userForm: FormGroup;
   firstSampleFiles: File[] = [];
   isSubmitted = false;
   loading = false;
-
+  violations: any = [];
+  maxDate = new Date().toISOString().split('T')[0];
   constructor(
     private _fb: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -54,13 +85,16 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
     private el: ElementRef
   ) {
     this.userForm = this._fb.group({
-      organizationName: ['', [Validators.minLength(3), Validators.required]],
-      webSiteURL: ['', [Validators.minLength(3), Validators.required]],
+      organizationName: ['', [Validators.maxLength(255), Validators.required]],
+      webSiteURL: ['', [Validators.maxLength(255), Validators.required]],
       websiteSoftwareCompany: [
         '',
-        [Validators.minLength(3), Validators.required],
+        [Validators.maxLength(255), Validators.required],
       ],
-      websiteHostDetails: ['', [Validators.minLength(3), Validators.required]],
+      websiteHostDetails: [
+        '',
+        [Validators.maxLength(255), Validators.required],
+      ],
       companies: this._fb.array([this.addCompainesGroup()]),
       companyDevelopmentFees: this._fb.array([
         this.addCompanyDevelopmentFeesGroup(),
@@ -69,40 +103,49 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
         this.addWebsiteMaintenanceFeesGroup(),
       ]),
       websiteSupervisors: this._fb.array([this.addWebsiteSupervisorsGroup()]),
-      websiteDomainNameFees: [null, Validators.required],
+      websiteDomainNameFees: [null, [Validators.required]],
       serviceFollowUp: [null, Validators.required],
-      serviceFollowUpDetails: [null],
+      serviceFollowUpDetails: [null, Validators.maxLength(255)],
       hasComplainFeature: [null, Validators.required],
-      complainFeatureDetails: [null],
+      complainFeatureDetails: [null, Validators.maxLength(255)],
       hasCustomerSatisfactionFeature: [null, Validators.required],
-      customerSatisfactionFeatureDetails: [null],
-      developedUsingLatestStandard: [null, Validators.required],
-      latestStandardDetails: [null],
+      customerSatisfactionFeatureDetails: [null, Validators.maxLength(255)],
+      developedUsingLatestStandard: [
+        null,
+        [Validators.maxLength(255), Validators.required],
+      ],
+      latestStandardDetails: [null, Validators.maxLength(255)],
       preferStandardDevelopmentInstruction: [null, Validators.required],
-      suggestionsDetails: [null], // 19
+      suggestionsDetails: [null, Validators.maxLength(255)], // 19
       suggestionsToShare: [null, Validators.required],
       continuousUpdate: [null, Validators.required],
-      continuousUpdateDetails: [null],
+      continuousUpdateDetails: [null, Validators.maxLength(255)],
       hasSocialMediaAccounts: [null, Validators.required],
-      socialMediaAccountsDetails: [null],
+      socialMediaAccountsDetails: [null, Validators.maxLength(255)],
       hasCustomerAwareness: [null, Validators.required],
-      customerAwarenessDetails: [null],
+      customerAwarenessDetails: [null, Validators.maxLength(255)],
       securityProtocolsApplied: [null, Validators.required],
-      howMaintenanceApplied: [null, Validators.required],
+      howMaintenanceApplied: [
+        null,
+        [Validators.required, Validators.maxLength(255)],
+      ],
       hasTrackingFeature: [null, Validators.required],
-      trackingFeatureDetails: [null],
+      trackingFeatureDetails: [null, Validators.maxLength(255)],
       sourceCodeObtained: [null, Validators.required],
-      websiteProgrammingLanguage: [null, Validators.required],
+      websiteProgrammingLanguage: [
+        null,
+        [Validators.required, Validators.maxLength(255)],
+      ],
       hasWebsiteExtraFees: [null, Validators.required],
-      websiteExtraFeesDetails: [null], // optional
+      websiteExtraFeesDetails: [null, Validators.maxLength(255)], // optional
     });
   }
 
   private addCompainesGroup(): FormGroup {
     return this._fb.group({
-      companyName: [null, Validators.required],
+      companyName: [null, [Validators.required, this.maxLengthArray(255)]],
       contractYear: [null, Validators.required],
-      reasonForLeaving: [null, Validators.required],
+      reasonForLeaving: [null, [Validators.required, this.maxLengthArray(255)]],
     });
   }
   /**
@@ -111,9 +154,9 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
    */
   private addCompanyDevelopmentFeesGroup(): FormGroup {
     return this._fb.group({
-      companyName: [null, Validators.required],
+      companyName: [null, [Validators.required, this.maxLengthArray(255)]],
       year: [null, Validators.required],
-      paymentAmount: [null, Validators.required],
+      paymentAmount: [null, [Validators.required]],
     });
   }
   /**
@@ -132,8 +175,8 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
    */
   private addWebsiteSupervisorsGroup(): FormGroup {
     return this._fb.group({
-      numberOfSupervisors: [null, Validators.required],
-      supervisorPosition: [null, Validators.required],
+      numberOfSupervisors: [null, [Validators.required]],
+      supervisorPosition: [null, [Validators.required]],
     });
   }
 
@@ -255,6 +298,20 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   }
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
+  maxLengthArray = (min: number) => {
+    return (c: AbstractControl): { [key: string]: any } => {
+      if (c && c.value && c.value.length <= min) return null;
+      return { maxLength: true };
+    };
+  };
+
+  isNumberInput = () => {
+    return (c: AbstractControl): { [key: string]: any } => {
+      console.log(!isNaN(+c.value));
+      if (isNaN(+c.value)) return { notNumber: true };
+      return null;
+    };
+  };
 
   resetFormArray() {
     this.resetCompanyArray();
@@ -299,7 +356,16 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
         }),
         finalize(() => this.stopLoader())
       )
-      .subscribe(() => this.cdr.detectChanges());
+      .subscribe(
+        () => this.cdr.detectChanges(),
+        (err) => {
+          console.log(err);
+          this.loading = false;
+          this.toastr.error(err.message || '');
+          this.violations = err.error.violations;
+          this.cdr.detectChanges();
+        }
+      );
   }
 
   /**

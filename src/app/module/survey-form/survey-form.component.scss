@@ -35,7 +35,7 @@
   padding: 2rem 1rem;
 }
 .form-group {
-  margin: 2.5rem 0rem;
+  margin: 1.2rem 0rem;
 }
 
 .grid-table {
@@ -46,7 +46,9 @@
   min-width: 800px;
   width: 100%;
   align-items: center;
-
+  .form-group:not(.remove-button) {
+    min-height: 100px;
+  }
   @media screen and (max-width: 600px) {
   }
 }
@@ -108,7 +110,7 @@ legend {
 }
 
 .remove-button {
-  align-self: flex-end;
+  align-self: center;
 }
 .add-more-container {
   display: flex;

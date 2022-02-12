@@ -10,6 +10,7 @@ export class BuildFormDataModel {
     this.formData.append('formId', this.getFormId());
     this.formData.append('type', this.fileType);
     for (const file of this.files) {
+      console.log('file', file);
       this.formData.append('file', file);
     }
   }

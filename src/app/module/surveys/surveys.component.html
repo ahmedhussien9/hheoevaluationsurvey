@@ -3,7 +3,7 @@
     <h1 class="title">قائمة النماذج</h1>
   </header>
 
-  <nav class="statusWrap">
+  <!-- <nav class="statusWrap">
     <ul class="list">
       <li *ngFor="let status of surveryStatusModel.statusData" class="item">
         <a
@@ -14,7 +14,7 @@
         >
       </li>
     </ul>
-  </nav>
+  </nav> -->
 
   <div class="tabelContainer">
     <div class="spinner-container" *ngIf="dataSource.loading$ | async">
@@ -75,7 +75,7 @@
     <mat-paginator
       #paginator
       [length]="resultsLength | async"
-      [pageSize]="10"
+      [pageSize]="(10).toLocaleString('ar-EG')"
       showFirstLastButtons
       showFirstLastButtons
     ></mat-paginator>
