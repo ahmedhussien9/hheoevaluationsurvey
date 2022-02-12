@@ -1,0 +1,11 @@
+<button
+  class="btn"
+  (click)="isCLickDownload()"
+  [ngClass]="{ 'loading-btn': loading }"
+>
+  <!-- <ng-container *ngIf="!loading; else loadTemp"> -->
+  <fa-icon [icon]="faDownload"></fa-icon>
+  <span class="loading" *ngIf="loading"> </span>
+  <!-- </ng-container> -->
+  <!-- <ng-template #loadTemp> ... </ng-template> -->
+</button>

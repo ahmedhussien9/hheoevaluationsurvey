@@ -34,7 +34,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              3- ما اسم الشركة التي قامت بتطوير الموقع
+              3- اسم الشركة التي قامت بتطوير الموقع
             </div>
             <div class="question__answer">
               {{ survey.websiteSoftwareCompany }}
@@ -45,14 +45,29 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              4- يرجى ذكر جميع الشركات التي تم التعامل معها لتطوير الموقع
-              الالكتروني بالترتيب مع ذكر السنة
+              4- جميع الشركات التي تم التعامل معها لتطوير الموقع الالكتروني
+              بالترتيب مع ذكر السنة
             </div>
             <div class="question__answer">
-              <div class="row" *ngFor="let company of survey.companies">
-                <div class="col-md-4">{{ company.companyName }}</div>
-                <div class="col-md-4">{{ company.contractYear }}</div>
-                <div class="col-md-4">{{ company.reasonForLeaving }}</div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">أسم الشركة</th>
+                      <th scope="col">سنة التعاقد</th>
+                      <th scope="col">أسباب تغيير الشركة</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let company of survey.companies; let i = index">
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>{{ company.companyName }}</td>
+                      <td>{{ company.contractYear }}</td>
+                      <td>{{ company.reasonForLeaving }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>
@@ -61,19 +76,34 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              5- ماهو المبلغ الاجمالي لتطوير الموقع مع بيان كل شركة والمبلغ
-              المدفوع/ إجمالى رسوم السنة ؟
+              5- المبلغ الاجمالي لتطوير الموقع مع بيان كل شركة والمبلغ المدفوع/
+              إجمالى رسوم السنة ؟
             </div>
             <div class="question__answer">
-              <div
-                class="row"
-                *ngFor="let company of survey.companyDevelopmentFees"
-              >
-                <div class="col-md-4">{{ company.companyName }}</div>
-                <div class="col-md-4">{{ company.year }}</div>
-                <div class="col-md-4">
-                  {{ company.paymentAmount }} درهم إماراتي
-                </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">أسم الشركة</th>
+                      <th scope="col">السنة</th>
+                      <th scope="col">المبلغ المدفوع (بالدرهم)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let company of survey.companyDevelopmentFees;
+                        let i = index
+                      "
+                    >
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>{{ company.companyName }}</td>
+                      <td>{{ company.year }}</td>
+                      <td>{{ company.paymentAmount }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>
@@ -81,18 +111,32 @@
 
         <ng-container>
           <section class="question">
-            <div class="question__title">
-              6- ماهو مبلغ صيانة الموقع مع ذكر السنة ؟
-            </div>
+            <div class="question__title">6- مبلغ صيانة الموقع مع ذكر السنة</div>
             <div class="question__answer">
-              <div
-                class="row"
-                *ngFor="let company of survey.websiteMaintenanceFees"
-              >
-                <div class="col-md-6">{{ company.paymentYear }}</div>
-                <div class="col-md-6">
-                  {{ company.totalPaymentAmount }} درهم إماراتي
-                </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">
+                        المبلغ المدفوع/ إجمالى رسوم السنة (بالدرهم)
+                      </th>
+                      <th scope="col">السنة</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let company of survey.websiteMaintenanceFees;
+                        let i = index
+                      "
+                    >
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>{{ company.totalPaymentAmount }}</td>
+                      <td>{{ company.paymentYear }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>
@@ -100,9 +144,7 @@
 
         <ng-container>
           <section class="question">
-            <div class="question__title">
-              7- اين موقع الهوست للموقع والبيانات (يرجى ذكر اسم الهوست)؟
-            </div>
+            <div class="question__title">7- موقع الهوست للموقع والبيانات</div>
             <div class="question__answer">
               {{ survey.websiteHostDetails }}
             </div>
@@ -112,7 +154,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              8- هل لديكم نسخة سورس كود من ملف الموقع وقاعدة البيانات؟
+              8- نسخة سورس كود من ملف الموقع وقاعدة البيانات
             </div>
             <div class="question__answer">
               {{ survey.sourceCodeObtained ? "نعم" : "لا" }}
@@ -123,7 +165,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              9- اي لغة برمجية تم استخدامها لتطوير الموقع ؟
+              9- لغة برمجية تم استخدامها لتطوير الموقع
             </div>
             <div class="question__answer">
               {{ survey.websiteProgrammingLanguage }}
@@ -133,24 +175,9 @@
 
         <ng-container>
           <section class="question">
-            <div class="question__title">
-              10- هل يتم دفع مبالغ مالية اخرى للموقع اذا كانت الاجابة (نعم) يرجى
-              ذكرها؟
-            </div>
+            <div class="question__title">10- دفع مبالغ مالية اخرى للموقع</div>
             <div class="question__answer">
               {{ survey.hasWebsiteExtraFees ? "نعم" : "لا" }}
-            </div>
-          </section>
-        </ng-container>
-
-        <ng-container>
-          <section class="question">
-            <div class="question__title">
-              يرجى ذكر قيمة المبالغ الاضافية التي يتم دفعها على الموقع الالكترني
-              ونوع الخدمة المقدمة
-            </div>
-            <div class="question__answer">
-              {{ survey.websiteExtraFeesDetails }}
             </div>
           </section>
         </ng-container>
@@ -179,15 +206,32 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              12 -كم عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
+              12 - عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
             </div>
             <div class="question__answer">
-              <div
-                class="row"
-                *ngFor="let company of survey.websiteSupervisors"
-              >
-                <div class="col-md-6">{{ company.numberOfSupervisors }}</div>
-                <div class="col-md-6">{{ company.supervisorPosition }}</div>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">عدد الاشخاص</th>
+                      <th scope="col">المسمي الوظيفي</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let company of survey.websiteSupervisors;
+                        let i = index
+                      "
+                    >
+                      <th scope="row">{{ i + 1 }}</th>
+                      <td>{{ company.numberOfSupervisors }}</td>
+                      <td>{{ company.supervisorPosition }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </section>
@@ -196,24 +240,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              13- جميع العقود الخاصة بالموقع والصيانة
-            </div>
-            <div class="question__answer">
-              <!-- <div
-                class="row"
-                *ngFor="let company of survey.websiteSupervisors"
-              >
-                <div class="col-md-6">{{ company.numberOfSupervisors }}</div>
-                <div class="col-md-6">{{ company.supervisorPosition }}</div>
-              </div> -->
-            </div>
-          </section>
-        </ng-container>
-
-        <ng-container>
-          <section class="question">
-            <div class="question__title">
-              14 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟
+              13 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟
             </div>
             <div class="question__answer">
               {{
@@ -252,7 +279,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              15 - هل يوجد في الموقع خدمة للابلاغ عن الشكاوي والمقترحات؟
+              15 - خدمة للابلاغ عن الشكاوي والمقترحات في الموقع
             </div>
             <div class="question__answer">
               {{ survey.hasComplainFeature ? "نعم" : "لا" }}
@@ -319,8 +346,8 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              19- هل تفضل وجود ارشادات خاصة بتطوير الموقع الإلكتروني موحد على
-              مستوى مؤسسات سمو الشيخة؟
+              19- ارشادات خاصة بتطوير الموقع الإلكتروني موحد على مستوى مؤسسات
+              سمو الشيخة
             </div>
             <div class="question__answer">
               {{ survey.preferStandardDevelopmentInstruction ? "نعم" : "لا" }}
@@ -331,7 +358,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              20- هل لديك اي اقتراحات خاصة بالارشادات التي يجب اتباعها؟
+              20- اقتراحات خاصة بالارشادات التي يجب اتباعها
             </div>
             <div class="question__answer">
               {{ survey.suggestionsToShare ? "نعم" : "لا" }}
@@ -352,9 +379,7 @@
 
         <ng-container>
           <section class="question">
-            <div class="question__title">
-              21 - هل يتم تحديث المحتوى بشكل دوري ؟
-            </div>
+            <div class="question__title">21 - يتم تحديث المحتوى بشكل دوري</div>
             <div class="question__answer">
               {{ survey.continuousUpdate ? "نعم" : "لا" }}
             </div>
@@ -364,7 +389,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              22 - هل تملك الجهة حسابات على مواقع التواصل الاجتماعي؟
+              22 - حسابات على مواقع التواصل الاجتماعي
             </div>
             <div class="question__answer">
               {{ survey.hasSocialMediaAccounts ? "نعم" : "لا" }}
@@ -408,8 +433,8 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              24 - هل تقوم المؤسسة بتطبيق آلية حماية لتبادل المعلومات الحساسة
-              "مثل استخدام بروتوكولات SSL, TLS, SSH, SFTP وغيرها؟
+              24 - آلية حماية لتبادل المعلومات الحساسة "مثل استخدام بروتوكولات
+              SSL, TLS, SSH, SFTP
             </div>
             <div class="question__answer">
               {{ survey.securityProtocolsApplied ? "نعم" : "لا" }}
@@ -438,9 +463,7 @@
         </ng-container>
         <ng-container>
           <section class="question">
-            <div class="question__title">
-              26 - هل يوجد طريقة لتتبع زوار الموقع ؟
-            </div>
+            <div class="question__title">26- طريقة تتبع الزوار</div>
             <div class="question__answer">
               {{ survey.hasTrackingFeature ? "نعم" : "لا" }}
             </div>
@@ -449,10 +472,24 @@
 
         <ng-container>
           <section class="question">
-            <div class="question__title">يرجى ذكر الطريقة المستخدمة</div>
+            <div class="question__title">الطريقة المستخدمة لتتبع الزوار</div>
             <div class="question__answer">
               {{ survey.trackingFeatureDetails }}
             </div>
+          </section>
+        </ng-container>
+
+        <ng-container>
+          <section class="question">
+            <div class="question__title">الملفات</div>
+            <ng-container *ngFor="let file of survey.formFiles; let i = index">
+              <app-download-file
+                [file]="file"
+                (downloadFile)="download(file)"
+                [number]="i + 1"
+                [loading]="downloadFileId.includes(file.id)"
+              ></app-download-file>
+            </ng-container>
           </section>
         </ng-container>
       </section>

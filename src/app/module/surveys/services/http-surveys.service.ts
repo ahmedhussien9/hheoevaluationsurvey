@@ -47,16 +47,4 @@ export class HttpSurveysService {
       .pipe(tap((data) => console.log(data)));
   }
 
-  public getSurveyById(id: string): Observable<ISurvey> {
-    let headers = new HttpHeaders();
-    headers = headers.append(
-      'Authorization',
-      `Bearer ${this.authService.getToken()}`
-    );
-    return this.httpClient
-      .get<ISurvey>(`${this.baseUrl}${id}`, {
-        headers: headers,
-      })
-      .pipe(tap((data) => console.log(data)));
-  }
 }
