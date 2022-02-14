@@ -146,3 +146,10 @@ textarea {
     font-size: 12px !important;
   }
 }
+
+body .bs-datepicker-container .bs-datepicker-head {
+  background-color: #fff;
+}
+body .bs-datepicker-container .bs-datepicker-head * {
+  color: #000;
+}

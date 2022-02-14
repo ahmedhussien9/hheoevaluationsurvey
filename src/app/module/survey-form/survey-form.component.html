@@ -2,7 +2,8 @@
   <header class="header">
     <img src="./assets/image/survey-logo.png" class="img-fluid logo" />
     <h1 class="title">
-      استبيان المواقع الإلكترونية التابعة لمؤسسات سمو الشيخة جواهر القاسمي
+      استبيان المواقع الإلكترونية التابعة لمؤسسات سمو الشيخة جواهر بنت محمد
+      القاسمي
     </h1>
   </header>
   <form class="formContainer" [formGroup]="userForm">
@@ -135,15 +136,21 @@
             <div class="form-group">
               <label class="label">سنة التعاقد </label>
               <input
+                type="text"
+                class="form-control"
+                formControlName="contractYear"
+                [maxDate]="maxDate"
+                readonly
+                bsDatepicker
+              />
+              <!--
+              <input
                 class="form-control"
                 matInput
-                type="date"
-                lang="ar-ae"
                 [max]="maxDate"
-                dir="rtl"
-                value=""
-                formControlName="contractYear"
-              />
+                type="date"
+                [value]=""
+              /> -->
 
               <small
                 class="form-text text-danger"
@@ -253,12 +260,12 @@
             <div class="form-group">
               <label class="label">السنة </label>
               <input
+                type="text"
                 class="form-control"
-                matInput
-                value=""
-                [max]="maxDate"
-                type="date"
                 formControlName="year"
+                [maxDate]="maxDate"
+                readonly
+                bsDatepicker
               />
 
               <small
@@ -358,12 +365,12 @@
             <div class="form-group">
               <label class="label">السنة </label>
               <input
+                type="text"
                 class="form-control"
-                matInput
-                value=""
-                [max]="maxDate"
-                type="date"
                 formControlName="paymentYear"
+                [maxDate]="maxDate"
+                bsDatepicker
+                readonly
               />
 
               <small

@@ -25,12 +25,7 @@ export class HttpSurveysService {
    * @returns
    */
   public getListOfSurveysApi(
-    page: number = 0,
-    formStatus:
-      | TFormStatus.completed
-      | TFormStatus.canceled
-      | TFormStatus.drafted
-      | TFormStatus.inProgress = TFormStatus.completed
+    page: number = 0
   ): Observable<ISurveryListResponse> {
     let headers = new HttpHeaders();
     headers = headers.append(
@@ -38,7 +33,7 @@ export class HttpSurveysService {
       `Bearer ${this.authService.getToken()}`
     );
     let params = new HttpParams();
-    params = params.set('formStatus', formStatus);
+    params = params.set('formStatus', TFormStatus.completed);
     return this.httpClient
       .get<ISurveryListResponse>(`${this.baseUrl}${page}/${10}`, {
         params: params,
@@ -46,5 +41,4 @@ export class HttpSurveysService {
       })
       .pipe(tap((data) => console.log(data)));
   }
-
 }

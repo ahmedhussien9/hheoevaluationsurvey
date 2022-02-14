@@ -13,7 +13,6 @@ import { ListOfSurveysDataSource } from './classes/surveys-list.datasource';
 import { ISurveyStatus } from './interfaces/ISurveryFilter.interface';
 import { SurveyStatusModel } from './models/SurveyStatus.model';
 import { HttpSurveysService } from './services/http-surveys.service';
-import { TFormStatus } from './types/TFormStatus.type';
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -29,6 +28,7 @@ export interface PeriodicElement {
   templateUrl: './surveys.component.html',
   styleUrls: ['./surveys.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class SurveysComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'website', 'detail'];
@@ -36,7 +36,6 @@ export class SurveysComponent implements OnInit {
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   resultsLength: Observable<number>;
   surveryStatusModel: SurveyStatusModel;
-
   constructor(
     private httpSurveyService: HttpSurveysService,
     private cd: ChangeDetectorRef
@@ -51,19 +50,11 @@ export class SurveysComponent implements OnInit {
 
   selectedStatus(status: ISurveyStatus) {
     this.surveryStatusModel.select(status);
-    this.refresh(this.paginator.pageIndex, status.value);
-    this.cd.detectChanges();
+    this.refresh(this.paginator.pageIndex);
   }
 
-  refresh(
-    page: number = 0,
-    formStatus:
-      | TFormStatus.completed
-      | TFormStatus.canceled
-      | TFormStatus.drafted
-      | TFormStatus.inProgress = TFormStatus.completed
-  ) {
-    this.dataSource.loadData(page, formStatus);
+  refresh(page: number = 0) {
+    this.dataSource.loadData(page);
     this.resultsLength = this.dataSource.mata$;
   }
 

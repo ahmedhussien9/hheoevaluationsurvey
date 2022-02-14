@@ -118,17 +118,15 @@ table {
     .mat-cell {
       padding: 8px 18px 8px 0;
       text-align: center;
-      [dir="rtl"] & {
-        text-align: right;
-        padding: 8px 0px;
-      }
     }
 
     th.mat-header-cell {
       border-bottom-color: transparent;
       color: rgb(36, 36, 36);
-      font-size: 16px;
-      background: #95d5b2;
+      font-size: 14px;
+      font-weight: 600;
+      background: #dbebe2;
+      text-align: center;
       @media screen and (max-width: 600px) {
         font-size: 12px;
         font-weight: 600;
@@ -142,7 +140,7 @@ table {
     }
     td.mat-cell {
       border-color: transparent;
-      font-size: 16px;
+      font-size: 14px;
       text-align: center;
       @media screen and (max-width: 600px) {
         font-size: 12px;
