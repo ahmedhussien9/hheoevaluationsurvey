@@ -1,7 +1,8 @@
 export interface FilePreviw {
   fileType: string;
-  fileSize: number;
+  fileSize: string;
   id: number;
   name: string;
   type: string;
+  size: number;
 }

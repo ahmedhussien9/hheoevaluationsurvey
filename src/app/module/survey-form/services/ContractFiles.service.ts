@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { ChildActivationStart } from '@angular/router';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { ToastrService } from 'ngx-toastr';
+import { map, tap } from 'rxjs';
 import { finalize } from 'rxjs/internal/operators/finalize';
 import { NotificationService } from 'src/app/core/auth/services/notification.service';
 import { HttpSubmitSurveyService } from 'src/app/module/survey-form/services/http-survey.service';
@@ -19,6 +20,8 @@ export class ContractFilesService extends FileUploadBase {
   override loading = false;
   override isStartUploading: boolean = false;
   public removedFilesIndx: number[] = [];
+  private filesSize: number = 0;
+
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
     private notificationService: NotificationService,
@@ -30,18 +33,60 @@ export class ContractFilesService extends FileUploadBase {
     this.loading = true;
     this.startUploading();
     this.cdr.detectChanges();
+
     try {
       const fileDropModel = new DropFileModel(
         this.fileType,
         this.notificationService
       );
       this.files = await fileDropModel.dropped(files);
+
+      // check the maximum number of files
+      if (
+        this.files.length > 0 &&
+        this.checkMaxFileNumber(
+          this.filesPreview,
+          this.files,
+          this.MAX_FILES_NUMBER
+        )
+      ) {
+        this.notificationService.showError(
+          'نعتذر لقد تجاوزت الحد الأقصي لعدد الملفات 7 '
+        );
+        this.loading = false;
+        this.endUploading();
+        this.files = [];
+        this.cdr.detectChanges();
+      }
+      // Check tha maximaum size of files which is 25 mb
+      if (
+        this.files.length > 0 &&
+        this.checkMaxSize(
+          this.filesPreview,
+          this.files,
+          this.filesMaxSizeNumber
+        )
+      ) {
+        this.loading = false;
+        this.endUploading();
+        this.notificationService.showError(
+          'نعتذر لقد تجاوزت الحد الأقصي 25 ميجابايت'
+        );
+        this.files = [];
+        this.cdr.detectChanges();
+        return;
+      }
+
       if (this.files.length > 0) {
         this.sendRequest();
       }
     } catch (err: any) {
       this.notificationService.showError(err);
     }
+  }
+
+  private validateMaxSize(size: number, max_size: number) {
+    return size >= max_size;
   }
 
   private sendRequest() {
@@ -52,7 +97,16 @@ export class ContractFilesService extends FileUploadBase {
       );
       this.httpSubmiturveyService
         .uploadingFile(buildFormDataModel.formData)
-        .pipe(finalize(() => (this.loading = false)))
+        .pipe(
+          map((data: FilePreviw[]) => {
+            const files = data;
+            files.forEach((file) => {
+              file.size = this.extractNumber(file.fileSize);
+            });
+            return files;
+          }),
+          finalize(() => (this.loading = false))
+        )
         .subscribe(
           (data: FilePreviw[]) => {
             this.uploadedFilesDone(data);
@@ -102,4 +156,6 @@ export class ContractFilesService extends FileUploadBase {
       this.notificationService.showWarn('من فضلك أنتظر قليلاً');
     }
   }
+
+
 }

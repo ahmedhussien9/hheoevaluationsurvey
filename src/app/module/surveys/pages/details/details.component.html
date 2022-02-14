@@ -63,7 +63,7 @@
                     <tr *ngFor="let company of survey.companies; let i = index">
                       <th scope="row">{{ i + 1 }}</th>
                       <td>{{ company.companyName }}</td>
-                      <td>{{ company.contractYear }}</td>
+                      <td>{{ company.contractYear | date: mediumDate }}</td>
                       <td>{{ company.reasonForLeaving }}</td>
                     </tr>
                   </tbody>
@@ -99,7 +99,7 @@
                     >
                       <th scope="row">{{ i + 1 }}</th>
                       <td>{{ company.companyName }}</td>
-                      <td>{{ company.year }}</td>
+                      <td>{{ company.year | date: mediumDate }}</td>
                       <td>{{ company.paymentAmount }}</td>
                     </tr>
                   </tbody>
@@ -133,7 +133,7 @@
                     >
                       <th scope="row">{{ i + 1 }}</th>
                       <td>{{ company.totalPaymentAmount }}</td>
-                      <td>{{ company.paymentYear }}</td>
+                      <td>{{ company.paymentYear | date: mediumDate }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -209,7 +209,6 @@
               12 - عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
             </div>
             <div class="question__answer">
-
               <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -260,18 +259,6 @@
             </div>
             <div class="question__answer">
               {{ survey.serviceFollowUpDetails }}
-            </div>
-          </section>
-        </ng-container>
-
-        <ng-container>
-          <section class="question">
-            <div class="question__title">
-              اذا كانت الاجابة في السؤال السابق "نظام الكتروني" يرجى ارفاق صورة
-              من النظام
-            </div>
-            <div class="question__answer">
-              <!-- {{ survey.serviceFollowUpDetails }} -->
             </div>
           </section>
         </ng-container>
@@ -411,7 +398,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              يرجى ادراج منصات التواصل الاجتماعي
+              23 - الجهة بتوعية الجمهور عن الخدمات التي تقدمها
             </div>
             <div class="question__answer">
               {{ survey.hasCustomerAwareness ? "نعم" : "لا" }}
@@ -421,9 +408,7 @@
 
         <ng-container>
           <section class="question">
-            <div class="question__title">
-              يرجى ادراج منصات التواصل الاجتماعي
-            </div>
+            <div class="question__title">يرجى توضيح الية التوعية المستخدمة</div>
             <div class="question__answer">
               {{ survey.customerAwarenessDetails }}
             </div>
@@ -438,15 +423,6 @@
             </div>
             <div class="question__answer">
               {{ survey.securityProtocolsApplied ? "نعم" : "لا" }}
-            </div>
-          </section>
-        </ng-container>
-
-        <ng-container>
-          <section class="question">
-            <div class="question__title">يرجى ارفاق ادلة</div>
-            <div class="question__answer">
-              <!-- {{ survey.securityProtocolsApplied ? "نعم" : "لا" }} -->
             </div>
           </section>
         </ng-container>
@@ -470,7 +446,9 @@
           </section>
         </ng-container>
 
-        <ng-container>
+        <ng-container
+          >يرجى ادراج منصات التواصل الاجتماعي
+
           <section class="question">
             <div class="question__title">الطريقة المستخدمة لتتبع الزوار</div>
             <div class="question__answer">

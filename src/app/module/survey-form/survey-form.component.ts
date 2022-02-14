@@ -15,7 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { finalize, switchMap, tap } from 'rxjs';
+import { finalize, switchMap } from 'rxjs';
 
 import { SecurityProtocolsDocumentsService } from 'src/app/module/survey-form/services/SecurityProtocolsDocuments.service';
 import { SystemImagesService } from 'src/app/module/survey-form/services/SystemImages.service';
@@ -30,7 +30,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 enum ToasterMessage {
   success = 'تم ارسال النموذج  بنجاح شكرا لكم',
   validationError = 'من فضلك قم بملئ النموذج!',
@@ -73,7 +73,7 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   isSubmitted = false;
   loading = false;
   violations: any = [];
-  maxDate = new Date().toISOString().split('T')[0];
+  maxDate = new Date();
   constructor(
     private _fb: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -82,8 +82,11 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
     public securityProtocolsDocumentsService: SecurityProtocolsDocumentsService,
     private httpSubmiturveyService: HttpSubmitSurveyService,
     private toastr: ToastrService,
-    private el: ElementRef
+    private el: ElementRef,
+    private localeService: BsLocaleService
   ) {
+    this.maxDate = new Date();
+    // this.localeService.use(this.locale);
     this.userForm = this._fb.group({
       organizationName: ['', [Validators.maxLength(255), Validators.required]],
       webSiteURL: ['', [Validators.maxLength(255), Validators.required]],

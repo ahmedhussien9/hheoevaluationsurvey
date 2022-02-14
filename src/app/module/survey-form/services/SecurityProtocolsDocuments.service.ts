@@ -30,12 +30,50 @@ export class SecurityProtocolsDocumentsService extends FileUploadBase {
     this.loading = true;
     this.startUploading();
     this.cdr.detectChanges();
+
     try {
       const fileDropModel = new DropFileModel(
         this.fileType,
         this.notificationService
       );
       this.files = await fileDropModel.dropped(files);
+
+      // check the maximum number of files
+      if (
+        this.files.length > 0 &&
+        this.checkMaxFileNumber(
+          this.filesPreview,
+          this.files,
+          this.MAX_FILES_NUMBER
+        )
+      ) {
+        this.notificationService.showError(
+          'نعتذر لقد تجاوزت الحد الأقصي لعدد الملفات 7 '
+        );
+        this.loading = false;
+        this.endUploading();
+        this.files = [];
+        this.cdr.detectChanges();
+      }
+      // Check tha maximaum size of files which is 25 mb
+      if (
+        this.files.length > 0 &&
+        this.checkMaxSize(
+          this.filesPreview,
+          this.files,
+          this.filesMaxSizeNumber
+        )
+      ) {
+        this.loading = false;
+        this.endUploading();
+        this.notificationService.showError(
+          'نعتذر لقد تجاوزت الحد الأقصي 25 ميجابايت'
+        );
+        this.files = [];
+        this.cdr.detectChanges();
+        return;
+      }
+
       if (this.files.length > 0) {
         this.sendRequest();
       }
