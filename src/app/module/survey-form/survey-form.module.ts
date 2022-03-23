@@ -12,10 +12,7 @@ import { AddButtonComponent } from './components/add-button/add-button.component
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { defineLocale } from 'ngx-bootstrap/chronos';
-import { arLocale } from 'ngx-bootstrap/locale';
-defineLocale('ar', arLocale); //only setting up Norwegian bokmaal (ar) in this sample
+import { SuccessComponent } from './pages/success/success.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +22,7 @@ defineLocale('ar', arLocale); //only setting up Norwegian bokmaal (ar) in this s
     RemoveButtonComponent,
     AddButtonComponent,
     ProgressBarComponent,
+    SuccessComponent,
   ],
   imports: [
     CommonModule,
@@ -35,8 +33,4 @@ defineLocale('ar', arLocale); //only setting up Norwegian bokmaal (ar) in this s
     BsDatepickerModule.forRoot(),
   ],
 })
-export class SurveyFormModule {
-  constructor(private bsLocaleService: BsLocaleService) {
-    this.bsLocaleService.use('ar'); //fecha en español, datepicker
-  }
-}
+export class SurveyFormModule {}

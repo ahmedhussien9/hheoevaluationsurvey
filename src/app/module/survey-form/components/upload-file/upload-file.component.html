@@ -10,12 +10,12 @@
         ngx-file-drop-content-tmp
         let-openFileSelector="openFileSelector"
       >
-        <h3 class="title">
+        <p class="title">
           قم بسحب وإدراج الملفات أو
           <a (click)="openFileSelector()" style="color: #03dac5"
             >قم برفع الملفات</a
           >
-        </h3>
+        </p>
         <!-- <h6>{{sampleTitle}}</h6> -->
         <h5 class="count" *ngIf="filesCount > 0">
           عدد الملفات : <strong>{{ filesCount }}</strong>

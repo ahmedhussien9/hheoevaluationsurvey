@@ -146,10 +146,22 @@ textarea {
     font-size: 12px !important;
   }
 }
-
+input {
+  @media screen and (max-width: 660px) {
+    font-size: 12px !important;
+  }
+}
 body .bs-datepicker-container .bs-datepicker-head {
   background-color: #fff;
 }
 body .bs-datepicker-container .bs-datepicker-head * {
   color: #000;
+}
+
+.form-control[readonly] {
+  background-color: #fff !important;
+}
+
+input {
+  height: 35px !important;
 }

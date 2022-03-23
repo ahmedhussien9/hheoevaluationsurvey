@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "BS-form-survey": {
+    "hheoevaluationsurvey": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/BS-form-survey",
+            "outputPath": "dist/hheoevaluationsurvey",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -29,7 +29,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/routes.json"
+              "src/routes.json",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
@@ -38,7 +39,9 @@
               "src/styles.scss",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -77,10 +80,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "BS-form-survey:build:production"
+              "browserTarget": "hheoevaluationsurvey:build:production"
             },
             "development": {
-              "browserTarget": "BS-form-survey:build:development"
+              "browserTarget": "hheoevaluationsurvey:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +91,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "BS-form-survey:build"
+            "browserTarget": "hheoevaluationsurvey:build"
           }
         },
         "test": {
@@ -101,7 +104,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
@@ -113,7 +117,7 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/BS-form-survey/server",
+            "outputPath": "dist/hheoevaluationsurvey/server",
             "main": "server.ts",
             "tsConfig": "tsconfig.server.json",
             "inlineStyleLanguage": "scss"
@@ -140,12 +144,12 @@
           "builder": "@nguniversal/builders:ssr-dev-server",
           "configurations": {
             "development": {
-              "browserTarget": "BS-form-survey:build:development",
-              "serverTarget": "BS-form-survey:server:development"
+              "browserTarget": "hheoevaluationsurvey:build:development",
+              "serverTarget": "hheoevaluationsurvey:server:development"
             },
             "production": {
-              "browserTarget": "BS-form-survey:build:production",
-              "serverTarget": "BS-form-survey:server:production"
+              "browserTarget": "hheoevaluationsurvey:build:production",
+              "serverTarget": "hheoevaluationsurvey:server:production"
             }
           },
           "defaultConfiguration": "development"
@@ -160,12 +164,12 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "BS-form-survey:build:production",
-              "serverTarget": "BS-form-survey:server:production"
+              "browserTarget": "hheoevaluationsurvey:build:production",
+              "serverTarget": "hheoevaluationsurvey:server:production"
             },
             "development": {
-              "browserTarget": "BS-form-survey:build:development",
-              "serverTarget": "BS-form-survey:server:development"
+              "browserTarget": "hheoevaluationsurvey:build:development",
+              "serverTarget": "hheoevaluationsurvey:server:development"
             }
           },
           "defaultConfiguration": "production"
@@ -173,5 +177,5 @@
       }
     }
   },
-  "defaultProject": "BS-form-survey"
+  "defaultProject": "hheoevaluationsurvey"
 }

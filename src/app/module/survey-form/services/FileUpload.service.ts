@@ -1,23 +1,23 @@
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
-import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/internal/operators/finalize';
+import { map } from 'rxjs/internal/operators/map';
 import { NotificationService } from 'src/app/core/auth/services/notification.service';
 import { HttpSubmitSurveyService } from 'src/app/module/survey-form/services/http-survey.service';
+import checkMaxFileNumber from 'src/app/shared/models/FileUploadModels/validation/maxNumberOfFiles.model';
+import CheckMaxFilesSizeValidation from 'src/app/shared/models/FileUploadModels/validation/maxSizeFiles.model';
 import { BuildFormDataModel } from '../../../shared/models/FileUploadModels/BuildFormData.model';
 import { DropFileModel } from '../../../shared/models/FileUploadModels/dropFile.model';
-import { FileType } from '../../../shared/models/FileUploadModels/File.types';
 import { FileUploadBase } from '../../../shared/models/FileUploadModels/FileUpload.model';
 import { FilePreviw } from '../interfaces/IFilePreview.interface';
-
 @Injectable()
-export class SystemImagesService extends FileUploadBase {
+export class FileUploadService extends FileUploadBase {
   override files: File[] = [];
-  override fileType = FileType.systemImages;
   override filesPreview: FilePreviw[] = [];
   override loading = false;
   override isStartUploading: boolean = false;
-  public removedFilesIndx: number[] = [];
+  override removedFilesIndx: number[] = [];
+  override fileType: string;
 
   constructor(
     private httpSubmiturveyService: HttpSubmitSurveyService,
@@ -27,6 +27,14 @@ export class SystemImagesService extends FileUploadBase {
     super();
   }
 
+  override setfileType(fileType: any) {
+    this.fileType = fileType;
+  }
+
+  override getFileType() {
+    return this.fileType;
+  }
+
   override async add(files: NgxFileDropEntry[]) {
     this.loading = true;
     this.startUploading();
@@ -34,19 +42,12 @@ export class SystemImagesService extends FileUploadBase {
 
     try {
       const fileDropModel = new DropFileModel(
-        this.fileType,
+        this.getFileType(),
         this.notificationService
       );
       this.files = await fileDropModel.dropped(files);
-
-      // check the maximum number of files
       if (
-        this.files.length > 0 &&
-        this.checkMaxFileNumber(
-          this.filesPreview,
-          this.files,
-          this.MAX_FILES_NUMBER
-        )
+        checkMaxFileNumber(this.filesPreview, this.files, this.MAX_FILES_NUMBER)
       ) {
         this.notificationService.showError(
           'نعتذر لقد تجاوزت الحد الأقصي لعدد الملفات 7 '
@@ -58,8 +59,7 @@ export class SystemImagesService extends FileUploadBase {
       }
       // Check tha maximaum size of files which is 25 mb
       if (
-        this.files.length > 0 &&
-        this.checkMaxSize(
+        CheckMaxFilesSizeValidation(
           this.filesPreview,
           this.files,
           this.filesMaxSizeNumber
@@ -83,7 +83,7 @@ export class SystemImagesService extends FileUploadBase {
     }
   }
 
-  private sendRequest() {
+  override sendRequest() {
     try {
       const buildFormDataModel = new BuildFormDataModel(
         this.files,
@@ -91,7 +91,16 @@ export class SystemImagesService extends FileUploadBase {
       );
       this.httpSubmiturveyService
         .uploadingFile(buildFormDataModel.formData)
-        .pipe(finalize(() => (this.loading = false)))
+        .pipe(
+          map((data: FilePreviw[]) => {
+            const files = data;
+            files.forEach((file) => {
+              file.size = this.extractNumber(file.fileSize);
+            });
+            return files;
+          }),
+          finalize(() => (this.loading = false))
+        )
         .subscribe(
           (data: FilePreviw[]) => {
             this.uploadedFilesDone(data);
@@ -110,9 +119,9 @@ export class SystemImagesService extends FileUploadBase {
     }
   }
 
-  public uploadedFilesDone(data: FilePreviw[]): void {
+  override uploadedFilesDone(newFiles: FilePreviw[]): void {
     this.loading = false;
-    this.filesPreview = this.filesPreview.concat(data);
+    this.filesPreview = this.filesPreview.concat(newFiles);
     this.files = [];
     this.endUploading();
     this.cdr.detectChanges();

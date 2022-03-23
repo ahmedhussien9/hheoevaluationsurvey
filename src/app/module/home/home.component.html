@@ -1,12 +1,18 @@
 <div class="container">
   <div class="main">
     <div class="body">
-      <img [src]="'./assets/thumbnail_Image.png'" class="img-fluid" />
+      <img
+        [src]="'./assets/thumbnail_Image.png'"
+        alt="logo"
+        class="img-fluid"
+      />
       <h1 class="title">
-        استبيان المواقع الالكترونية التابعة لمؤسسات سمو الشيخة جواهر بنت محمد
+        أستبيان المواقع الإلكترونية التابعة لمؤسسات سمو الشيخة جواهر بنت محمد
         القاسمي
       </h1>
-      <button class="btn" [routerLink]="['survey']">ابدأ</button>
+      <button class="btn" aria-label="ابدأ النموذج" [routerLink]="['survey']">
+        ابدأ
+      </button>
     </div>
   </div>
 </div>

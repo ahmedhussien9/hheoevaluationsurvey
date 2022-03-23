@@ -65,6 +65,10 @@ export interface ISurvey {
   hasTrackingFeature: boolean;
   date: Date;
   formFiles: FormFile[];
+  contractFiles: FormFile[];
+  systemImages: FormFile[];
+  securityProtocolsDocuments: FormFile[];
+  complainsSugesionFiles: FormFile[];
 }
 
 export interface Sort {

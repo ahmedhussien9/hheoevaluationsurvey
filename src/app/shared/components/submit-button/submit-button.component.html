@@ -3,5 +3,5 @@
   (click)="isClicked()"
   [ngClass]="{ 'loading-btn': loading }"
 >
-  {{ title }} <span class="loading" *ngIf="loading"> </span>
+  {{ title }} <span class="loading" *ngIf="loading" aria-hidden="true"> </span>
 </button>

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/BS-form-survey",
+    "public": "dist/hheoevaluationsurvey",
     "ignore": [
       "firebase.json",
       "**/.*",

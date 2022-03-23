@@ -1,11 +1,12 @@
 <button
   class="btn"
   (click)="isCLickDownload()"
+  aria-label="تحميل"
   [ngClass]="{ 'loading-btn': loading }"
 >
   <!-- <ng-container *ngIf="!loading; else loadTemp"> -->
-  <fa-icon [icon]="faDownload"></fa-icon>
-  <span class="loading" *ngIf="loading"> </span>
+  <fa-icon [icon]="faDownload" aria-hidden="true"></fa-icon>
+  <span class="loading" *ngIf="loading" aria-hidden="true"> </span>
   <!-- </ng-container> -->
   <!-- <ng-template #loadTemp> ... </ng-template> -->
 </button>

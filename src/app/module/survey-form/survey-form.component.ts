@@ -4,7 +4,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   OnInit,
 } from '@angular/core';
 import {
@@ -14,13 +13,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { finalize, switchMap } from 'rxjs';
 
-import { SecurityProtocolsDocumentsService } from 'src/app/module/survey-form/services/SecurityProtocolsDocuments.service';
-import { SystemImagesService } from 'src/app/module/survey-form/services/SystemImages.service';
 import { HttpSubmitSurveyService } from './services/http-survey.service';
-import { ContractFilesService } from 'src/app/module/survey-form/services/ContractFiles.service';
 import { TFormStatus } from 'src/app/module/surveys/types/TFormStatus.type';
 import {
   animate,
@@ -30,7 +25,14 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { FileUploadService } from './services/FileUpload.service';
+import { NotificationService } from 'src/app/core/auth/services/notification.service';
+import { FileType } from 'src/app/shared/models/FileUploadModels/File.types';
+import { Router } from '@angular/router';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { arLocale, defineLocale } from 'ngx-bootstrap/chronos';
+defineLocale("ar", arLocale); //only setting up Norwegian bokmaal (nb) in this sample
+
 enum ToasterMessage {
   success = 'تم ارسال النموذج  بنجاح شكرا لكم',
   validationError = 'من فضلك قم بملئ النموذج!',
@@ -58,13 +60,7 @@ export const listAnimation = trigger('listAnimation', [
   templateUrl: './survey-form.component.html',
   styleUrls: ['./survey-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    DatePipe,
-    ContractFilesService,
-    SystemImagesService,
-    SecurityProtocolsDocumentsService,
-    HttpSubmitSurveyService,
-  ],
+  providers: [DatePipe, HttpSubmitSurveyService],
   animations: [listAnimation],
 })
 export class SurveyFormComponent implements OnInit, AfterContentChecked {
@@ -74,19 +70,21 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
   loading = false;
   violations: any = [];
   maxDate = new Date();
+  contractFiles: FileUploadService;
+  securityProtocolsDocuments: FileUploadService;
+  systemImages: FileUploadService;
+  complainSugesionFiles: FileUploadService;
   constructor(
     private _fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    public contractFilesService: ContractFilesService,
-    public systemImagesService: SystemImagesService,
-    public securityProtocolsDocumentsService: SecurityProtocolsDocumentsService,
     private httpSubmiturveyService: HttpSubmitSurveyService,
-    private toastr: ToastrService,
-    private el: ElementRef,
-    private localeService: BsLocaleService
+    private notificationService: NotificationService,
+    private router: Router,
+    private bsLocaleService: BsLocaleService
   ) {
+    this.bsLocaleService.use('ar');
+    this.initFilesInstancesWrap();
     this.maxDate = new Date();
-    // this.localeService.use(this.locale);
     this.userForm = this._fb.group({
       organizationName: ['', [Validators.maxLength(255), Validators.required]],
       webSiteURL: ['', [Validators.maxLength(255), Validators.required]],
@@ -142,6 +140,65 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
       hasWebsiteExtraFees: [null, Validators.required],
       websiteExtraFeesDetails: [null, Validators.maxLength(255)], // optional
     });
+  }
+
+  /**
+   * Init files instances wrap
+   */
+  private initFilesInstancesWrap() {
+    this.initSystemImages();
+    this.initContractFiles();
+    this.initComplainSugesionFiles();
+    this.initSecurityProtocolsDocuments();
+  }
+
+  /**
+   * Init Complain sugesion files instance
+   */
+  private initComplainSugesionFiles(): void {
+    this.complainSugesionFiles = new FileUploadService(
+      this.httpSubmiturveyService,
+      this.notificationService,
+      this.cdr
+    );
+    this.complainSugesionFiles.setfileType(FileType.complainsSugesionFiles);
+  }
+
+  /**
+   * Init Contract files instance
+   */
+  private initContractFiles(): void {
+    this.contractFiles = new FileUploadService(
+      this.httpSubmiturveyService,
+      this.notificationService,
+      this.cdr
+    );
+    this.contractFiles.setfileType(FileType.contractFiles);
+  }
+
+  /**
+   * Init security protocol documents instance
+   */
+  private initSecurityProtocolsDocuments(): void {
+    this.securityProtocolsDocuments = new FileUploadService(
+      this.httpSubmiturveyService,
+      this.notificationService,
+      this.cdr
+    );
+    this.securityProtocolsDocuments.setfileType(
+      FileType.securityProtocolsDocuments
+    );
+  }
+  /**
+   * Init system images instance
+   */
+  private initSystemImages() {
+    this.systemImages = new FileUploadService(
+      this.httpSubmiturveyService,
+      this.notificationService,
+      this.cdr
+    );
+    this.systemImages.setfileType(FileType.systemImages);
   }
 
   private addCompainesGroup(): FormGroup {
@@ -360,16 +417,20 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
         finalize(() => this.stopLoader())
       )
       .subscribe(
-        () => this.cdr.detectChanges(),
+        () => {
+          this.router.navigate(['/survey', 'success']);
+          this.cdr.detectChanges();
+        },
         (err) => {
-          console.log(err);
           this.loading = false;
-          this.toastr.error(err.message || '');
+          this.notificationService.showError(err.message || '');
           this.violations = err.error.violations;
           this.cdr.detectChanges();
         }
       );
   }
+
+
 
   /**
    *  Check some cases if one of them is unvalid so error message should be shown
@@ -377,21 +438,21 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
    */
   isNotValidForm(): boolean {
     if (this.userForm.invalid) {
-      this.toastr.error(ToasterMessage.validationError);
+      this.notificationService.showError(ToasterMessage.validationError);
       return true;
     }
 
     if (
-      this.contractFilesService.isStartUploading ||
-      this.systemImagesService.isStartUploading ||
-      this.securityProtocolsDocumentsService.isStartUploading
+      this.contractFiles.isStartUploading ||
+      this.systemImages.isStartUploading ||
+      this.securityProtocolsDocuments.isStartUploading
     ) {
-      this.toastr.error(ToasterMessage.isStillUploadingFile);
+      this.notificationService.showError(ToasterMessage.isStillUploadingFile);
       return true;
     }
 
-    if (this.contractFilesService.filesPreview.length === 0) {
-      this.toastr.error(ToasterMessage.uploadFileError);
+    if (this.contractFiles.filesPreview.length === 0) {
+      this.notificationService.showError(ToasterMessage.uploadFileError);
       return true;
     }
 
@@ -402,13 +463,13 @@ export class SurveyFormComponent implements OnInit, AfterContentChecked {
    * It should be called when submitted form is success
    */
   submittedFormSuccess(): void {
-    this.toastr.success(ToasterMessage.success);
+    this.notificationService.showSuccess(ToasterMessage.success);
     this.userForm.reset();
     this.resetFormArray();
     this.endSubmittingForm();
-    this.systemImagesService.filesPreview = [];
-    this.securityProtocolsDocumentsService.filesPreview = [];
-    this.contractFilesService.filesPreview = [];
+    this.systemImages.filesPreview = [];
+    this.securityProtocolsDocuments.filesPreview = [];
+    this.contractFiles.filesPreview = [];
     this.httpSubmiturveyService.clearLocalStorage();
   }
 

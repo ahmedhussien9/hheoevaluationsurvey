@@ -1,5 +1,5 @@
 {
-  "name": "bs-form-survey",
+  "name": "hheoevaluationsurvey",
   "version": "0.0.2",
   "scripts": {
     "ng": "ng",
@@ -7,10 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "dev:ssr": "ng run BS-form-survey:serve-ssr",
-    "serve:ssr": "node dist/BS-form-survey/server/main.js",
-    "build:ssr": "ng build && ng run BS-form-survey:server",
-    "prerender": "ng run BS-form-survey:prerender"
+    "dev:ssr": "ng run hheoevaluationsurvey:serve-ssr",
+    "serve:ssr": "node dist/hheoevaluationsurvey/server/main.js",
+    "build:ssr": "ng build && ng run hheoevaluationsurvey:server",
+    "prerender": "ng run hheoevaluationsurvey:prerender"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/platform-server": "~13.1.0",
     "@angular/router": "~13.1.0",
+    "@angular/service-worker": "~13.1.0",
     "@fortawesome/angular-fontawesome": "^0.10.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",

@@ -1,17 +1,22 @@
 <div class="surveyContainer">
   <header class="header">
-    <img src="./assets/image/survey-logo.png" class="img-fluid logo" />
+    <img
+      src="./assets/image/survey-logo.png"
+      alt="logo"
+      class="img-fluid logo"
+    />
     <h1 class="title">
-      استبيان المواقع الإلكترونية التابعة لمؤسسات سمو الشيخة جواهر بنت محمد
+      أستبيان المواقع الإلكترونية التابعة لمؤسسات سمو الشيخة جواهر بنت محمد
       القاسمي
     </h1>
   </header>
   <form class="formContainer" [formGroup]="userForm">
     <div class="form-group">
-      <label class="label">
-        1- اسم المؤسسة <span class="required">*</span></label
+      <label class="label" for="organizationName">
+        1- أسم المؤسسة <span class="required">*</span></label
       >
       <input
+        id="organizationName"
         class="form-control"
         matInput
         value=""
@@ -22,7 +27,7 @@
         *ngIf="
           userForm.controls['organizationName']?.errors?.required && isSubmitted
         "
-        >اسم المؤسسة مطلوب</small
+        >أسم المؤسسة مطلوب</small
       >
 
       <small
@@ -32,14 +37,14 @@
       >
     </div>
     <div class="form-group">
-      <label class="label">
+      <label class="label" for="webSiteURL">
         2- رابط الموقع الإلكتروني <span class="required">*</span></label
       >
       <input
         class="form-control"
         matInput
         value=""
-        urlDirective
+        id="webSiteURL"
         formControlName="webSiteURL"
         urlDirective
       />
@@ -48,38 +53,43 @@
         class="form-text text-danger"
         *ngIf="userForm.controls['webSiteURL']?.errors?.required && isSubmitted"
       >
-        رابط الموقع الالكتروني مطلوب</small
+        رابط الموقع الإلكتروني مطلوب</small
       >
       <small
         class="form-text text-danger"
         *ngIf="userForm.controls['webSiteURL']?.errors?.maxlength"
-        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
-      >
+        >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف
+      </small>
+
       <small
         class="form-text text-danger"
         style="display: block"
         *ngIf="userForm.controls['webSiteURL']?.errors?.wrongUrl"
       >
-        رابط الموقع الالكتروني الذي ادخلته غير صحيح
+        رابط الموقع الإلكتروني الذي أدخلته غير صحيح
         {{ userForm.controls["webSiteURL"]?.errors?.wrongUrl }}</small
       >
     </div>
     <div class="form-group">
-      <label class="label"
-        >3- ما اسم الشركة التي قامت بتطوير الموقع
+      <label class="label" for="websiteSoftwareCompany"
+        >3- ما أسم الشركة التي قامت بتطوير الموقع
         <span class="required">*</span></label
       >
+
       <input
+        id="websiteSoftwareCompany"
         class="form-control"
         matInput
         value=""
         formControlName="websiteSoftwareCompany"
       />
+
       <small
         class="form-text text-danger"
         *ngIf="userForm.controls['websiteSoftwareCompany']?.errors?.maxlength"
         >الحد الأقصي للنص لا يجب أن يتجاوز 255 حرف</small
       >
+
       <small
         class="form-text text-danger"
         *ngIf="
@@ -87,7 +97,7 @@
           isSubmitted
         "
       >
-        اسم الشركة التي قامت بتطوير الموقع مطلوب</small
+        أسم الشركة التي قامت بتطوير الموقع مطلوب</small
       >
     </div>
     <!---->
@@ -96,7 +106,7 @@
     <fieldset>
       <legend>
         <label class="label">
-          4- يرجى ذكر جميع الشركات التي تم التعامل معها لتطوير الموقع الالكتروني
+          4- يرجى ذكر جميع الشركات التي تم التعامل معها لتطوير الموقع الإلكتروني
           بالترتيب مع ذكر السنة <span class="required">*</span>
         </label>
       </legend>
@@ -109,8 +119,9 @@
         >
           <div class="grid-table">
             <div class="form-group">
-              <label class="label">اسم الشركة</label>
+              <label class="label" [for]="i + companyName">أسم الشركة</label>
               <input
+                [id]="i + companyName"
                 class="form-control"
                 matInput
                 value=""
@@ -134,14 +145,16 @@
               >
             </div>
             <div class="form-group">
-              <label class="label">سنة التعاقد </label>
+              <label class="label" [for]="i + contractYear">سنة التعاقد </label>
               <input
+                [id]="i + contractYear"
                 type="text"
                 class="form-control"
                 formControlName="contractYear"
                 [maxDate]="maxDate"
                 readonly
                 bsDatepicker
+                [bsConfig]="{ showWeekNumbers: false }"
               />
               <!--
               <input
@@ -163,8 +176,11 @@
               >
             </div>
             <div class="form-group">
-              <label class="label">اسباب تغيير الشركة</label>
+              <label class="label" [for]="i + reasonForLeaving"
+                >أسباب تغيير الشركة</label
+              >
               <input
+                [id]="i + reasonForLeaving"
                 class="form-control"
                 matInput
                 value=""
@@ -214,7 +230,7 @@
     <fieldset>
       <legend>
         <label class="label">
-          5- ماهو المبلغ الاجمالي لتطوير الموقع مع بيان كل شركة والمبلغ المدفوع/
+          5- ماهو المبلغ الإجمالي لتطوير الموقع مع بيان كل شركة والمبلغ المدفوع/
           إجمالى رسوم السنة ؟ <span class="required">*</span>
         </label>
       </legend>
@@ -230,11 +246,13 @@
         >
           <div class="grid-table">
             <div class="form-group">
-              <label class="label">اسم الشركة</label>
+              <label class="label" [for]="i + companyName">أسم الشركة</label>
               <input
+                [id]="i + companyName"
                 class="form-control"
                 matInput
                 value=""
+                type="text"
                 formControlName="companyName"
               />
 
@@ -253,19 +271,21 @@
                   group.controls['companyName']?.errors?.required && isSubmitted
                 "
               >
-                اسم الشركة التي تم تطوير الموقع الخاص بها مطلوب</small
+                أسم الشركة التي تم تطوير الموقع الخاص بها مطلوب</small
               >
             </div>
 
             <div class="form-group">
-              <label class="label">السنة </label>
+              <label class="label" [for]="i + companyName">السنة </label>
               <input
+                [id]="i + companyName"
                 type="text"
                 class="form-control"
                 formControlName="year"
                 [maxDate]="maxDate"
                 readonly
                 bsDatepicker
+                [bsConfig]="{ showWeekNumbers: false }"
               />
 
               <small
@@ -276,8 +296,11 @@
               >
             </div>
             <div class="form-group">
-              <label class="label">المبلغ المدفوع (بالدرهم)</label>
+              <label class="label" [for]="i + paymentAmount"
+                >المبلغ المدفوع (بالدرهم)</label
+              >
               <input
+                [id]="i + paymentAmount"
                 class="form-control"
                 matInput
                 value=""
@@ -339,10 +362,11 @@
         >
           <div class="grid-table-2c">
             <div class="form-group">
-              <label class="label"
+              <label class="label" [for]="i + totalPaymentAmount"
                 >المبلغ المدفوع/ إجمالى رسوم السنة (بالدرهم)</label
               >
               <input
+                [id]="i + totalPaymentAmount"
                 class="form-control"
                 matInput
                 value=""
@@ -363,14 +387,16 @@
             </div>
 
             <div class="form-group">
-              <label class="label">السنة </label>
+              <label class="label" [id]="i + totalPaymentAmount">السنة </label>
               <input
+                [id]="i + totalPaymentAmount"
                 type="text"
                 class="form-control"
                 formControlName="paymentYear"
                 [maxDate]="maxDate"
                 bsDatepicker
                 readonly
+                [bsConfig]="{ showWeekNumbers: false }"
               />
 
               <small
@@ -402,11 +428,12 @@
     <!-- End Third add more question -->
     <!---->
     <div class="form-group">
-      <label class="label"
-        >7- اين موقع Host للموقع والبيانات (يرجى ذكر Host name )؟
+      <label class="label" for="websiteHostDetails"
+        >7- أين موقع Host للموقع والبيانات (يرجى ذكر Host name )؟
         <span class="required">*</span>
       </label>
       <textarea
+        id="websiteHostDetails"
         class="form-control h-25"
         formControlName="websiteHostDetails"
         rows="5"
@@ -419,7 +446,7 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
 
       <small
@@ -464,7 +491,7 @@
     </div>
     <div class="form-group">
       <label class="label"
-        >9- اي لغة برمجية تم استخدامها لتطوير الموقع ؟
+        >9- أي لغة برمجية تم أستخدامها لتطوير الموقع ؟
         <span class="required">*</span></label
       >
 
@@ -494,7 +521,7 @@
 
     <div class="form-group">
       <label class="label">
-        10- هل يتم دفع مبالغ مالية اخرى للموقع<span class="required">*</span>
+        10- هل يتم دفع مبالغ مالية اخرى للموقع؟<span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -521,7 +548,7 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
@@ -530,7 +557,7 @@
     <ng-container>
       <div class="form-group">
         <label class="label">
-          يرجى ذكر قيمة المبالغ الاضافية التي يتم دفعها على الموقع الالكترني
+          يرجى ذكر قيمة المبالغ الإضافية التي يتم دفعها على الموقع الإلكتروني
           ونوع الخدمة المقدمة
         </label>
         <textarea
@@ -583,7 +610,7 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
       <small
         class="form-text text-danger"
@@ -598,7 +625,7 @@
     <fieldset>
       <legend>
         <label class="label">
-          12 -كم عدد الاشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
+          12 -كم عدد الإشخاص الذين يشرفون على محتوى الموقع والخدمات المقدمة؟
           <span class="required">*</span>
         </label>
       </legend>
@@ -611,7 +638,7 @@
         >
           <div class="grid-table-2c">
             <div class="form-group">
-              <label class="label">عدد الاشخاص </label>
+              <label class="label">عدد الأشخاص </label>
               <input
                 class="form-control"
                 matInput
@@ -680,35 +707,32 @@
     <!----------------------------->
     <div class="dropFile-container">
       <label class="label"
-        >13- الرجاء ارفاق جميع العقود الخاصة بالموقع والصيانة
+        >13- الرجاء إرفاق جميع العقود الخاصة بالموقع والصيانة
         <span class="required">*</span></label
       >
       <app-upload-file
-        (filesEvent)="contractFilesService.add($event)"
-        [filesCount]="contractFilesService.filesPreview.length"
+        (filesEvent)="contractFiles.add($event)"
+        [filesCount]="contractFiles.filesPreview.length"
       >
       </app-upload-file>
 
-      <ng-container *ngIf="contractFilesService.loading">
+      <ng-container *ngIf="contractFiles.loading">
         <app-progress-bar></app-progress-bar>
       </ng-container>
 
-      <ng-container *ngIf="contractFilesService.filesPreview.length > 0">
+      <ng-container *ngIf="contractFiles.filesPreview.length > 0">
         <div class="dropFile-details">
           <div class="dropFile-details__header">
             <h6 style="font-weight: bold">الملفات</h6>
           </div>
           <div
-            *ngFor="
-              let item of contractFilesService.filesPreview;
-              let i = index
-            "
-            [@listAnimation]="contractFilesService.filesPreview.length"
+            *ngFor="let item of contractFiles.filesPreview; let i = index"
+            [@listAnimation]="contractFiles.filesPreview.length"
             class="files-container"
           >
             <app-upload-file-details
               [file]="item"
-              (deleteFile)="contractFilesService.remove(item, i)"
+              (deleteFile)="contractFiles.remove(item, i)"
               [number]="i + 1"
             >
             </app-upload-file-details>
@@ -719,12 +743,12 @@
       <small
         class="form-text text-danger"
         *ngIf="
-          contractFilesService.filesPreview.length <= 0 &&
+          contractFiles.filesPreview.length <= 0 &&
           isSubmitted &&
-          !contractFilesService.loading
+          !contractFiles.loading
         "
       >
-        من فضلك ارفاق الملفات مطلوب</small
+        من فضلك إرفاق الملفات مطلوب</small
       >
     </div>
     <!--End Upload Attachments-->
@@ -770,7 +794,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        اذا كانت الاجابة في السؤال السابق" يدوي" يرجى توضيح الية متابعة الخدمات
+        إذا كانت الإجابة في السؤال السابق" يدوي" يرجى توضيح آلية متابعة الخدمات
       </label>
       <textarea
         class="form-control h-25"
@@ -785,35 +809,35 @@
     </div>
 
     <!----------------------------->
-    <!--2 Start Upload Attachements-->
+    <!-- Start Upload Attachements-->
     <!----------------------------->
     <div class="dropFile-container">
       <label class="label">
-        اذا كانت الاجابة في السؤال السابق "نظام الكتروني" يرجى ارفاق صورة من
+        إذا كانت الإجابة في السؤال السابق "نظام إلكتروني" يرجى إرفاق صورة من
         النظام
       </label>
       <app-upload-file
-        (filesEvent)="systemImagesService.add($event)"
+        (filesEvent)="systemImages.add($event)"
         [sampleTitle]="'Sample 1 (Mandatroy)'"
-        [filesCount]="systemImagesService.filesPreview.length"
+        [filesCount]="systemImages.filesPreview.length"
       >
       </app-upload-file>
-      <ng-container *ngIf="systemImagesService.loading">
+      <ng-container *ngIf="systemImages.loading">
         <app-progress-bar></app-progress-bar>
       </ng-container>
-      <ng-container *ngIf="systemImagesService.filesPreview.length > 0">
+      <ng-container *ngIf="systemImages.filesPreview.length > 0">
         <div class="dropFile-details">
           <div class="dropFile-details__header">
             <h6>الملفات</h6>
           </div>
           <div
-            *ngFor="let item of systemImagesService.filesPreview; let i = index"
+            *ngFor="let item of systemImages.filesPreview; let i = index"
             class="files-container"
-            [@listAnimation]="systemImagesService.filesPreview.length"
+            [@listAnimation]="systemImages.filesPreview.length"
           >
             <app-upload-file-details
               [file]="item"
-              (deleteFile)="systemImagesService.remove(item, i)"
+              (deleteFile)="systemImages.remove(item, i)"
               [number]="i + 1"
             >
             </app-upload-file-details>
@@ -829,7 +853,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        15 - هل يوجد في الموقع خدمة للابلاغ عن الشكاوي والمقترحات؟
+        15 - هل يوجد في الموقع خدمة للإبلاغ عن الشكاوي والمقترحات؟
         <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
@@ -857,15 +881,16 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
     <!--Follow up for 15 -->
     <!---->
+
     <div class="form-group">
       <label class="label">
-        اذا كانت الاجابة في السؤال السابق" لا" يرجى توضيح الية متابعة الشكاوي
+        اذا كانت الإجابة في السؤال السابق" لا" يرجى توضيح آلية متابعة الشكاوي
         والمقترحات؟
       </label>
       <textarea
@@ -915,12 +940,54 @@
             ?.required && isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
     <!--Follow up for 16 -->
     <!---->
+
+    <!----------------------------->
+    <!-- Start Upload Attachements-->
+    <!----------------------------->
+    <div class="dropFile-container">
+      <label class="label">
+        إذا كانت الإجابة نعم يرجى إرفاق أخر نتائج لرضا المتعاملين
+      </label>
+      <app-upload-file
+        (filesEvent)="complainSugesionFiles.add($event)"
+        [sampleTitle]="'Sample 1 (Mandatroy)'"
+        [filesCount]="complainSugesionFiles.filesPreview.length"
+      >
+      </app-upload-file>
+      <ng-container *ngIf="complainSugesionFiles.loading">
+        <app-progress-bar></app-progress-bar>
+      </ng-container>
+      <ng-container *ngIf="complainSugesionFiles.filesPreview.length > 0">
+        <div class="dropFile-details">
+          <div class="dropFile-details__header">
+            <h6>الملفات</h6>
+          </div>
+          <div
+            *ngFor="
+              let item of complainSugesionFiles.filesPreview;
+              let i = index
+            "
+            class="files-container"
+            [@listAnimation]="complainSugesionFiles.filesPreview.length"
+          >
+            <app-upload-file-details
+              [file]="item"
+              (deleteFile)="complainSugesionFiles.remove(item, i)"
+              [number]="i + 1"
+            >
+            </app-upload-file-details>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <!--End Upload Attachments-->
+
     <div class="form-group">
       <label class="label"
         >ماهي الخدمات التي يتم تقييمها وما هو الاسلوب المتبع في التقييم؟
@@ -947,8 +1014,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        17 - هل تم تطوير الموقع وفق ارشادات خاصة بافضل الممارسات العالمية لتطوير
-        المواقع الالكترونية؟ <span class="required">*</span>
+        17 - هل تم تطوير الموقع وفق إرشادات خاصة بأفضل الممارسات العالمية لتطوير
+        المواقع الإلكترونية؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -975,14 +1042,14 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
     <!--Follow up for 17 -->
     <!---->
     <div class="form-group">
-      <label class="label">يرجى ذكر الارشادات و الممارسات </label>
+      <label class="label">يرجى ذكر الإرشادات و الممارسات </label>
       <textarea
         class="form-control h-25"
         formControlName="latestStandardDetails"
@@ -1002,7 +1069,7 @@
     <!---->
     <!-- <div class="form-group">
       <label class="label">
-        18 -هل تم تطوير الموقع وفق ارشادات خاصة بافضل الممارسات العالمية لتطوير المواقع الالكترونية
+        18 -هل تم تطوير الموقع وفق ارشادات خاصة بافضل الممارسات العالمية لتطوير المواقع الإلكترونية
       </label>
       <div id="group2" class="radio-button-group">
         <div class="group-field">
@@ -1043,7 +1110,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        19- هل تفضل وجود ارشادات خاصة بتطوير الموقع الإلكتروني موحد على مستوى
+        18- هل تفضل وجود إرشادات خاصة بتطوير الموقع الإلكتروني موحد على مستوى
         مؤسسات سمو الشيخة؟ <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
@@ -1071,7 +1138,7 @@
             ?.required && isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
@@ -1083,7 +1150,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        20- هل لديك اي اقتراحات خاصة بالارشادات التي يجب اتباعها؟
+        19- هل لديك أي أقترحات خاصة بالإرشادات التي يجب إتباعها؟
         <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
@@ -1111,12 +1178,12 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
 
     <div class="form-group">
-      <label class="label">اذا كانت الاجابة نعم يرجى ذكر الارشادات </label>
+      <label class="label">إذا كانت الإجابة نعم يرجى ذكر الإرشادات </label>
       <textarea
         class="form-control h-25"
         formControlName="suggestionsDetails"
@@ -1137,7 +1204,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        21 - هل يتم تحديث المحتوى بشكل دوري ؟
+        20 - هل يتم تحديث المحتوى بشكل دوري ؟
         <span class="required">*</span></label
       >
 
@@ -1165,14 +1232,14 @@
           userForm.controls['continuousUpdate']?.errors?.required && isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
     <!--Follow up for 21 -->
     <!---->
     <div class="form-group">
-      <label class="label">يرجى توضيح الية و دورية التحديث </label>
+      <label class="label">يرجى توضيح آلية و دورية التحديث </label>
       <textarea
         class="form-control h-25"
         formControlName="continuousUpdateDetails"
@@ -1191,7 +1258,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        22 - هل تملك الجهة حسابات على مواقع التواصل الاجتماعي؟
+        21 - هل تملك الجهة حسابات على مواقع التواصل الاجتماعي؟
         <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
@@ -1219,14 +1286,14 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
     <!--Follow up for 22 -->
     <!---->
     <div class="form-group">
-      <label class="label">يرجى ادراج منصات التواصل الاجتماعي </label>
+      <label class="label">يرجى إدراج منصات التواصل الاجتماعي </label>
       <textarea
         class="form-control h-25"
         formControlName="socialMediaAccountsDetails"
@@ -1247,7 +1314,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        23 - هل تقوم الجهة بتوعية الجمهور عن الخدمات التي تقدمها؟
+        22 - هل تقوم الجهة بتوعية الجمهور عن الخدمات التي تقدمها؟
         <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
@@ -1275,14 +1342,14 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
     <!--Follow up for 23 -->
     <!---->
     <div class="form-group">
-      <label class="label">يرجى توضيح الية التوعية المستخدمة </label>
+      <label class="label">يرجى توضيح آلية التوعية المستخدمة </label>
       <textarea
         class="form-control h-25"
         formControlName="customerAwarenessDetails"
@@ -1301,8 +1368,8 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        24- هل تقوم المؤسسة بتطبيق آلية حماية لتبادل المعلومات الحساسة "مثل
-        استخدام بروتوكولات SSL, TLS, SSH, SFTP وغيرها؟
+        23- هل تقوم المؤسسة بتطبيق آلية حماية لتبادل المعلومات الحساسة "مثل
+        أستخدام بروتوكولات SSL, TLS, SSH, SFTP وغيرها؟
         <span class="required">*</span>
       </label>
       <div id="group2" class="radio-button-group">
@@ -1330,7 +1397,7 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
@@ -1340,37 +1407,33 @@
     <!--3 Start Upload Attachements-->
     <!----------------------------->
     <div class="dropFile-container">
-      <label class="label">يرجى ارفاق ادلة </label>
+      <label class="label">يرجى إرفاق الأدلة </label>
       <app-upload-file
-        (filesEvent)="securityProtocolsDocumentsService.add($event)"
+        (filesEvent)="securityProtocolsDocuments.add($event)"
         [sampleTitle]="'Sample 1 (Mandatroy)'"
-        [filesCount]="securityProtocolsDocumentsService.filesPreview.length"
+        [filesCount]="securityProtocolsDocuments.filesPreview.length"
       >
       </app-upload-file>
-      <ng-container *ngIf="securityProtocolsDocumentsService.loading">
+      <ng-container *ngIf="securityProtocolsDocuments.loading">
         <app-progress-bar></app-progress-bar>
       </ng-container>
       <div class="dropFile-container__header"></div>
-      <ng-container
-        *ngIf="securityProtocolsDocumentsService.filesPreview.length > 0"
-      >
+      <ng-container *ngIf="securityProtocolsDocuments.filesPreview.length > 0">
         <div class="dropFile-details">
           <div class="dropFile-details__header">
             <h6>الملفات</h6>
           </div>
           <div
             *ngFor="
-              let item of securityProtocolsDocumentsService.filesPreview;
+              let item of securityProtocolsDocuments.filesPreview;
               let i = index
             "
-            [@listAnimation]="
-              securityProtocolsDocumentsService.filesPreview.length
-            "
+            [@listAnimation]="securityProtocolsDocuments.filesPreview.length"
             class="files-container"
           >
             <app-upload-file-details
               [file]="item"
-              (deleteFile)="securityProtocolsDocumentsService.remove(item, i)"
+              (deleteFile)="securityProtocolsDocuments.remove(item, i)"
               [number]="i + 1"
             >
             </app-upload-file-details>
@@ -1386,7 +1449,7 @@
     <!---->
     <div class="form-group">
       <label class="label"
-        >25- كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟
+        >24- كيف يتم معالجة المشاكل التقنية الخاصة بالموقع الإلكتروني؟
         <span class="required">*</span>
       </label>
       <input
@@ -1407,7 +1470,7 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!--End 25-->
@@ -1416,7 +1479,7 @@
     <!---->
     <div class="form-group">
       <label class="label">
-        26 - هل يوجد طريقة لتتبع زوار الموقع ؟
+        25 - هل يوجد طريقة لتتبع زوار الموقع ؟
         <span class="required">*</span></label
       >
 
@@ -1445,7 +1508,7 @@
           isSubmitted
         "
       >
-        من فضلك هذا السؤال مطلوب الاجابة عليه</small
+        من فضلك هذا السؤال مطلوب الإجابة عليه</small
       >
     </div>
     <!---->
@@ -1479,14 +1542,5 @@
       >
       </app-submit-button>
     </div>
-    <!--End Follow up for 26-->
-    <!-- <div class="pre-code">
-      <div>
-        <div>Users Information</div>
-      </div>
-      <div>
-        <pre>{{ userForm.value | json }}</pre>
-      </div>
-    </div> -->
   </form>
 </div>

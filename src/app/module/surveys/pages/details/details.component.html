@@ -45,7 +45,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              4- جميع الشركات التي تم التعامل معها لتطوير الموقع الالكتروني
+              4- جميع الشركات التي تم التعامل معها لتطوير الموقع الإلكتروني
               بالترتيب مع ذكر السنة
             </div>
             <div class="question__answer">
@@ -185,8 +185,8 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              يرجى ذكر قيمة المبالغ الاضافية التي يتم دفعها على الموقع الالكترني
-              ونوع الخدمة المقدمة
+              يرجى ذكر قيمة المبالغ الاضافية التي يتم دفعها على الموقع
+              الإلكتروني ونوع الخدمة المقدمة
             </div>
             <div class="question__answer">
               {{ survey.websiteExtraFeesDetails }}
@@ -239,7 +239,29 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              13 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟
+              13 - العقود الخاصة بالموقع والصيانه
+            </div>
+            <div
+              class="question__answer"
+              *ngIf="survey.contractFiles.length > 0; else noResult"
+            >
+              <ng-container
+                *ngFor="let file of survey.contractFiles; let i = index"
+              >
+                <app-download-file
+                  [file]="file"
+                  (downloadFile)="download(file)"
+                  [number]="i + 1"
+                  [loading]="downloadFileId.includes(file.id)"
+                ></app-download-file>
+              </ng-container>
+            </div>
+          </section>
+        </ng-container>
+        <ng-container>
+          <section class="question">
+            <div class="question__title">
+              14 -كيف يتم متابعة الخدمات التي تسجل من قبل المجتمع؟
             </div>
             <div class="question__answer">
               {{
@@ -262,7 +284,26 @@
             </div>
           </section>
         </ng-container>
-
+        <ng-container>
+          <section class="question">
+            <div class="question__title">صور من النظام</div>
+            <div
+              class="question__answer"
+              *ngIf="survey.systemImages.length > 0; else noResult"
+            >
+              <ng-container
+                *ngFor="let file of survey.systemImages; let i = index"
+              >
+                <app-download-file
+                  [file]="file"
+                  (downloadFile)="download(file)"
+                  [number]="i + 1"
+                  [loading]="downloadFileId.includes(file.id)"
+                ></app-download-file>
+              </ng-container>
+            </div>
+          </section>
+        </ng-container>
         <ng-container>
           <section class="question">
             <div class="question__title">
@@ -297,7 +338,29 @@
             </div>
           </section>
         </ng-container>
-
+        <ng-container>
+          <section class="question">
+            <div class="question__title">أخر نتائج لرضا العاملين</div>
+            <div
+              class="question__answer"
+              *ngIf="survey.complainsSugesionFiles.length > 0; else noResult"
+            >
+              <ng-container
+                *ngFor="
+                  let file of survey.complainsSugesionFiles;
+                  let i = index
+                "
+              >
+                <app-download-file
+                  [file]="file"
+                  (downloadFile)="download(file)"
+                  [number]="i + 1"
+                  [loading]="downloadFileId.includes(file.id)"
+                ></app-download-file>
+              </ng-container>
+            </div>
+          </section>
+        </ng-container>
         <ng-container>
           <section class="question">
             <div class="question__title">
@@ -313,7 +376,7 @@
           <section class="question">
             <div class="question__title">
               17 - هل تم تطوير الموقع وفق ارشادات خاصة بافضل الممارسات العالمية
-              لتطوير المواقع الالكترونية؟
+              لتطوير المواقع الإلكترونية؟
             </div>
             <div class="question__answer">
               {{ survey.developedUsingLatestStandard ? "نعم" : "لا" }}
@@ -333,7 +396,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              19- ارشادات خاصة بتطوير الموقع الإلكتروني موحد على مستوى مؤسسات
+              18- ارشادات خاصة بتطوير الموقع الإلكتروني موحد على مستوى مؤسسات
               سمو الشيخة
             </div>
             <div class="question__answer">
@@ -345,7 +408,7 @@
         <ng-container>
           <section class="question">
             <div class="question__title">
-              20- اقتراحات خاصة بالارشادات التي يجب اتباعها
+              19 - اقتراحات خاصة بالارشادات التي يجب اتباعها
             </div>
             <div class="question__answer">
               {{ survey.suggestionsToShare ? "نعم" : "لا" }}
@@ -426,7 +489,32 @@
             </div>
           </section>
         </ng-container>
-
+        <ng-container>
+          <section class="question">
+            <div class="question__title">مرفقات الأدلة</div>
+            <div
+              class="question__answer"
+              *ngIf="
+                survey.securityProtocolsDocuments.length > 0;
+                else noResult
+              "
+            >
+              <ng-container
+                *ngFor="
+                  let file of survey.securityProtocolsDocuments;
+                  let i = index
+                "
+              >
+                <app-download-file
+                  [file]="file"
+                  (downloadFile)="download(file)"
+                  [number]="i + 1"
+                  [loading]="downloadFileId.includes(file.id)"
+                ></app-download-file>
+              </ng-container>
+            </div>
+          </section>
+        </ng-container>
         <ng-container>
           <section class="question">
             <div class="question__title">
@@ -456,8 +544,29 @@
             </div>
           </section>
         </ng-container>
-
-        <ng-container>
+        <ng-template #noResult>
+          <div
+            style="
+              display: flex;
+              height: 100px;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <p
+              style="
+                color: red;
+                font-weight: bold;
+                padding-bottom: 0px;
+                margin-bottom: 0px;
+                font-size: 14px;
+              "
+            >
+              لا يوجد ملفات
+            </p>
+          </div>
+        </ng-template>
+        <!-- <ng-container>
           <section class="question">
             <div class="question__title">الملفات</div>
             <ng-container *ngFor="let file of survey.formFiles; let i = index">
@@ -469,7 +578,7 @@
               ></app-download-file>
             </ng-container>
           </section>
-        </ng-container>
+        </ng-container> -->
       </section>
     </ng-container>
   </section>

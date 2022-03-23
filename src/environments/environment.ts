@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://surveyformweb.azurewebsites.net/v1/survey/form/',
+  baseUrl: 'https://surveyformweb2.azurewebsites.net/v1/survey/form/',
 };
 
 /*

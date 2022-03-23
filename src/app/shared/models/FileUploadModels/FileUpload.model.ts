@@ -1,4 +1,3 @@
-import { ChangeDetectorRef } from '@angular/core';
 import { NgxFileDropEntry } from 'ngx-file-drop';
 import { FilePreviw } from 'src/app/module/survey-form/interfaces/IFilePreview.interface';
 import { IFileUpload } from 'src/app/module/survey-form/interfaces/IFileUpload.interface';
@@ -11,9 +10,18 @@ export abstract class FileUploadBase implements IFileUpload {
   MAX_FILES_NUMBER: number = 7;
   isStartUploading: boolean = false;
   filesMaxSizeNumber = 25096;
+  removedFilesIndx: number[] = [];
 
   public remove(file: FilePreviw, index: number): void {
     throw Error('remove is not called!');
+  }
+
+  public setfileType(fileType: any) {
+    this.fileType = fileType;
+  }
+
+  public getFileType() {
+    return this.fileType;
   }
 
   public validateMaxFilesNumber(
@@ -26,6 +34,14 @@ export abstract class FileUploadBase implements IFileUpload {
       : false;
   }
 
+  public sendRequest() {
+    throw new Error('Method not implemented.');
+  }
+
+  public uploadedFilesDone(data: FilePreviw[]): void {
+    throw new Error('Method not implemented.');
+  }
+
   public add(files: NgxFileDropEntry[]): void {
     throw new Error('Method not implemented.');
   }
@@ -36,35 +52,6 @@ export abstract class FileUploadBase implements IFileUpload {
 
   public endUploading() {
     return (this.isStartUploading = false);
-  }
-
-  public checkMaxSize(
-    currentFiles: FilePreviw[],
-    upCommingFiles: File[],
-    max_size: number
-  ) {
-    let totalFilesSize = 0;
-
-    for (let index = 0; index < upCommingFiles.length; index++) {
-      const element = upCommingFiles[index];
-      totalFilesSize += Math.round(element.size / 1024);
-    }
-
-    for (let index = 0; index < currentFiles.length; index++) {
-      const element = currentFiles[index];
-      totalFilesSize += element.size;
-    }
-    console.log('Check max size function', totalFilesSize >= max_size);
-    console.log('Check max size function', totalFilesSize, max_size);
-    return totalFilesSize >= max_size;
-  }
-
-  public checkMaxFileNumber(
-    currentFiles: FilePreviw[],
-    upCommingFiles: File[],
-    maxNumber: number
-  ) {
-    return currentFiles.length + upCommingFiles.length > maxNumber;
   }
 
   public extractNumber(text: string): number {
